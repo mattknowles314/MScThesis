@@ -1,0 +1,24 @@
+# Load all IPD data
+handle_IPD <- function(){
+  system("python3 src/IPD_handler.py")
+  
+  for (i in list.files("Data/IPD/", pattern = ".csv")) {
+    assign(
+      stringr::str_remove(i, ".csv"),
+      read.csv(paste0("Data/IPD/",i)) |> 
+        dplyr::mutate(status = ifelse(censored == TRUE, 0, 1))
+    ) 
+  }
+}
+
+combine_PFS <- function(){
+  PFSData <- dplyr::bind_rows(
+    IPD_Conroy_PFS_FOL,
+    IPD_Conroy_PFS_GEM,
+    IPD_Kindler_PFS_GEM,
+    `IPD_Kindler_PFS_GEM-AXI`,
+    IPD_Reni_PFS_GEM,
+    IPD_Reni_PFS_PEFG,
+  )
+}
+

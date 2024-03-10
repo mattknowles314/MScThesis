@@ -1,0 +1,44 @@
+\chapter{NMA of Pancreatic Cancer Trials}
+
+\section{Data}
+
+The NMA is performed on median survival estimates given by the best fitting survival model to each treatment arm in each study. We use the medians given by the survival estimates as opposed to the trial data to account for heterogeneity between the trials.
+
+The \verb|multinma| package requires a standard error for each median value, which we do not have by default. We calculate it from the 95\% confidence interval by 
+
+\[
+    SE = \frac{(U_{95}-L_{95})}{2*qnorm(0.975)*\sqrt{n}}.
+\]
+
+Where $n$ is the number of patients in the trial, and $qnorm(0.975) \approx 1.96$ is the Z-value for a 95\% confidence interval for a $N(0, 1)$ distribution. $L_{95}$ and $U_{95}$ give the values of the upper and lwoer 95\% CI values for a given model. Figure~\ref{fig:OS_net} presents the network of evidence used in the NMA. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/OS_Network.png}
+    \caption{Network of evidence}
+    \label{fig:OS_net}
+\end{figure}
+
+\section{Parametric Models}
+
+Table~\ref{paramNMAInputs} presents the input data used for the parametric NMA. 
+
+\begin{table}[h]
+    \center
+    \begin{tabular}{llllllll}
+    \hline
+    Distribution      & Treatment & Median  & L95    & U95     & Study      & n   & SE      \\ \hline
+    Gompertz          & GEM       & 8.5075  & 7.0869 & 9.9992  & Colucci    & 400 & 14.8588 \\
+    Generalised Gamma & GEM-CIS   & 7.3009  & 6.2111 & 8.5350  & Colucci    & 400 & 11.8569 \\
+    Log-Logistic      & GEM       & 5.9954  & 5.4301 & 6.6452  & Cunningham & 533 & 7.1564  \\
+    Generalised Gamma & GEM-CAP   & 7.2947  & 6.5520 & 8.1846  & Cunningham & 533 & 9.6151  \\
+    Exponential       & GEM       & 10.1538 & 8.5389 & 12.2304 & Kindler    & 632 & 23.6750 \\
+    Exponential       & GEM-AXI   & 9.8440  & 8.0901 & 11.9280 & Kindler    & 632 & 24.6133 \\
+    Generalised Gamma & GEM       & 6.1225  & 5.4602 & 6.9002  & Oettle     & 565 & 8.7319  \\
+    Gamma             & GEM-PEM   & 6.5691  & 5.9814 & 7.2575  & Oettle     & 565 & 7.7381  \\
+    Gamma             & GEM       & 6.7650  & 5.9708 & 7.6333  & Rocha Lima & 360 & 8.0471  \\
+    Weibull           & GEM-IRI   & 6.2512  & 5.3539 & 7.3042  & Rocha Lima & 360 & 9.4399  \\ \hline
+    \end{tabular}
+    \caption{Input data for the parametric NMA}
+    \label{paramNMAInputs}
+\end{table}

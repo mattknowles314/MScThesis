@@ -1,0 +1,108 @@
+\chapter{Mathematical Background of Fractional Polynomials}\label{fp}
+
+The seminal paper on fractional polynomials is~\cite{royston}. This chapters introduces the mathematical background of Fractional Polynmials.
+
+\section{Setup and Definitions}
+
+For a single covariate $x > 0$, an initial definition of a fractional polynomial may take the form 
+
+\[
+    \phi_m(x, \bf{\zeta}, \bf{p}) = \zeta_0 + \sum_{j = 1}^{m} x^{(p_j)}    
+\]
+
+Where $m \in \mathbb{N}$, $\bf{p} = (p_1, p_2, \ldots, p_m) \in \mathbb{R}^m$ with $p_1 < p_2 < \cdots < p_m$ and $\bf{\zeta} = (\zeta_0, \zeta_1, \zeta_2, \ldots, \zeta_m) \in \mathbb{R}^{m+1}$. Note that the $x^{(p_j)}$ term is the \textit{Box-Tidwell Transformation}
+
+\begin{definition}{Box-Tidwell Transformation}
+    A The \textbf{Box-Tidwell Transformation} for a variable $x$ and power $p$ is given by 
+    \[
+        x^{(p)} = \begin{cases}
+            x^{p} & \text{if} \ p \neq 0 \\
+            \log(x) & \text{if} \ p = 0
+        \end{cases}
+    \]
+    \label{def:bt}
+\end{definition}
+
+Recall, a conventional (real-valued) polynomial of degree $m$ in a variable $x$ is given by 
+
+\[
+    f(x) = \sum_{j = 0}^{m} a_j x^j = a_0 + a_1x + a_2x^2 + \cdots + a_mx^m.  
+\]
+
+Then it follows that $f(x) = \phi_m(x, \bf{\zeta}, \bf{p})$ with $\bf{\zeta} = (a_o = 0, a_1, a_2, \ldots, a_m)$ and $\bf{p} = (1, 2, 3, \ldots m)$. However, the current definition does not account for the situation where two concurrent powers are equal. Before giving the general form of a fractional polynomial, the following function that extends the Box-Tidwell transform must be considered.
+
+Let $j = 1,2,\ldots,m$. Then
+
+\[
+      H_j(x) = \begin{cases}
+        x^{(p_j)} & \text{if} \ p_j \neq p_{j-1} \\
+        H_{j-1}(x)\log(x) & \text{if} \ p_j = p_{j-1}
+      \end{cases}.
+\]
+
+By default, $H_0(x) = 1 \ \forall \ X$.
+
+\begin{definition}{Fractional Polynomial}
+    FFor arbitrary powers $p_1 \leq p_2 \leq \cdots \leq p_m$ and $p_0 = 0$ a \textbf{Fractional Polynomial} is of the form
+    \[
+        \phi_m(x, \bf{\zeta}, \bf{p}) = \sum_{j = 0}^{m} \zeta_j H_j(x) 
+    \]
+\end{definition}
+
+The following example is chosen given the context of survival analysis.
+
+\begin{example}{$m=2$ Fractional Polynomial}
+    AConsider the set of powers $\bf{p} = (-2, -1)$ and let $\bf{\zeta} = \bf{1}$. Then we have 
+    \begin{align*}
+        \phi(x) &= \sum_{j=0}^{2}H_j(x) \\
+                &= H_0(x) + H_1(x) + H_2(x) \\
+                &= 1 + \frac{1}{x^2} + \frac{1}{x} 
+    \end{align*}
+
+    A sketch of this polynomial can be seen below.
+
+    \begin{center}
+        \includesvg{../figures/FPm2.svg}
+    \end{center}
+\end{example}
+
+\section{Fitting Fractional Polynomials to Data}
+
+The set of powers $\bf{p}$ for fitting fractional polynomials must be considered. The paper by~\cite{royston} presents the set $\{-2, -1, -0.5, 0, 0.5, 1, 2, \ldots, \max(3, m)\}$. However, some of these models will not be acceptable in a survival analysis context. This is because of the conditions on any survival function $S(t)$. Firstly $S(0) = 1$, so if a $S(0)$ is undefined, it is not a valid survival function. Further, a survival must be monotonically decreasing.
+
+\begin{definition}{Monotonically Decreasing}
+    LLet $f(x):\mathbb{R^{+}} \rightarrow \mathbb{R}$ be a differentiable function. $f$ is \textbf{monotonically decreasing} over $\mathbb{R^{+}}$ if for any $x, y \in \mathbb{R^{+}}$ with $x < y$, $f(x) \geq f(y)$. Equivalently, $f'(x) \leq 0 \forall x \in \mathbb{R^{+}}$ 
+    \label{def:sd}
+\end{definition}
+
+\begin{example}{Invalid Survival Fractional Polynomial}
+    QLet $m = 2$, $\bf{p} = (-2, 1)$ and $\bf{\zeta} = \bf{1}$. Then we have 
+    \begin{align*}
+        \phi(x) &= \sum_{j=0}^{2}H_j(x) \\
+                &= H_0(x) + H_1(x) + H_2(x) \\
+                &= 1 + \frac{1}{x^2} + x 
+    \end{align*}
+    This is clearly undefined at $x = 0$, But consider the first and second derivatives of this function. 
+    \begin{align*}
+        \frac{d \phi}{dx} &= 1 - 2x^{-3} \\
+        \frac{d^2 \phi}{dx^2} &= 6x^{-4}
+    \end{align*}
+    There is a local minimum at $x = 2^{1/3}$, which is an inflection point in this case, meaning the curve starts increasing again after this point, which is not allowed in survival analysis, but also, the only real root is at $x = -1.4656$, which means for $x > 0$, there is no point at which the function reaches 0, and hense cannot be used to model survival, as not everyone would be able to die.\\
+
+    It would be possible to include 0 by setting the first $\bf{\zeta}$ term to a sufficiently negative value to translate the curve down, but this does not escape the undefined at $X = 0$ issue.
+\end{example}
+
+In order to get around this issue, a survival function that uses a fractional polynomial must be written piecewise. 
+
+\begin{definition}{Fractional Polynomial Survival Function}
+    RLet $t \in \mathbb{R^+}$. For arbitrary powers $p_1 \leq p_2 \leq \ldots \leq p_m$ and $p_0$, a \textbf{Fractional Polynomical Survival Function} takes the form 
+
+    \[
+        S(t) = \begin{cases}
+            1 & \text{if } t = 0 \\
+            \phi_m(t, \bf{\zeta}, \bf{p}) = \sum_{j = 0}^{m} \zeta_j H_j(t) & \text{otherwise}
+        \end{cases}  
+    \]
+\end{definition}
+
+\section{Fractional Polynomials for Flexsurv}

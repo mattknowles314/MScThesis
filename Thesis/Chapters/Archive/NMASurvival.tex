@@ -1,0 +1,117 @@
+\chapter{Network Meta Analysis of Survival Outcomes}
+
+\section{Single Treatment Effect}
+
+Given (possibly reconstructed) Individual Patient Data (IPD), a parametric survival function can be assumed for studies in the network, for which constant HRs or acceleration factors are obtained to be incorperated in the NMA. Consider for example, that survival times in study $i$ are modelled by a Weibull distribution.
+
+\begin{definition}{Weibull Distribution}{wei}
+     The \textbf{Weibull Distribution} is a continutios probability distribution characterised by the probability density function
+     \[f(x; \lambda, k) = 
+     \begin{cases}
+          \frac{k}{\lambda} \left(\frac{x}{\lambda}\right) ^{k-1}e^{-(x/\lambda)^k} & x \geq 0 \\
+          0 & x <0 
+     \end{cases} 
+     \]
+\end{definition}
+
+For uncensored individuals, we have $t_{ijk} \sim Weibull(\varphi_i, \lambda_{ik})$ for observed survival time $t_{ijk}$. For censored individuals, we have $S(t_{ijk}) = \exp(-\lambda_{ik}(t_{ijk})^{\varphi_i})$. We assume that the treatment effect acts only on the scale parameter, $\lambda_{ik}$. We have the hazard function $h_{ik}(t) = \lambda_{ik}\varphi_it^{\varphi_i-1}$. Taking logs, we get
+
+\begin{align}
+     \log(h_{ik}(t)) &= \alpha_{0,ik} + \alpha_{1,i}\log(t) \\
+     \alpha_{0,ik} &= \mu_{0,i} + \delta_{0,ik} \label{eq:alpha0} \\
+     \delta_{0,ik} &\sim Normal(d_{0,1t_{ik}}-d_{0,1t_{i1}}, \sigma^2) 
+\end{align}.
+
+Where $\alpha_{1,i} = (\varphi_i-1)$ and $\alpha_{0,ik} = \log(\lambda_{ik}\varphi_i)$. The $\delta_{0,ik}$ are trial-specific treatment effects affecting the scale parameter $\alpha_0$ of the treatment arm $k$ relative to the reference treatment. The pooled results are log HRs. 
+
+\section{Multiple Treatment Effects}
+
+We can extend the example above to account for multiple treatment effects. Hazard functions of interventions are modelled using known (non)parametric survival functions. It is the difference in parameteres that are considered the multidimensional treatment effect. These are compared across studies. 
+
+Let us expand the Weibull example. In this model, the $\alpha_1,ik$ term also has a treatment effect. So~\ref{eq:alpha0} becomes 
+
+\begin{equation}
+     \begin{pmatrix}
+          \alpha_{0,ik} \\
+          \alpha_{1,ik} 
+     \end{pmatrix}   
+     =
+     \begin{pmatrix}
+          \mu_{0,i} \\
+          \mu_{01,i}
+     \end{pmatrix} 
+     +
+     \begin{pmatrix}
+          \delta_{0,ik} \\
+          d_{1,1t_{ik}} - d_{1,1t_{i1}}
+     \end{pmatrix}.
+\end{equation}
+
+Therefore, 
+
+\begin{align}
+     \log(h_{ik}(t)) &= \alpha_{0,ik} + \alpha_{1,ik}\log(t) \label{weibNMA} \\
+     \begin{pmatrix}
+          \alpha_{0,ik} \\
+          \alpha_{1,ik} 
+     \end{pmatrix}   
+     &=
+     \begin{pmatrix}
+          \mu_{0,i} \\
+          \mu_{1,i}
+     \end{pmatrix} 
+     +
+     \begin{pmatrix}
+          \delta_{0,ik} \\
+          d_{1,1t_{ik}} - d_{1,1t_{i1}}
+     \end{pmatrix} \\
+     \delta_{0,ik} &\sim Normal(d_{0,1t_{ik}}-d_{0,1t_{i1}}, \sigma^2). 
+\end{align}
+
+\section{Fractional Polynomials}
+
+Fractional polynomials are an alternative to parametric models for survival. This comes at the expense of being more complex. The mathematical background is discussed in Appendix~\ref{fp}. The previous Weibull example is a special case of the fractional polynomial method. Indeed, a first-degree fractional polynomial for survival takes the form 
+
+\[
+     \alpha_{0,ik} + \alpha_{1,ik}t^{(p)}.  
+\]
+
+Where $p = \{-3, -1, -0.5, 0, 0.5, 1, 2, 3 \}$. The $t^p$ is a Box-Tidwell Transformation, (Definition~\ref{def:bt}), giving $t^0 = \log(t)$, giving the Weibull example when $t = 0$.\footnote{In the case of a first degree fractional polynomial with $p=1$, we have $\alpha_{0,ik} + \alpha_{1,ik}t$, which is the Gompertz model} By adding another term, we obtain a second order fractional polynomial
+
+\[
+     \alpha_{0,ik} + \alpha_{1,ik}t^{(p_1)} + \alpha_{2,ik}t^{(p_2)}.
+\]
+
+Care must be taken depending on the value of $p_1$ and $p_2$. In the case where $p_1 = p_2 = p$, weh have
+
+\[
+     \alpha_{0,ik} + \alpha_{1,ik}t^{(p)} + \alpha_{2,ik}t^{(p)}\log(t).    
+\]
+
+The full model for a second order fractional polynomial is then given by 
+
+\begin{align}
+     \log(h_{ik}(t)) &= \begin{cases}
+          \alpha_{0,ik} + \alpha_{1,ik}t^{(p_1)} + \alpha_{2,ik}t^{(p_2)} & p_1 \neq p_2 \\
+          \alpha_{0,ik} + \alpha_{1,ik}t^{(p)} + \alpha_{2,ik}t^{(p)}\log(t) & p = p_1 = p_2
+     \end{cases} \\
+     \begin{pmatrix}
+          \alpha_{0,ik} \\
+          \alpha_{1,ik} \\
+          \alpha_{2,ik}
+     \end{pmatrix}   
+     &=
+     \begin{pmatrix}
+          \mu_{0,i} \\
+          \mu_{1,i} \\
+          \mu_{2,i}
+     \end{pmatrix} 
+     +
+     \begin{pmatrix}
+          \delta_{0,ik} \\
+          d_{1,1t_{ik}} - d_{1,1t_{i1}} \\
+          d_{2,1t_{ik}} - d_{2,1t_{i1}}
+     \end{pmatrix} \\
+     \delta_{0,ik} &\sim Normal(d_{0,1t_{ik}}-d_{0,1t_{i1}}, \sigma^2). 
+\end{align}
+

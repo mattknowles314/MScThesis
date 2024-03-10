@@ -1,0 +1,82 @@
+\chapter{The Kaplan-Meier Estimator}\label{kmsec}
+
+\section{Deriving The Kaplan-Meier Estimator}
+Let $d_i$ and $r_i$ be the number of deaths and number at risk at time $t_i$ respectively. The discrete hazard rate $\lambda_i$ is the instantaneous probability of an individual dying at time $t_i$. The survival function can then be defined as 
+
+\[
+    S(t) = \prod_{i: t_i \leq t} (1 - \lambda_i).  
+\]
+
+The likelihood is then given by
+
+\[
+    \mathcal{L} = \prod^{i}_{j = 1} \lambda_j^{d_j}(1 - \lambda_j)^{n_j - d_j}. 
+\]
+
+We take the natural logarithm of both sides to obtain the log-likelikhood
+
+\[
+    \log(\mathcal{L}) = \sum_{j = 1}^i d_j\log(\lambda_j) + (n_j-d_j)\log(1-\lambda_j). 
+\]
+
+Taking the partial derivative of the above with respect to $\lambda_i$ gives
+
+\[
+    \frac{\partial \log(\mathcal{L})}{\partial \lambda_i}  = \frac{d_i}{\hat{\lambda_i}} - \frac{n_i - d_i}{1-\hat{\lambda_i}}  
+\]
+
+The Maximum Likelihood Estimate then occurs when the above is 0, solving for which yields $\hat{\lambda_i} = \frac{d_i}{n_i}$. Substituting this back into the survival function at the beginning of the section gives the Kaplan-Meier estimator, $S_{KM}$ as
+
+\begin{equation}
+    \label{eq:KM}
+    S_{KM}(t) = \prod_{i: t_i \leq t} \left( 1 - \frac{d_i}{n_i} \right).
+\end{equation}
+
+\section{Standard Error}
+
+We begin by taking the natural logarithm of both sides of Equation~\ref{eq:KM},
+
+\begin{align*}
+    \log(S_{KM}) &= \log \left( \prod_{i:t_i \leq t} \left(1 - \frac{d_i}{n_i} \right) \right) \\
+                 &= \sum_{i:t_i \leq t} \log \left(1 - \frac{d_i}{n_i} \right).
+\end{align*}
+
+Therefore,
+
+\[
+    \text{var} \{ \log(S_{KM}(t)) \} = \sum_{i:t_i \leq t} \text{var}\log\left( 1 - \frac{d_i}{n_i}\right)
+\]
+
+It is assumed that the number of individuals surviving through an interval begining at time $t_{(i)}$ follows a binomial distribution $D_i \sim Bin(n_i, p_i)$. The observed value of those who survive will is $n_i - d_i$, and therefore the variance of this is $n_ip_i(1-p_i)$, by the definition of the variance of a binomial distribution. Before continuing, summer probability theory is required.
+
+\begin{theorem}{Taylor Series Approximation to the Variance of a Function of a Random Variable}
+    LLet $X$ be a random variable, and $g$ a function on that random variable. Then 
+    \[
+        \text{var}(g(X)) \approx \left\{ \frac{dg(X)}{dX} \right\}^2 \text{var}(X)
+    \]
+\end{theorem}
+\begin{proof}
+    Let $X$ be a random variable and $\mu_X$, $\sigma^2_X$ be the mean and variance of $X$ respectively. Recall that the Taylor-Series of $f(x)$ about $a$ is given by 
+
+    \[
+        f(x) \approx f(a) + f'(a)(x - a) +\frac{1}{2}\frac{d^2f}{dx^2}(x-a)^2 + \frac{1}{6}\frac{d^3f}{dx^3}(x-a)^3 + \cdots.  
+    \]
+
+    In our case, consider the function $g(X)$ and let $a = X - \mu_X$. Then we have 
+
+    \[
+        g(X) \approx g(\mu_X) + g'(\mu_X)(X-\mu_X) + \frac{1}{2}g''(\mu_X)(X - \mu_X)^2 
+    \]
+
+    Taking the variance of both sides,
+
+    \begin{align*}
+        \text{var} (g(X)) &\approx \text{var}\left( g(\mu_X) + g'(\mu_X)(X-\mu_X) + \frac{1}{2}g''(\mu_X)(X - \mu_X)^2 \right)   \\
+        &\approx \text{var}(g(\mu_X)) + \text{var}(g'(\mu_X))\text{var}(X-\mu_X) + \frac{1}{2}\text{var}(g''(\mu_X))\text{var}(X - \mu_X)^2
+    \end{align*}
+
+    TO BE FINISHED
+
+\end{proof}
+
+In the case of the variance of the Kaplan-Meier Estimator. We have $g(X) = log(X)$, giving $\frac{dg(X)}{dX} = \frac{1}{X}$. However, we also need $\text{var}\left(1-\frac{d}{n}\right)$.

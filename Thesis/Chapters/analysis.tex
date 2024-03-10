@@ -1,0 +1,68 @@
+\chapter{Survival Analysis of Pancreatic Cancer Trials}
+
+\section{Trial Data}
+
+Figure~\ref{fig:OSGem} and Figure~\ref{fig:OSComp} present the OS KM curves for GEM and the comparators, respectively. In addition, Table~\ref{tab:OS_meds} presents the median OS estimates by study for GEM and the comparator treatment. In all studies except Oettle, GEM had a higher median OS. Note that more information about each included trial is given in Section~\ref{trialData}. \\
+
+\begin{table}[h]
+    \begin{tabular}{lllllll}
+    \hline
+               & \multicolumn{3}{l}{Treatment = GEM}          & \multicolumn{3}{l}{Treatment = Comparator}   \\ \hline
+               & Median Survival & L95\% CI & U95\%CI & Median Survival & L95\% CI & U95\%CI \\
+    Colucci    & 8.5157          & 7.412        & 10.2119     & 7.2514          & 6.3844       & 8.7499      \\
+    Cunningham & 6.0892          & 5.4991       & 7.34        & 7.1984          & 6.3016       & 7.9773      \\
+    Kindler    & 9.9477          & 7.2714       & 11.1849     & 9.0388          & 7.0821       & 10.3769     \\
+    Oettle     & 6.1769          & 5.5159       & 7.2945      & 6.4053          & 5.4246       & 6.9519      \\
+    Rocha Lima & 6.7424          & 5.6812       & 7.9758      & 6.3989          & 4.8554       & 7.6321      \\ \hline
+    \end{tabular}
+    \caption{Median OS data (in months) from each of the studies, along with lower and upper 95\% confidence intervals}
+    \label{tab:OS_meds}
+\end{table}
+
+\begin{sidewaysfigure}[ht]
+    \centering
+    \includegraphics[scale=0.9]{../figures/KMs/OS_KM.png}
+    \caption{OS Kaplan-Meier data for Gemcitabine}
+    \label{fig:OSGem}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[ht]
+    \centering
+    \includegraphics[scale=0.9]{../figures/KMs/OS_KM_COMP.png}
+    \caption{OS Kaplan-Meier data for comparators}
+    \label{fig:OSComp}
+\end{sidewaysfigure}
+
+\section{Parametric Models}
+
+For each study, the standard seven parametric models were fit to each treatment arm, up to a maximum time of five years. Figure~\ref{collucimodels} to Figure~\ref{rlmodels} present the fitted models for each study. The median estimates given for each treatment arm of the studies are presenteed in Table~\ref{rochalimaModelMedians} \- Table~\ref{rochalimaModelMedians}.
+
+\begin{figure}
+    \includegraphics[width = 0.9\textwidth]{../figures/Models/OS/Colucci.png}
+    \caption{Colucci 2010 Models}
+    \label{collucimodels}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width = 0.9\textwidth]{../figures/Models/OS/Cunningham.png}
+    \caption{Cunningham 2009 Models}
+    \label{cunnmodels}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width = 0.9\textwidth]{../figures/Models/OS/Kindler.png}
+    \caption{Kindler 2011 Models}
+    \label{kinmodels}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width = 0.9\textwidth]{../figures/Models/OS/Oettle.png}
+    \caption{Oettle 2006 Models}
+    \label{oettlemodels}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width = 0.9\textwidth]{../figures/Models/OS/RochaLima.png}
+    \caption{Rocha Lima 2004 Models}
+    \label{rlmodels}
+\end{figure}

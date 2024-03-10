@@ -1,0 +1,73 @@
+\chapter{Computational Methods in NMAs}
+
+It is worth devoting some time to the computational methods that will be used throughout this project, not least because they are interesting, but because they help us to understand what is really going on in NMAs.
+We will be using the \verb|multinma| package in R [CITE MULTINMA] for performing NMAs. This package is actually built ontop of the STAN language, and more specifically, the \verb|rstan| R package that interfaces R with STAN. [STAN REFERENCE]. 
+
+We first give some details about the kind of computing methods required for our task at hand. We then start to build towards being able to explain the methods employed for perfoming NMAs. Namely, we build up to describing the \textit{No U-Turn Sampler}, which is used by STAN, and by extension by the \verb|multinma| package. 
+
+\section{Motivation and Setup}
+
+The main need for computing power in NMAs stems from needing to sample from probability distributions. The idea is to create samples from a continuous random variable which has a probability density proportional to some known function. 
+
+Consider a target sample space $Q$, and let $\pi(q)$ for $q \ in Q$ spaceify the (smooth) probability density function of a target distribution.
+
+
+
+\begin{definition}{Markov Chain}
+A \textbf{Markov Chain} is a sequence of random variables $X_1, X_2, \ldots$ such that 
+\[
+    P(X_{n+1} = x | X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n) = P(X_{n+1} = x | X_n = x_n) 
+.\] 
+\end{definition}
+
+Intuitively, one can think of a markov chain as being created by a point moving through spacec, a cloud surrounding the point representing the probability of a the next point in the chain. The trajectory traced out by this particle gives the chain. [DIAGRAM PLEASE]
+Naturally, given enough time, this chain will explore the entire sample space $Q$. The issue being that computers tend to not have infinite time avaialble.
+
+\section{Markov Chain Monte-Carlo}
+Markov Chain Monte-Carlo (MCMC) is a class of methods for sampling from a probability distribution. The idea is to construct a markov chain that has the 
+
+\section{Hamiltonian Monte-Carlo}
+The Hamiltonian Monte-Carlo algorithm (HMC) is a Markov-Chain Monte-Carlo algorithm used for generating a sequence of random samples which converge to a target distribution. 
+
+\begin{definition}{Convergence in Distribution}
+    Consider a sequence of random variables $X_1, X_2, \ldots$ with cumulative distribution functions $F_1, F_2, \ldots$. The sequence $X_1, X_2, \ldots$ is said to \textbf{converge in distribution} to some random variable X with cumulative distribution function F if 
+    \[
+        \lim_{n \to \infty}F_n(x) = F(x)
+    .\] 
+    For all $x \in \mathbb{R}$ at which F is continuous.
+\end{definition}
+
+The algorithm was proposed by Duane et. al [DUANE 1987 REF] for its use in the field of quantum chromodynamics. Below we present the algorithm as given in Hoffman et. al, [HOFFMAN NUTS REFERENCE] 
+
+\begin{algorithm}
+    \caption{The Hamiltonian Monte-Carlo Algorithm}\label{alg:hmc}
+    \begin{algorithmic}
+        \State Given $\theta^0$, $\epsilon$, L $\mathcal{L}$, M
+        \For{$m=1$ to M}
+            \State Sample $r^0 \sim N(0, I)$
+            \State Set $\theta^m \leftarrow \theta^{m-1}$, $\hat{\theta} \leftarrow \hat{\theta^{m-1}}$, $\hat{r} \leftarrow r^0$
+            \For{$i = 1$ to L}
+                \State Set $\hat{\theta}, \hat{r} \leftarrow Leapfrog(\hat{\theta},\hat{r},\epsilon)$
+            \EndFor
+            \State with probability $\alpha = min\left(1, \frac{\exp( \mathcal{L}(\hat{\theta}- 0.5 \hat{r}\cdot \hat{r})}{\exp( \mathcal{L}(\theta^{m-1}) -0.5r^0 \cdot r^0 )} \right)$, set $\theta^m \leftarrow \hat{\theta}, r^m \leftarrow -\hat{r}$ 
+        \EndFor
+    
+    \State \textbf{function} Leapfrog($\theta, r, \epsilon$)
+    \State $\hat{r} \leftarrow r + (\frac{\epsilon}{2})\nabla_{\theta}\mathcal{L}(\theta)$
+    \State $\hat{\theta} \leftarrow \theta + \epsilon \hat{r}$
+    \State $\hat{r} \leftarrow \hat{r} + (\frac{\epsilon}{2})\nabla_{\theta}\mathcal{L}(\hat{\theta})$
+    \State \textbf{return} $\hat{\theta}, \hat{r}$
+    \end{algorithmic}
+\end{algorithm}
+
+The actual details and intution behind this algorithm is discussed at length in Hoffman's paper. The key thing to note is that the performance of this algorithm depends primarily on the choice of values for $\epsilon$ and L. For $\epsilon$, consider the \textit{Leapfrog} function, if $\epsilon$ is too small, the simulation will give inaccurate results, but if it is too small, then the function will run for too long. For L, if it too small, then the sample will contain values close to one another and will not converge, but if it is too largee then their is the possibility that the trajectories generated will loop. It is this problem with L that gives rise to the No U-Turn Sampler.
+
+\section{No U-Turn Sampler}.
+The No u-Turn Sampler expands on HMC by removing the need for a fixed value of L. There is need for some stopping rule to inform that performing any more iterations would no longer increease the distance between $\hat{\theta}$ and $\theta$. The criterion chosen for this is the following derivative
+
+\begin{align*}
+    \frac{d}{dt}\frac{(\hat{\theta}-\theta)\cdot (\hat{\theta}-\theta)}{2} &= (\hat{\theta}-\theta)\cdot \frac{d}{dt}(\hat{\theta}-\theta) \\
+    &= (\hat{\theta}-\theta)\cdot \hat{r}
+\end{align*}
+
+Naturally, if this quanitity is equal to 0, we are making no progress, but if it is less than 0, that is an indication that we are moving from $\hat{\theta}$ back towards $\theta$, since this relationship os proportional to the progress made away from the starting point $\theta$. This would indicate running the Leapfrog algorithm until the above goes below 0, and at that point stop.

@@ -1,0 +1,79 @@
+\chapter{Network Meta-Analysis}%
+
+\section{The Basic Model}
+
+\subsection{Building a Network of Evidence}
+
+Consider a set of $N$ two-arm clinical trials. In each trial $i \in 1,\ldots,N$, the patients are randomised to recieve a treatment $A_i$, or a placebo $P_i$. This can be represented as N graphs with two nodes, $A_i$ and $P_i$, connected by an edge representing the trial comparing $A_i$ and $P_i$. It is useful at this stage to recall the formal definition of an (undirected) graph. 
+
+\begin{definition}{Graph}
+A  A \textbf{Graph} is an ordered triple $G = (V, E, \varphi)$. Where  $V$ is a set of nodes, E is a set  of edges, and $\varphi : E \to \{\{ x, y \} | x, y \in V \ \text{such that} \ x \neq y \}$ is an  \textbf{incidence function} mapping every edge to a pair of verticesa.
+\end{definition}
+
+We can construct $N$ graphs under the formal definition. Namely, for trial $T_i$, we have $G_i = (V_i, E_i, \varphi_i)$ where $V_i = \{ A_i, P_i \}$, $E_i = \{T_i\}$ and $\varphi_i : E_i \to \{ \{ x, y \} | x, y \in V_i \ \text{such that} \  x \neq y \}$. For construction of the grpahs, we can drop the subscript on $P_i$, and take the placebo as a reference treatment. This is done under the assumption that the effect of placebo is constant across all trials. This is a strong assumption, and implications of this are discussed later. Under this assumption however, each $V_i$ now contains a common element, $P$.
+
+Let
+
+\begin{align*}
+    V_{trts} &= \bigcup_{i=1}^{N} V_i \\
+    E_{trials} &= \bigcup_{i=1}^{N} E_i
+.\end{align*}
+
+The incidence function becomes 
+
+\[
+    \varphi : E_{trials} \to \{ \{x, y \} | x, y \in V_{trts} \ \text{such that} \ x = P \}
+.\] 
+
+Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of evidence given by these two arm trials that forms the basis of a network meta analysis. This process expands to trials that compare more than two treatments by weighting the edges by the number of trials making that particular comparison.
+
+\begin{figure}[h]
+    \centering
+    \includesvg{../figures/combined_evidence.svg}
+    \caption{Visualisation of combining trials into a network of evidence}
+    \label{comb_evi}
+\end{figure}
+
+\section{General Network Meta Analysis Framework}
+A meta-analysis model can be written in the form of a Generalised Linear Model as follows,
+
+\begin{align}
+    g(\gamma) &= \theta_{ik} \nonumber \\
+              &= \mu_i + \delta_{ik}. 
+    \label{nmaGLMRE}
+\end{align}
+
+In the above, $g$ is an appropriately chosen link function, $\theta_{ik}$ represents a continuous measure of the treatment effect in arm $k$ of trial $i$. Further, $\mu_i$ and $\delta_{ik}$ are the trial-specific effects of the treatment in arm 1 of trial $i$ and the the trial-specific treatment effects of the treatment in arm $k$ relative to the treatment of arm $k$ in trial $i$. A more concrete definition of $\delta_{ik}$ is 
+
+\[
+    \delta_{ik} \sim \begin{cases}
+        0 & \text{if} \ k = 1 \\ 
+        N(d_{1,t_{ik}} - d_{1,t_{i1}}, \sigma^2) & \text{if} \ k > 1
+    \end{cases}.  
+\]
+
+Where $d_{12}$ is the relative effect of treatment 2 compared with treatment 1 over some scale. Equation~\ref{nmaGLMRE} is the \textit{random effects} model. The \textit{fixed effect} model is given by the similar result
+
+\begin{align}
+    g(\gamma) &= \theta_{ik} \\
+              &= \mu_i + d_{1,t_{ik}} - d_{1,t_{i1}}   
+\end{align}
+
+[[NOTE TO MATT: WOULD BE COOL TO ADD SOME STAN CODE HERE]]
+
+NICE TSD 2~\cite{tsd2} outlines a table of link functions.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llll}
+    Link  & Function & Inverse Function & Likelihood     \\
+    \hline
+    Indentity & $\gamma$ & $\theta$ & Normal \\
+    Logit & $\log\left(\frac{\gamma}{1-\gamma}\right)$ & $\frac{\exp(\theta)}{1+\exp(\theta)}$ & Binomial, Multinomial\\
+    Log  & $\log(\gamma)$ & $\exp(\theta)$ & Poisson  \\
+    Cloglog & $\log(-\log(1-\gamma))$ & $1-\exp(-\exp(\theta))$ & Binomial,Multinomial \\
+    Reciprocal link & $\frac{1}{\gamma}$ & $\frac{1}{\theta}$ Gamma \\
+    Probit & $\Phi^{-1}(\gamma)$ & $\Phi(\theta)$ & Binomial, Multinomial
+    \end{tabular}\label{Tab:link}
+    \caption{Common link (and inverse link) functions and associated likelihoods}
+\end{table}

@@ -1,0 +1,79 @@
+\chapter{Survival Analysis Bakground}\label{survchap}
+
+\section{Background and Survival Functions}
+
+Given a homogeneous population of individuals, the time of death for each individual is drawn from a continuous random variable $T > 0$ with probability density function $f(t)$ and distribution function $F(t) = \int_{0}^{t}f(\tau)d\tau$. Survival analysis is concerned with estimating the distribution $T$ from Time-To-Event (TTE) data. There are two functions central to survival analysis, the \textit{survival function} and \textit{hazard function}.
+
+\begin{definition}{Survival Function}{h}
+    The \textbf{Survival Function} $S(t)$, gives the probability of an individual surviving longer than time $t$. 
+    \[
+        S(t) = P(T \geq  t) = 1 - F(t) = \int_{t}^{\infty}f(\tau)d\tau  
+    \]
+\end{definition}
+
+\begin{definition}{Hazard Function}{h}
+    The \textbf{Hazard Function} gives the risk of death at time $t$, given that the individual has survived up to time $t$. 
+    
+    \[
+        h(t) = -\frac{d}{dt}\log S(t)  
+    \]
+\end{definition}
+
+\section{Regression Models for Survival}
+
+The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions.
+
+\subsection{Accelerated Failure Time (AFT) Models}
+
+Let $x$ be a vector of explanatory variables for each individual in a trial. The survival function can be extended to include this,
+
+\[
+    S(t, \bf{x}) = S_0(t\Psi(\bf{x})).
+\]
+
+Here, $S_0(t) = S(t, \bf{x} = \bf{0})$, i.e the survival function at baseline. We define the density and hazard functions accordingly,
+
+\begin{align*}
+    f(t, \bf{x}) &= f_0(t\Psi(\bf{x}))\Psi(\bf{x}) \\
+    h(t, \bf{x}) &= h_0(t\Psi(\bf{x}))\Psi(\bf{x}).
+\end{align*}
+
+This is equivalent to defining a random variable $T$ such that
+
+\[
+    T = T_0/\Psi(\bf{x}).  
+\]
+
+Here, $T_0$ has survivor function $S_0$. It is required that $\Psi(\bf{x}) \geq 0$ and $\Psi(\bf{0}) = 1$ [[NOTE TO MATT: WHY?]], leading to the natural choice 
+
+\[
+    \Psi(\bf{x}) = \exp(-\beta'x).  
+\]
+
+We can then write 
+
+\begin{align*}
+    T &= T_0/\Psi(\bf{x}) \\
+    \implies E(T) &= E(T_0)/E(e^{-\beta'x}) \\
+    &= E(T_0)/e^{-\beta'x} \\
+    &= E(T_0)e^{\beta'x}
+\end{align*}
+
+In practice, we assume a distribution for $T$, and estimate parameters using maximum likelihood estimation. 
+
+\subsection{Proportional Hazards (PH) Models}
+
+Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $\bf{x}$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
+
+\begin{equation}
+    h(t, \bf{x}) = e^{\beta'\bf{x}}h_0(t)
+\end{equation}
+
+Consider the following defintion.
+
+\begin{definition}{Semi Parametric Model}{h}
+    A statistical model is a parameterised family of distributions $\{P_{\theta} : \theta \in \Theta\}$. 
+    For a parametric model, $\Theta \subseteq \mathbb{R}^k$ for $k \in \mathbb{N}$. Similarly, for a non-parametric model, $\Theta \subseteq V$, where $V$ is some (possibly infinite) dimensional space $V$. A \textbf{Semi-parametric} model is a statistical model with both parametric and non-parametrc components. For a semi-parametric model we have $\Theta \subseteq \mathbb{R}^k \times V$.
+\end{definition}
+
+The Cox model is semi-parametric then $\beta$ is of finite dimension and $h_0(t)$ is infinite-dimensional and does not need to be specified. 

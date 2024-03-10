@@ -1,0 +1,34 @@
+\chapter{Network Meta Analysis of Chemotherapy Pancreatic Cancer Trials}
+
+\section{Networks}
+
+A literature search was conducted to identify studies to include in the NMA. Information on the studies is presented in Appendix~\ref{studies}. Seperate networks were considered for PFS and OS. These networks are presented in Figure~\ref{fig:pfs_os_networks}. 
+
+\begin{figure}[h]
+    \centering
+    \subfloat[\centering PFS Network]{{\includegraphics[width=0.45\textwidth]{../figures/PFS_Network_Included.png} }}%
+    \qquad
+    \subfloat[\centering OS Network]{{\includegraphics[width=0.45\textwidth]{../figures/OS_Network_Included.png} }}%
+    \caption{Networks of evidence for PFS and OS}%
+    \label{fig:pfs_os_networks}%
+\end{figure}
+
+In total, the PFS network contained 6 studies, comparing 6 unique treatments against GEM, and the OS network contained 8 studies comparing 7 unique treatments against GEM. 
+
+\section{Progression Free Survival}
+
+\subsection{Parametric Models}
+The raw results of parametric model fitting for the PFS data are presented in Appendix~\ref{modelsApp_PFS_param}. The log-normal model was the best performing model in terms of AIC score (Table~\ref{AICPFS}) in the GEM data from the Conroy, Colucci and Kindler studies. The generlaised gamma model performed best in terms of AIC score for the Cunningham, Reni and Rocha-Lima studies. However, in Reni study, the AIC score of the log-normal model was within 2 of the generalised gamma model's AIC score, so can be considered a well fitting model (See Section~\ref{model_selction} for more details). \textbf{Therefore, the log-normal model was selected as the the model for GEM in the PFS network}. A random effects model was used to account for any heterogeneity across the trials. The model was run with 50000 iterations and four chains. Trace plots are presented in Appendix~\ref{stanchap}.
+
+
+
+\subsection{Fractional Polynomial Models}
+foo
+
+\section{Overall Survival}
+
+\subsection{Parametric Models}
+bar
+
+\subsection{Fractional Polynomial Models}
+foobar

@@ -1,0 +1,98 @@
+\chapter{Deriving the Link Functions for Common Likelihoods}
+
+This appendix chapter explores some GLM theory in more depth, giving context behind the results presented in Table~\ref{Tab:link}. Before deriving the results in the afforementioned table, some results are required.
+
+For GLMSs, the probability denisty function (pdf) $f$ of a single observation in scalar $y$ is of the form
+
+\[
+    f(y:\theta,\phi) = \exp\left( \frac{w(y\theta - b(\theta))}{\varphi} + c(y, \varphi)\right). 
+\]
+
+\begin{definition}{Score Statistic}
+    SLet $l = \log(f)$ be the log-likelihood corresponding to a pdf $f$. Then the \textbf{Score Statistic} is given by 
+    \begin{equation}
+        \frac{\partial l(y, \theta, \varphi)}{\partial \theta}.
+    \end{equation}
+\end{definition}
+
+\begin{theorem}{Mean and Variance of the Score Statistic}
+   SThe score statistic has mean $0$ and variance 
+   \[
+     -E\left(\frac{\partial^2l}{\partial\theta^2}\right)
+   \] 
+\end{theorem}
+\begin{proof}
+    Let f be a pdf in scalar $y$ with parameters $\theta$ and $\varphi$. We must have 
+    \[
+        \int f dy = 1.
+    \]
+    Differentiating both sides with respect to $\theta$ gives the following
+    \begin{align*}
+        \int \frac{\partial f}{\partial \theta}dy &= 0 \\
+        \int \frac{1}{f}\frac{\partial f}{\partial \theta}f dy &= 0.
+    \end{align*}
+    At first glance, rewriting the integral in this way may seem odd, but now we can employ the chain rule in the following way,
+    \[
+        \frac{\partial \log f}{\partial \theta} = \frac{1}{f}\frac{\partial f}{\partial \theta}.  
+    \] 
+    The integral then becomes
+    \begin{align*}
+        \int \frac{1}{f}\frac{\partial f}{\partial \theta}f dy &= 0. \\
+        \int \frac{\partial \log f}{\partial \theta}f dy &= 0 \\
+        \int \frac{\partial l}{\partial \theta}fdy &= 0 \\
+        \implies E\left(\frac{\partial l }{\partial \theta}\right) &= 0.
+    \end{align*}
+
+    This completes the first clain in the proof. To begin with the second claim, we differentiate again with respect to $\theta$.
+
+    \begin{align*}
+        \frac{\partial}{\partial \theta}\left( \int \frac{\partial l}{\partial \theta} f dy\right) &= 0 \\
+        \int \frac{\partial}{\partial \theta} \left( \frac{\partial l}{\partial \theta}f\right)dy &=0. 
+    \end{align*}
+    Using the product rule, we expand this integral out,
+    \begin{align*}
+        \int \frac{\partial}{\partial \theta} \left( \frac{\partial l}{\partial \theta}f\right)dy &= 
+        \int \left( \frac{\partial^2 l }{\partial \theta^2}f + \frac{\partial l}{\partial \theta}\frac{\partial f}{\partial \theta} \right)dy \\
+        &= \int \frac{\partial^2 l}{\partial \theta^2}f dy + \int \frac{\partial l}{\partial \theta}\frac{\partial l}{\partial \theta}f dy. \\
+        &= 
+        E\left(\frac{\partial^2 l}{\partial \theta^2}\right) + E\left( \left( \frac{\partial l}{\partial \theta}\right)^2\right) \\
+        &= 0       
+    \end{align*}
+    Since we know from the first part of this proof, that $\frac{\partial l }{\partial \theta}$ has mean 0, the first term goes to 0, and we are left with the variance being given by the second term, giving 
+    \[
+        var\left(\frac{\partial l}{\partial \theta }\right) = -E\left(\frac{\partial^2 l}{\partial \theta^2}\right)
+    \]
+\end{proof}
+
+The above results for the Score Statistic are useful in proving the following result.
+
+\begin{theorem}{Mean and Variance Functions for GLMs}
+    GLet $Y_i$ for $i = 1,2,\ldots$ be independent observations. The pdf of $y = Y_i$ is given by 
+
+    \[
+    f(y:\theta,\phi) = \exp\left( \frac{w(y\theta - b(\theta))}{\varphi} + c(y, \varphi)\right). 
+    \]
+
+    Then $\mu$ = $E(Y) = b'(\theta)$ and $var(Y) = \frac{\varphi}{w}b''(\theta)$.
+\end{theorem}
+\begin{proof}
+    We start by taking the logarithm of the pdf of $Y_i$,
+    \begin{align*}
+        \log(y, \theta, \varphi) &= \log(\exp\left( \frac{w(y\theta - b(\theta))}{\varphi} + c(y, \varphi)\right)) \\
+                                 &= \frac{w(y\theta - b\theta)}{\varphi} + c(y, \varphi).
+    \end{align*}
+    We can then differenciate both sides with respect to $\theta$,
+    \begin{align*}
+        \frac{\partial l}{\partial \theta} &= \frac{\partial }{\partial \theta} \left(\frac{w(y\theta - b\theta)}{\varphi} + c(y, \varphi) \right) \\
+        &= \frac{w(y - b'\theta)}{\varphi}  \\
+        \frac{\partial l^2}{\partial \theta^2} &= -\frac{wb''\theta}{\varphi}
+    \end{align*}
+    Since $\frac{\partial l}{\partial \theta}$ is just the Score Statistic, we know it has mean 0, which gives the result that 
+    \begin{align*}
+        E\left( \frac{\partial l}{\partial \theta}\right)  &= 0 \\ 
+        E\left( \frac{w(y-b'(\theta))}{\phi}\right) &= 0 \\
+        \implies E(Y) &= b'(\theta)
+    \end{align*}
+
+    TODO - VARIANCE OF PROOF
+\end{proof}

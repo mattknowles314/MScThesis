@@ -1,0 +1,162 @@
+\documentclass[11pt]{report}
+%\documentclass[working]{tufte-book}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in,8in}, portrait, margin=1in]{geometry}
+\usepackage{rotating}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[misc]{ifsym}
+\usepackage{indentfirst} 
+\usepackage{amsthm}
+\usepackage{appendix}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{dirtree}
+\usepackage{epigraph}
+\usepackage{dsfont}
+\usepackage{svg}
+\usepackage{chemformula}
+\usepackage{fontspec, arabxetex}
+\pagestyle{fancy}
+\usepackage[Bjarne]{fncychap}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\topskip0pt
+
+\setsvg{inkscapeexe = {/usr/bin/inkscape}}
+
+%Headers and Footers, thanks to Overleaf
+%https://www.overleaf.com/learn/latex/How_to_Write_a_Thesis_in_LaTeX_(Part_2):_Page_Layout
+\fancyhead{}
+\fancyhead[RO,LE]{\small Parametric and Non-Parametric Survival Analysis}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Matthew Knowles}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newtcbtheorem[number within = section]{theorem}{Theorem}%
+{colback = green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within = section]{definition}{Definition}%
+{colback = red!5,colframe=red!35!black,fonttitle=\bfseries}{df}
+
+\newtcbtheorem[number within = section]{example}{Example}%
+{colback = blue!5, colframe=blue!35!black,fonttitle=\bfseries}{ex}
+
+\newtcbtheorem[number within = section]{remark}{Remark}%
+{colback=yellow!5!white,colframe=yellow!50!black,
+colbacktitle=yellow!75!black,fonttitle=\bfseries}{re}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstnewenvironment{R}[1][]{%
+  \lstset{language=R,#1}%
+}{}
+
+\lstset{style=mystyle}
+
+\begin{document}
+
+\input{titlepage}
+
+% ONLY USE THIS FOR PRINTING MOMS XMAS PRESENT!!!
+%\clearpage
+%\includepdf{toMom.pdf}
+
+\section*{Abstract}
+An investigation into improving the computational efficiency of Network Meta Analyses is presented.
+
+\section*{Acknowledgements}
+I would like to thank Dr Kate Ren for her invaluable supervision throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by.  
+
+\clearpage
+\begin{center}
+  \thispagestyle{empty}
+  \vspace*{\fill}
+  For my late grandfather, Norman Fredrick Taylor (July 1943 - April 2015).
+  \vspace*{\fill}
+\end{center}
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+
+\setcounter{tocdepth}{2}
+\listoffigures
+
+\input{Chapters/background.tex}
+
+\input{Chapters/Surv.tex}
+
+\input{Chapters/parametric_survival_modelling.tex}
+
+\input{Chapters/FP.tex}
+
+\input{Chapters/NMA_New.tex}
+
+\input{Chapters/analysis.tex}
+
+\input{Chapters/nma_analysis.tex}
+%\input{Chapters/NMASurvival.tex}
+
+%\input{Chapters/analysisChap.tex}
+
+\input{Chapters/conclusions.tex}
+
+\bibliographystyle{apalike}
+\bibliography{refs}{}
+
+\appendix
+\appendixpage
+
+\input{Chapters/trials}
+
+\input{Chapters/survAppendix.tex}
+
+\input{Chapters/survResultsAppendix.tex}
+
+\input{Chapters/packageDev.tex}
+
+\includepdf[pages=-]{Chapters/PCNMA.pdf}
+
+%\input{Chapters/studies.tex}
+
+%\input{Chapters/models.tex}
+
+\end{document}
