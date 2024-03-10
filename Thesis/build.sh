@@ -10,7 +10,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if [ "$RUN_R_COMMAND" = true ]; then
-    R CMD rd2pdf ../../PCMNMA
+    R CMD Rd2pdf ../../PCMNMA
     mv PCNMA.pdf Chapters/
 fi
 

@@ -124,5 +124,31 @@ p <- plot(network, circular = TRUE)
 ggsave(p, filename = "OS_Network.png", path = "~/Documents/MScThesis/figures/",
        height = 5, width = 8, units = "in")
 
-param_FE <- fit_model(network, "fixed", 40000)
-param_RE <- fit_model(network, "random", 40000)
+param_FE <- fit_model(network, "fixed", 30000)
+param_RE <- fit_model(network, "random", 30000)
+
+
+p <- plot(param_FE, type = "forest", xLims = c(-1, 1)) + labs(x = "Treatment Effects", y = "Treatment")
+ggsave(p, filename = "FE-Zoomed.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 6, units = "in")
+p <- plot(param_FE, type = "forest") + labs(x = "Treatment Effects", y = "Treatment")
+ggsave(p, filename = "FE-Forest.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 6, units = "in")
+p <- plot(param_FE, type = "trace")
+ggsave(p, filename = "FE-Trace-Param.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 8, units = "in")
+
+summary(param_FE, dic = TRUE)
+
+
+p <- plot(param_RE, type = "forest", xLims = c(-1, 1)) + labs(x = "Treatment Effects", y = "Treatment")
+ggsave(p, filename = "RE-Zoomed.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 6, units = "in")
+p <- plot(param_RE, type = "forest") + labs(x = "Treatment Effects", y = "Treatment")
+ggsave(p, filename = "RE-Forest.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 6, units = "in")
+p <- plot(param_RE, type = "trace")
+ggsave(p, filename = "RE-Trace-Param.png", path = "~/Documents/MScThesis/figures/",
+       height = 6, width = 8, units = "in")
+
+summary(param_RE, dic = TRUE)
