@@ -66,7 +66,8 @@ In practice, we assume a distribution for $T$, and estimate parameters using max
 Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $\bf{x}$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
 
 \begin{equation}
-    h(t, \bf{x}) = e^{\beta'\bf{x}}h_0(t)
+    h(t, \bf{x}) = \exp(\beta'\bf{x}) \ h_0(t)
+    \label{coxmodel}
 \end{equation}
 
 Consider the following defintion.
@@ -77,3 +78,103 @@ Consider the following defintion.
 \end{definition}
 
 The Cox model is semi-parametric then $\beta$ is of finite dimension and $h_0(t)$ is infinite-dimensional and does not need to be specified. 
+
+\section{Key Survival Metrics}
+
+\subsection{The Hazard Ratio}
+The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, \bf{x}) = \exp(\beta'\textbf{x}) \ h_0(t)$ and $h_2(t, \bf{x}) = \exp(\beta'\textbf{x}) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
+
+\begin{equation}
+    HR = \frac{h_1}{h_2} = \exp(\beta' \textbf{x})
+    \label{HReq}
+\end{equation}
+
+In practice, the HR is a useful endpoint in performing network meta-analyses on survival outcomes. However, in order to conduct a HR-based NMA, the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by visual-inspection of a log-cumulative hazards plot. 
+
+\begin{definition}{Cumulative Hazard Function}
+    BThe \textbf{Cumulative Hazard Function}, $H(t)$ is given by 
+    \[
+        H(t) = \int_{0}^{x}h(t)dt = -\log(S(t))  
+    \]
+\end{definition}
+
+By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$. When plotting this for both arms of a clinical trial, if the curves remain roughly parallel, the PHA is likely satisfied, but if they curves cross, it indicates violation of the PHA.
+
+\subsection{Restriced Mean Survival Time}
+The Restricted Mean Survival Time (RMST) is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. We therefore define it formally as
+
+\begin{definition}{RMST}
+    AFor a survival function $S(t)$, the \textbf{RMST} for some pre-specified time $x > 0$,
+    \[
+        RMST = \int_{0}^{x} S(t)dt
+    \] 
+\end{definition}
+
+\section{Parametric Models for Survival Analysis}
+This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the National Institute for Health and Care Excellence (NICE) in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
+
+\subsection{Model Setup}
+The general model of a \verb|flexsurv| survival model takes the form 
+
+\begin{equation}
+    \label{fsurvmodel}
+    f(t|\mu(\bf{z}), \bf{\alpha}(\bf{z})).
+\end{equation}
+
+Equation~\ref{fsurvmodel} gives the probability density for death at time $t \geq 0$. The \textit{mean} or \textit{location} of the distribution is given by $\mu = \alpha_0$. The remaining parameters, $\bf{\alpha^1} = (\alpha_1, \ldots, \alpha_R)$ are called \textit{ancillary} parameters. \\
+
+Chapter~\ref{survchap} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as 
+
+\[
+    h(t|\bf{\alpha}, \mu(\bf{z})) = \mu(\bf{z})h_0(t|\bf{\alpha}). 
+\] 
+
+Then we have a PH model. On the other hand, an AFT model would be written as
+
+\[
+    S(t|\mu(\bf{z}), \bf{\alpha}) = S_0(\mu(\bf{z})t/\bf{\alpha}).  
+\]
+
+All parameters may depend on $\bf{z}$, a vector of covariates. This is done through the link-transformed linear models
+
+% MATT: THERE IS BOLD TEXT HERE THAT SHOULDNT BE!
+\begin{align}
+    \label{flexsurvMLE}
+    g_0(\mu(\bf{z})) &= \gamma_0 + \bf{\beta}_0^Tz \nonumber \\
+    g_r(\alpha_r(\bf{z})) &= \gamma_r + \bf{\beta}_{\gamma}^T\bf{z}
+\end{align}
+
+$g$ is usally chosen to be $log()$ if the parameter is positive, or the identity function if the parameter is unrestricted.\\
+
+\verb|Flexsurv| contains several built-in models. Appendix~\ref{flexsurvDists} presents these models.
+
+\subsection{Fitting Models}
+Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ such that 
+
+\[
+    c_i = \begin{cases*}
+        1 & \text{if $t_i$ is an observed death time} \\
+        0 & \text{if $t_i$ is censored} 
+    \end{cases*}  
+.\]
+
+Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. $s_i = 0$ when there is no delayed-entry. \\
+
+\subsubsection{Right Censoring}
+In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE} is given by 
+
+\begin{equation}
+    \label{flexsurvRightCens}
+    l(\bf{\theta}|\bf{t},\bf{c},\bf{s}) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
+\end{equation}
+
+\subsubsection{Interval Censoring}
+In the case of interval-censoring, where the survival time is censored on $(t_i^{\text{min}}, t_i^{\text{max}})$, the likelihood for $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ is 
+
+\begin{equation}
+    \label{flexSurvIntCens}
+    l(\bf{\theta}|\bf{t^\text{min}}, \bf{t^\text{max}}, \bf{c},\bf{s}) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} \left(S_i(t_i^{\text{min}}) - S_i(t_i^{\text{max}}) \right)}{\prod_{i} S_i(s_i)}
+\end{equation}
+
+Maximum Likelihood Estimation is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens}. 
+

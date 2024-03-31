@@ -2,7 +2,7 @@
 
 \section{Data}
 
-The NMA is performed on median survival estimates given by the best fitting survival model to each treatment arm in each study. We use the medians given by the survival estimates as opposed to the trial data to account for heterogeneity between the trials. An NMA based on hazard ratios was considered, but deemed inappropriate due to the log-cumulative hazard plots of each trial, as presented in Section~\ref{survivalResultsAppendix}, crossing in every trial, suggesting violation of the PHA.
+The NMA is performed on RMST values given by the best fitting survival model to each treatment arm in each study for teh 12 month, 18 month, and 24 month timepoint. We use the RMST given by the models as opposed to the trial data to account for heterogeneity between the trials, and to obtain survival estimates at a standardised set of timepoints. An NMA based on hazard ratios was considered, but deemed inappropriate due to violation of the PHA.
 
 The \verb|multinma| package requires a standard error for each median value, which we do not have by default. We calculate it from the 95\% confidence interval by 
 
@@ -21,56 +21,19 @@ Where $n$ is the number of patients in the trial, and $qnorm(0.975) \approx 1.96
 
 \section{Parametric Models}
 
-Table~\ref{paramNMAInputs} presents the input data used for the parametric NMA. 
-
-\begin{table}[h]
-    \center
-    \begin{tabular}{llllllll}
-    \hline
-    Distribution      & Treatment & Median  & L95    & U95     & Study      & n   & SE      \\ \hline
-    Gompertz          & GEM       & 8.5075  & 7.0869 & 9.9992  & Colucci    & 400 & 14.859 \\
-    Generalised Gamma & GEM-CIS   & 7.3009  & 6.2111 & 8.5350  & Colucci    & 400 & 11.857 \\
-    Log-Logistic      & GEM       & 5.9954  & 5.4301 & 6.6452  & Cunningham & 533 & 7.1564  \\
-    Generalised Gamma & GEM-CAP   & 7.2947  & 6.5520 & 8.1846  & Cunningham & 533 & 9.6151  \\
-    Exponential       & GEM       & 10.154  & 8.5389 & 12.230  & Kindler    & 632 & 23.675 \\
-    Exponential       & GEM-AXI   & 9.8440  & 8.0901 & 11.928  & Kindler    & 632 & 24.613 \\
-    Generalised Gamma & GEM       & 6.1225  & 5.4602 & 6.9002  & Oettle     & 565 & 8.7319  \\
-    Gamma             & GEM-PEM   & 6.5691  & 5.9814 & 7.2575  & Oettle     & 565 & 7.7381  \\
-    Gamma             & GEM       & 6.7650  & 5.9708 & 7.6333  & Rocha Lima & 360 & 8.0471  \\
-    Weibull           & GEM-IRI   & 6.2512  & 5.3539 & 7.3042  & Rocha Lima & 360 & 9.4399  \\ \hline
-    \end{tabular}
-    \caption{Input data for the parametric NMA}
-    \label{paramNMAInputs}
-\end{table}
-
-Figure~\ref{fig:forests_param} presntes the forest plots of the NMA conducted on median survival estimates. Both fixed and random effects models were fit. There was little difference between the two models, as shown by the selection statistics in Table~\ref{paramDIC}. Note that the forest plots in Figure~\ref{fig:forests_param} have been zoomed in to show the differences more clearly, the full figures are presented in Section~\ref{nmaappend}, along with further model diagnostic plots. The models were fit with uninformative priors of $N(0, 100^2)$, $N(0, 10^2)$, and $hN(0, 5^2)$ for the intercept, treatment and heterogeneity respectively. Here $hN$ is the half-normal distribution. The trace plots, as presented in Section~\ref{nmaappend} suggested good convergence for both models. 
-
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{../figures/FE-Zoomed.png}
-        \caption{Fixed Effects forest plot for parametric models}
-        \label{fig:FEForestParam}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{../figures/RE-Zoomed.png}
-        \caption{Random Effects forest plot for parametric models}
-        \label{fig:REForestParam}
-    \end{subfigure}
-    \caption{Forest plots for the fixed and random effects models of survival}
-    \label{fig:forests_param}
-\end{figure}
+Table~\ref{paramDIC} presents the selection statistics for 
 
 \begin{table}[h]
     \center
     \begin{tabular}{lll}
     \hline
-    Model          & pD  & DIC  \\ \hline
-    Fixed Effects  & 6.5 & 13.1   \\
-    Random Effects & 6.6 & 13.3 \\ \hline
+    \textbf{Model}          & \textbf{pD}  & \textbf{DIC}  \\ \hline
+    Fixed Effect - 12 Months & 6.2 & 12.5 \\
+    Fixed Effect - 18 Months & 5.6 & 11.3 \\
+    Fixed Effect - 24 Months & 5.4 & 10.8 \\ \hline
+    Random Effects - 12 Months & 6.6 & 13.2 \\
+    Random Effects - 18 Months & 5.9 & 11.8 \\
+    Random Effects - 24 Months & 5.6 & 11.3 \\ \hline
     \end{tabular}
     \caption{Model selection statistics for the parametric NMA models}
     \label{paramDIC}
