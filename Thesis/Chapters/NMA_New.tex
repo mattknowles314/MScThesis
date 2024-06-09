@@ -2,7 +2,7 @@
 
 \section{Building a Network of Evidence}
 
-Consider a set of $N$ two-arm clinical trials. In each trial $i \in 1,\ldots,N$, the patients are randomised to recieve a treatment $A_i$, or a placebo $P_i$. This can be represented as N graphs with two nodes, $A_i$ and $P_i$, connected by an edge representing the trial comparing $A_i$ and $P_i$. It is useful at this stage to recall the formal definition of an (undirected) graph. 
+Consider a set of $N$ two-arm randomised-controlled trials (RCTs). In each trial $i \in 1,\ldots,N$, the patients are randomised to recieve a treatment $A_i$, or a placebo $P_i$. This can be represented as N graphs with two nodes, $A_i$ and $P_i$, connected by an edge representing the trial comparing $A_i$ and $P_i$. It is useful at this stage to recall the formal definition of an (undirected) graph. 
 
 \begin{definition}{Graph}
 A  A \textbf{Graph} is an ordered triple $G = (V, E, \varphi)$. Where  $V$ is a set of nodes, E is a set  of edges, and $\varphi : E \to \{\{ x, y \} | x, y \in V \ \text{such that} \ x \neq y \}$ is an  \textbf{incidence function} mapping every edge to a pair of verticesa.
@@ -32,66 +32,28 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
     \label{fig:comb_evi}
 \end{figure}
 
-\section{The Foundational Bayesian-NMA Model}
-The development of the core NMA model in this section follows that of~\cite{dias}.
+\section{Deriving the NMA Model}
 
-In this dissertation, trials with only two treatment arms were considered, we therefore develop the NMA model in this context. We also consider only random effects models, as it relies on less assumptions about the underlying population in the trials. The literature review performed for this dissertation was not particularly systematic, and therefore random effects models are more appropriate. Consider $N$ two-arm trials. In a random effeects model, each study $i \in M$ provides an estimate of the study-specific treatment effects $\delta_i,12$ between treatment 1 and 2 in study $i$. The $\delta_{i,12}$ are subject to the \textit{exchangeability assumption}, which means the trial-specific treatment effects for each $i \in M$ come from a commond distribution, known as the \textit{random effects distribution}. A common choice for this distribution is the normal distribution, such that 
+The derivation in this chapter is based on the work of~\ref{phillippo2024}, but modified for this project. Under an NMA framework, we have $J$ RCTs investigating a subset $K_j$ ($j = 1, \ldots, J$) of $K$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Depending on data avialability, we may have IPD for some studies, and only aggregate data for the remaining. 
 
-\begin{equation} \label{eq:red}
-    \delta_{i,12} \sim N(d_{12}, \sigma^2_{12})
+\begin{definition}{General IPD Meta-Regression Model}
+    LLet $y_{ijk}$ be the IPD outcome for individual $i = 1, \ldots, N_{kj}$ in study $j$ recieving treatment $k \in K_j$ given the likelihood distribution $\pi_{Ind}(\theta_{ijk})$. 
+    \begin{align*}
+        y_{ijk} &\sim \pi_{Ind}(\theta_{ijk}) \\
+        g(\theta_{ijk}) &= \mu_j + \bf{x}^T_{ijk}(\bf{\beta}_1 + \bf{\beta}_{2,k}) + \gamma_k \\
+                        &= \eta_{jk}(\bf{x}_{ijk})
+    \end{align*}
+    Here, $g$ links the likelihood parameter $\theta_{ijk}$ to $\eta_{jk}(\bf{x}_{ijk})$. The $\mu_j$ are study-specific intercepts, and $\bf{\beta}_1$, $\bf{\beta}_{2,k}$ are regression coefficients for prognostic and effect-modifying covariates respectively. Additionally, the $\gamma_k$ are individual-level treatment effects. For the reference treatment, $\bf{\beta}_{2,1} = \gamma_1 = 0$.
+    \label{def:mlnmrIPD}
+\end{definition}
+
+\section{Survival ML-NMR}
+Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $\bf{x}_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
+
+Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|\bf{x})$ be the survival and hazard functions conditional on the covariates $\bf{x}$. Then the individual conditional likelohood contributions for each time $t_{ijk}$ in the IPD studies are given by
+
+\begin{equation}
+    L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},\bf{x}_{ijk}) = S_{jk}(t_{ijk}|\bf{x}_{ijk})h_{jk}(t_{ijk}|\bf{x}_{ijk})^{c_{ijk}}
 \end{equation}
- 
-The $d_{12}$ term in Equation~\ref{eq:red} is the pooled effect of t reatment 2 compared with 1. This is the primary parameter of interest in an NMA. It follows that by setting $\sigma^2_{12}$ in Equation~\ref{eq:red} gives the fixed effects model. Under a Bayesian framework, priors are required for the parameters that will be estimated. Since the data obtained from a study or trial should give the most weight to the estimated treatment effects, non-informative priors are used. The pooled treatment effect is assumedto be able to take any value in $\mathbb{R}$, so we may use $d_{12} \sim N(0,100)$ as a non-informative prior. For the $\sigma^2_{12}$ term in Equation~\ref{eq:red} has the constraint $\sigma_{12} > 0$, so a uniform distribution with a lower bound at $0$ is an appropriate prior. 
 
-Consider Figure~\ref{fig:comb_evi}. The above model is equivalent to making five comparisons. One for each $A_n$ with the reference $P$ $(n = 1,\ldots,5)$. But suppose a comparison of $A_2$ with $A_3$ was to be made. In the general framework, we want to compare treatments $1$ and $3$ from the evidence in the $N$ trials. Assume that the $\delta_{i,13} ~ N(d_{13}, \sigma^2_{13})$ are exchangable. By transitivity, we obtain $\delta_{i,23} = \delta_{i,13} - \delta_{i,12} \sim N(d_{23}, \sigma_{23}^2) \implies d_{23} = d_{13}-d_{12}$ \cite{lu2009}. Further to this result, we have $\sigma_{23}^2  = \sigma_{12}^2 + sigma_{13}^2 - 2\rho_{23}\sigma_{12}\sigma_{13}$, where $\rho_{23}$ is the correlation between the relative effects of treatment 3 compared to treatment 1 and of treatment 2 compared to treatment 1. If the patient populations are similar in the trials being considered, it is reasonable to assume that $\sigma^2_{12} = \sigma_{13}^2 = \ldots = \sigma^2$.
-
-\begin{remark}{Notation}
-    AAs not all studies compare the same treatments, some notation must be introduced to distinguish between arm $k$ of trial $i$ and the treatment compared in that arm. The trial-specific treatment effects of the treatment in arm $k$, relative to the treatment in arm 1 of trial $i$ are $\delta_{ik} \sim N(d_{t_{i1}},t_{ik}, \sigma^2)$. 
-\end{remark}
-
-Under this notiaton, a trial comparing treatment 1 and 2 we have $d_{12} = d_{t_{i1},t_{ik}}$ and for a trial comparing treatment 2 and treatment 3, $d_{23} = d_{t_{i1},t_{ik}}$. In an NMA, only the $d_1k$ are estimated, and are given the non-infomrative priort $d_{1k} \sim N(0,100^2)$.
-
-\section{Generalized Linear Models in NMAs}
-A meta-analysis model can be written in the form of a Generalised Linear Model as follows,
-
-\begin{align}
-    g(\gamma) &= \theta_{ik} \nonumber \\
-              &= \mu_i + \delta_{ik}. 
-    \label{nmaGLMRE}
-\end{align}
-
-In the above, $g$ is an appropriately chosen link function, $\theta_{ik}$ represents a continuous measure of the treatment effect in arm $k$ of trial $i$. Further, $\mu_i$ and $\delta_{ik}$ are the trial-specific effects of the treatment in arm 1 of trial $i$ and the the trial-specific treatment effects of the treatment in arm $k$ relative to the treatment of arm $k$ in trial $i$. A more concrete definition of $\delta_{ik}$ is 
-
-\[
-    \delta_{ik} \sim \begin{cases}
-        0 & \text{if} \ k = 1 \\ 
-        N(d_{1,t_{ik}} - d_{1,t_{i1}}, \sigma^2) & \text{if} \ k > 1
-    \end{cases}.  
-\]
-
-Where $d_{12}$ is the relative effect of treatment 2 compared with treatment 1 over some scale. Equation~\ref{nmaGLMRE} is the \textit{random effects} model. The \textit{fixed effect} model is given by the similar result
-
-\begin{align}
-    g(\gamma) &= \theta_{ik} \\
-              &= \mu_i + d_{1,t_{ik}} - d_{1,t_{i1}}   
-\end{align}
-
-The remained of this subsection contains information about models relevant to survival outcomes.
-
-\subsection{Poisson Likelihood with Log Links}
-Let $r_{ik}$ be the number of events ocurring during the trial followup period.
-
-\section{Network Meta-Analysis of Survival Data}
-
-\subsection{Parametric Survival Curves: Single Treatment Effect}
-We assume a parametric survival model across the studies in the network, and obtain an acceleration factor or constant hazard ratio to incorperate in an NMA. 
-
-\begin{example} {Weibull NMA}
-    Assume the survival times in study $i$ follow a Weibull model, and that the treatment effect acts only on the scale parameter of this model. Define the treatment-specific hazard function $h_{ik}(u) = \lambda_{ik}\varphi_iu^{\varphi_i-1}$ and implenent the NMA assuming the treatment effects on $\alpha_{0,ik} = \log(\lambda_{ik}\varphi_i)$, which gives the model 
-    \begin{align}
-        \log(h_{ik}(u)) &= \alpha_{0,ik} + \alpha_{1,i}\log(u) \\
-        \alpha_{0,ik} &= \mu_0,i + \delta_{0,ik} \\
-        \delta_{0,ik} &= N(d_{0,1t_{ik}}-d_{0,1t_{i1}}, \sigma^2)
-    \end{align}.
-    In the above, $\alpha_{1,i} = (\varphi_i - 1)$. The $\alpha$ terms describe the hazard over time, and the pooled results are log-HRs.
-\end{example}
+\bf{The forms of $S$ and $h$ depend on the specific models chosen}.

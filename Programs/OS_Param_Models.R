@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(openxlsx)
 
 Colucci_GEM <- read.csv("Data/IPD/IPD_Colucci_OS_GEM.csv")
 Colucci_GEMCIS <- read.csv("Data/IPD/IPD_Colucci_OS_GEM-CIS.csv")
@@ -66,7 +67,7 @@ ggsave(p, filename = "OS_GEM_Models.png", path = "../MScThesis/figures/Models/OS
        width = 7, height = 6, units = "in")
 
 GEM_Models_Medians <- summary(GEM_Models, median = TRUE)
-openxlsx::write.xlsx(GEM_Models_Medians, file = "../MScThesis/Results/Models/OS/GEM_Medians.xlsx")
+write.xlsx(GEM_Models_Medians, file = "../MScThesis/Results/Models/OS/GEM_Medians.xlsx")
 
 GEM_Models_AIC <- summary(GEM_Models, AIC = TRUE)
 
@@ -80,8 +81,7 @@ ggsave(p, filename = "OS_COMP_Models.png", path = "../MScThesis/figures/Models/O
        width = 7, height = 6, units = "in")
 
 COMP_Models_Medians <- summary(COMP_Models, median = TRUE)
-openxlsx::write.xlsx(COMP_Models_Medians, file = "../MScThesis/Results/Models/OS/COMP_Medians.xlsx")
-
+write.xlsx(COMP_Models_Medians, file = "../MScThesis/Results/Models/OS/COMP_Medians.xlsx")
 COMP_Models_AIC <- summary(COMP_Models, AIC = TRUE)
 
 # NMA

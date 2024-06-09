@@ -2,39 +2,3 @@
 
 \section{Data}
 
-The NMA is performed on RMST values given by the best fitting survival model to each treatment arm in each study for teh 12 month, 18 month, and 24 month timepoint. We use the RMST given by the models as opposed to the trial data to account for heterogeneity between the trials, and to obtain survival estimates at a standardised set of timepoints. An NMA based on hazard ratios was considered, but deemed inappropriate due to violation of the PHA.
-
-The \verb|multinma| package requires a standard error for each median value, which we do not have by default. We calculate it from the 95\% confidence interval by 
-
-\[
-    SE = \frac{(U_{95}-L_{95})}{2*qnorm(0.975)*\sqrt{n}}.
-\]
-
-Where $n$ is the number of patients in the trial, and $qnorm(0.975) \approx 1.96$ is the Z-value for a 95\% confidence interval for a $N(0, 1)$ distribution. $L_{95}$ and $U_{95}$ give the values of the upper and lwoer 95\% CI values for a given model. Figure~\ref{fig:OS_net} presents the network of evidence used in the NMA. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{../figures/OS_Network.png}
-    \caption{Network of evidence}
-    \label{fig:OS_net}
-\end{figure}
-
-\section{Parametric Models}
-
-Table~\ref{paramDIC} presents the selection statistics for 
-
-\begin{table}[h]
-    \center
-    \begin{tabular}{lll}
-    \hline
-    \textbf{Model}          & \textbf{pD}  & \textbf{DIC}  \\ \hline
-    Fixed Effect - 12 Months & 6.2 & 12.5 \\
-    Fixed Effect - 18 Months & 5.6 & 11.3 \\
-    Fixed Effect - 24 Months & 5.4 & 10.8 \\ \hline
-    Random Effects - 12 Months & 6.6 & 13.2 \\
-    Random Effects - 18 Months & 5.9 & 11.8 \\
-    Random Effects - 24 Months & 5.6 & 11.3 \\ \hline
-    \end{tabular}
-    \caption{Model selection statistics for the parametric NMA models}
-    \label{paramDIC}
-\end{table}

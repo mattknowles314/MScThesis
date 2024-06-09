@@ -11,14 +11,3 @@ handle_IPD <- function(){
   }
 }
 
-combine_PFS <- function(){
-  PFSData <- dplyr::bind_rows(
-    IPD_Conroy_PFS_FOL,
-    IPD_Conroy_PFS_GEM,
-    IPD_Kindler_PFS_GEM,
-    `IPD_Kindler_PFS_GEM-AXI`,
-    IPD_Reni_PFS_GEM,
-    IPD_Reni_PFS_PEFG,
-  )
-}
-
