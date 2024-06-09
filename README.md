@@ -1,6 +1,4 @@
-# High Performance Network Meta Anlaysis
-
-This dissertation explores improvements in the performance of Network Meta Analysis.
+# A Network Meta Analysis of Pancreatic Cancer Trials
 
 Colour Scheme:
 - green: #7EBE91
