@@ -1,4 +1,4 @@
-\chapter{Network Meta Analysis}
+\chapter{Network Meta Analysis Theory}
 
 \section{Building a Network of Evidence}
 
@@ -32,28 +32,56 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
     \label{fig:comb_evi}
 \end{figure}
 
-\section{Deriving the NMA Model}
+\section{Standard NMA Model}
+Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$, the standard NMA model is written as in Equation~\ref{eq:standardNMA}. This summary outcome may be, for example, HRs, or RMST values. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment. Together, Equation~\ref{eq:standardNMA1} and Equation~\ref{eq:standardNMA2} give the standard NMA model.
 
-The derivation in this chapter is based on the work of~\ref{phillippo2024}, but modified for this project. Under an NMA framework, we have $J$ RCTs investigating a subset $K_j$ ($j = 1, \ldots, J$) of $K$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Depending on data avialability, we may have IPD for some studies, and only aggregate data for the remaining. 
+\begin{align}
+    y_{jk} &\sim \pi_{Agg}(\theta_{jk}) \label{eq:standardNMA1} \\
+    g(\theta_{jk}) &= \mu_j + \delta_{jk} \label{eq:standardNMA2}
+\end{align}
+
+There are two types of NMA: fixed effect (FE) and relative effects (RE). In an FE NMA, $\delta_{jk} = d_{1k} = d_k$, with $d_1 = 0$. In an RE NMA, $\delta_{jk} \sim N(d_k, \tau^2)$ for the heterogeneity variance $\tau^2$, with $\delta_j1 = d_1 = 0$. \\
+
+The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and Multi-Level Network-Meta-Regression (ML-NMR) have saught to relax this assumption by using IPD from at least one of the studies in a population.
+
+\section{Multi-Level Network Meta Regression}
+The derivation in this chapter is based on the work of~\ref{phillippo2024}, but modified under the context of this project. Under an NMA framework, we have $J$ RCTs investigating a subset $K_j$ ($j = 1, \ldots, J$) of $K$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Depending on data avialability, we may have IPD for some studies, and only aggregate data for the remaining.
 
 \begin{definition}{General IPD Meta-Regression Model}
     LLet $y_{ijk}$ be the IPD outcome for individual $i = 1, \ldots, N_{kj}$ in study $j$ recieving treatment $k \in K_j$ given the likelihood distribution $\pi_{Ind}(\theta_{ijk})$. 
     \begin{align*}
         y_{ijk} &\sim \pi_{Ind}(\theta_{ijk}) \\
-        g(\theta_{ijk}) &= \mu_j + \bf{x}^T_{ijk}(\bf{\beta}_1 + \bf{\beta}_{2,k}) + \gamma_k \\
-                        &= \eta_{jk}(\bf{x}_{ijk})
+        g(\theta_{ijk}) &= \mu_j + x^T_{ijk}(\beta_1 + \beta_{2,k}) + \gamma_k \\
+                        &= \eta_{jk}(x_{ijk})
     \end{align*}
-    Here, $g$ links the likelihood parameter $\theta_{ijk}$ to $\eta_{jk}(\bf{x}_{ijk})$. The $\mu_j$ are study-specific intercepts, and $\bf{\beta}_1$, $\bf{\beta}_{2,k}$ are regression coefficients for prognostic and effect-modifying covariates respectively. Additionally, the $\gamma_k$ are individual-level treatment effects. For the reference treatment, $\bf{\beta}_{2,1} = \gamma_1 = 0$.
+    Here, $g$ links the likelihood parameter $\theta_{ijk}$ to $\eta_{jk}(\bf{x}_{ijk})$. The $\mu_j$ are study-specific intercepts, and $\beta_1$, $\beta_{2,k}$ are regression coefficients for prognostic and effect-modifying covariates respectively. Additionally, the $\gamma_k$ are individual-level treatment effects. For the reference treatment, $\beta_{2,1} = \gamma_1 = 0$.
     \label{def:mlnmrIPD}
 \end{definition}
 
-\section{Survival ML-NMR}
-Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $\bf{x}_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
+It is clear to see how the model in Definition~\ref{def:mlnmrIPD} extends Equations~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}. Let $\xi = \{\mu_j, \beta_1, \beta_{2,k}, \gamma_k | \forall \ j,k \}$ be the parameter space. Using $\xi$, we can denote the individual conditional likelihood function by $L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x_{ijk})$. The form of $L_{ijk|x}^{\text{Con}}$ depends on $\pi_{Ind}$, $g$, and $\eta_{jk}$. 
 
-Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|\bf{x})$ be the survival and hazard functions conditional on the covariates $\bf{x}$. Then the individual conditional likelohood contributions for each time $t_{ijk}$ in the IPD studies are given by
+By integrating the individual conditional likelihood ovr the joint covariate distributoin $f_jk$, we obtain Equation~\ref{eq:marg}, the individual marginal likelihood function.
 
 \begin{equation}
-    L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},\bf{x}_{ijk}) = S_{jk}(t_{ijk}|\bf{x}_{ijk})h_{jk}(t_{ijk}|\bf{x}_{ijk})^{c_{ijk}}
+    L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) = \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x) dx
+    \label{eq:marg}
 \end{equation}
 
-\bf{The forms of $S$ and $h$ depend on the specific models chosen}.
+It is clear from Equation~\ref{eq:marg} that $L_{ijk}^{\text{Mar}}$ does not depend on x. Let $i$ be an individual, on treatment $k$ in study $j$ with outcome $y_{ijk}$. If we don't know the covariate vector for $i$, $x_{ijk}$, but we do know $f_{jk}$, then we know that the likelihood contribution of $i$ is given by Equation~\ref{eq:marg}. \\
+
+It is likeliy that a closed-form of Equation~\ref{eq:marg} does not exist. We can therefore take a set of $N$ integration points, $\hat{x}$ from $f_{jk}$, giving Equation~\ref{eq:margApprox}.
+
+\begin{equation}
+    L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) \approx \frac{1}{N}\sum_{\hat{x}}L_{ijk|x}^{\text{Con}}(\xi;y_{ijk},x)
+    \label{eq:margApprox}
+\end{equation}
+
+\section{Survival ML-NMR}
+Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
+Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|x)$ be the survival and hazard functions conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
+
+\begin{equation}
+    L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}
+\end{equation}
+
+The forms of $S$ and $h$ depend on the specific survival models chosen.

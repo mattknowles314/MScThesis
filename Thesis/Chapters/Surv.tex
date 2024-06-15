@@ -89,7 +89,7 @@ The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatme
     \label{HReq}
 \end{equation}
 
-In practice, the HR is a useful endpoint in performing network meta-analyses on survival outcomes. However, in order to conduct a HR-based NMA, the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by visual-inspection of a log-cumulative hazards plot. 
+In practice, the HR is a useful endpoint in performing network meta-analyses on survival outcomes. However, in order to conduct a HR-based Network Meta Analysis (NMA), the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by visual-inspection of a log-cumulative hazards plot. 
 
 \begin{definition}{Cumulative Hazard Function}
     BThe \textbf{Cumulative Hazard Function}, $H(t)$ is given by 
@@ -177,4 +177,3 @@ In the case of interval-censoring, where the survival time is censored on $(t_i^
 \end{equation}
 
 Maximum Likelihood Estimation is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens}. 
-

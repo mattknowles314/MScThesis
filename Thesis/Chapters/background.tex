@@ -8,5 +8,15 @@ Risk factors of pancreatic cancer include smoking, diabetes, obesity, and high-f
 \section{Treatment Landscape}
 Gemcitabine (GEM) ($C_9H_{11}F_2N_3O_4$) is a standard first-line treatment for pancreatic cancer administered intrveneously~\cite{NG85}. GEM is also used to treat other types of cancer, including breast cancer, bladder cancer and non-small-cell lung cancer~\cite{wong2009}. GEM can be administered alone or in combination with another medication.\\
 
-This dissertation considered five treatments that were given in combination with GEM: Cisplatin (CIS) ($PtCl_2(NH_3)_2$), Capecitabine (CAP) ($C_{15}H_{22}FN_3O_6$), Axitinib (AXI) ($C_{22}H_{18}N_4OS$), Pemetrexed (PEM) ($C_{20}H_{21}N_5O_6$), and Irinotecan (IRI) ($C_{33}H_{38}N_4O_6$).
+This dissertation considered six treatments that were given in combination with GEM: Capecitabine (CAP) ($C_{15}H_{22}FN_3O_6$), Axitinib (AXI) ($C_{22}H_{18}N_4OS$), Pemetrexed (PEM) ($C_{20}H_{21}N_5O_6$), Sorafenib (SOR) ($C_{21}H_{16}CIF_{3}N_4O_3)$, nab-Paclitaxel (NAB)\footnote{nab-Paclitaxel is a mixture of Paclitaxel ($C_{47}H_{51}NO_{14}$) with albumin protein, meaning it does not have a standard chemical formula} and Irinotecan (IRI) ($C_{33}H_{38}N_4O_6$). \\
+
+A Network Meta Analysis (NMA) conducted by~\cite{gresham2014}, which included GEM, GEM-NAB, and GEM-CAP, found all three to be associated with statisitically significant improvements in Overall Survival (OS) relative to GEM, and several other treatments. Their NMA was a Bayesian NMA for calculating survival outcomes. The primary result outcomes of their NMA were the HR, and survival gain, defined as in Equation~\ref{eq:gain}. 
+
+\begin{equation}
+    \frac{\frac{\text{GEM Median OS}}{HR}-\text{GEM Median OS}}{\frac{\text{GEM Median PFS}}{HR}-\text{GEM Median PFS}}
+    \label{eq:gain}
+\end{equation}
+
+\section{Project Aim}
+To assess the efficacy of GEM alone versus GEM in combination with one of the six afforementioned treatments for the treatment of advanced/metastatic pancreatic cancer, a modified Multi-Level Network Meta Regression (ML-NMR) was used. The focus of this project was not on a thoroguh literature review, but on the methodology, so inclusion criteria were not particularly strict, but studies had to be Phase III, and contain published Kaplan-Meier (KM) curves with numbers at risk. In addition, studies had to report the proportion of male patients on each treatment arm. Only the OS endpoint was considered. 
 

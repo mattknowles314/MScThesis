@@ -1,0 +1,52 @@
+\chapter{Studies}
+
+Table~\ref{tab:studies} presents the studies used in this NMA. In total, there were seven studies comparing GEM with one of six combination therapies. The studies were comparable in terms of median age and proportion male. \\
+
+Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest plots of the median OS of the GEM arm in each study, and the comparator arm in each study, respectively. In particuar, the GEM arms in the Cunningham, Oettle, Goldstein, and Rocha Lima studies were similar, while the Spano study was noted for having a large 95\% CI. This was to be expected given there were only 34 patients in the GEM arm. For the comarator arms, there was more variation in the reported median OS. Large 95\% CIs were present for the Spano and Goncalves studies, again due to the comparatively low number of patients in these studies. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llllll}
+    \hline
+    Study      & Treatment & N & Medain Age & Proportion Male & Median OS (Months) \\ \hline
+    Cunningham 2009 & GEM       & 266                & 62.0       & 0.580           & 6.2 (5.5, 7.2)     \\
+    Cunningham 2009 & GEM-CAP   & 267                & 62.0       & 0.570           & 7.1 (6.2, 7.8)     \\
+    Goldstein  2015 & GEM       & 430                & 63.0       & 0.600           & 6.6 (6.0, 7.2)     \\
+    Goldstein  2015 & GEM-NAB   & 431                & 62.0       & 0.570           & 8.7 (7.9, 9.7)     \\
+    Goncalves  2012 & GEM       & 52                 & 64.0       & 0.620           & 9.2 (7.7, 11.6)    \\
+    Goncalves  2012 & GEM-SOR   & 52                 & 61.0       & 0.580           & 8.0 (6.0, 10.8)    \\
+    Kindler    2011 & GEM       & 316                & 61.0       & 0.590           & 8.3 (6.9, 10.3)    \\
+    Kindler    2011 & GEM-AXI   & 314                & 61.0       & 0.610           & 8.5 (6.9, 9.5)     \\
+    Oettle     2005 & GEM       & 282                & 63.0       & 0.535           & 6.3 (5.4, 6.9)     \\
+    Oettle     2005 & GEM-PEM   & 283                & 63.0       & 0.604           & 6.2 (5.4, 6.9)     \\
+    Rocha Lima 2004 & GEM       & 180                & 60.2       & 0533            & 6.6 (5.2, 7.8)     \\
+    Rocha Lima 2004 & GEM-IRI   & 180                & 63.2       & 0.572           & 6.3 (4.7, 7.5)     \\
+    Spano      2008 & GEM       & 34                 & 61.0       & 0.470           & 5.6 (3.9, 8.8)     \\
+    Spano      2008 & GEM-AXI   & 69                 & 65.0       & 0.510           & 6.9 (5.3, 10.1)    \\ \hline
+    \end{tabular}
+    \caption{Included studies}
+    \label{tab:studies}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../Results/Survival/GEM_Trial_Medians.png} 
+    \caption{Forest plot for median OS of GEM in each study}
+    \label{fig:GEMMedForest}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../Results/Survival/Comp_Trial_Medians.png} 
+    \caption{Forest plot for median OS of the comparator in each study}
+    \label{fig:CompMedForest}
+\end{figure}
+
+Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each study. It was clear that the PHA would need to be relaxed when fitting NMA models from the shape of the curves in Figure~\ref{fig:OSKMs}, due to the amount of crossing. Most of the studies had mature data, however the Kindler and Concalves studies were noted for only dropping to an OS of aroun 0.25 at the end of the observation period.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/OS_KMs.png} 
+    \caption{KM curves for each study}
+    \label{fig:OSKMs}
+\end{figure}

@@ -41,7 +41,7 @@
 %Headers and Footers, thanks to Overleaf
 %https://www.overleaf.com/learn/latex/How_to_Write_a_Thesis_in_LaTeX_(Part_2):_Page_Layout
 \fancyhead{}
-\fancyhead[RO,LE]{\small Parametric and Non-Parametric Survival Analysis}
+\fancyhead[RO,LE]{\small Pancreatic Cancer NMA}
 \fancyfoot{}
 \fancyfoot[LE,RO]{\thepage}
 \fancyfoot[LO,CE]{Chapter \thechapter}
@@ -103,7 +103,7 @@ colbacktitle=yellow!75!black,fonttitle=\bfseries}{re}
 %\includepdf{toMom.pdf}
 
 \section*{Abstract}
-Five treatments for advanced pancreatic cancer were compared against the standard of care treatment in two network meta analyses. The first network meta analysis used parametric survival models, and the second used fractional polynomials. The parametric model results showed only one treatment gave improvements on the standard of care, but little to no improvements were found in overall survival. 
+Do this last!
 
 \section*{Acknowledgements}
 I would like to thank Dr Kate Ren for her invaluable supervision throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by.  
@@ -126,16 +126,13 @@ I would like to thank Dr Kate Ren for her invaluable supervision throughout this
 
 \input{Chapters/Surv.tex}
 
-%\input{Chapters/FP.tex}
-
 \input{Chapters/NMA_New.tex}
 
-\input{Chapters/analysis.tex}
+\input{Chapters/Trials.tex}
+
+\input{Chapters/Surv_Analysis.tex}
 
 \input{Chapters/nma_analysis.tex}
-%\input{Chapters/NMASurvival.tex}
-
-%\input{Chapters/analysisChap.tex}
 
 \input{Chapters/conclusions.tex}
 
@@ -145,22 +142,10 @@ I would like to thank Dr Kate Ren for her invaluable supervision throughout this
 \appendix
 \appendixpage
 
-\input{Chapters/trials}
-
-\input{Chapters/survAppendix.tex}
-
-\input{Chapters/survResultsAppendix.tex}
-
-\input{Chapters/median_nma_results.tex}
-
-\input{Chapters/nmaResultsAppendix.tex}
+\input{Chapters/Surv_Results_Appendix.tex}
 
 \input{Chapters/packageDev.tex}
 
 \includepdf[pages=-]{Chapters/PCNMA.pdf}
-
-%\input{Chapters/studies.tex}
-
-%\input{Chapters/models.tex}
 
 \end{document}

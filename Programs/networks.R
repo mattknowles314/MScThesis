@@ -1,11 +1,8 @@
 library(multinma)
-library(PCNMA)
 library(dplyr)
 library(openxlsx)
 library(ggraph)
-
-Colucci_GEM <- read.csv("Data/IPD/IPD_Colucci_OS_GEM.csv")
-Colucci_GEMCIS <- read.csv("Data/IPD/IPD_Colucci_OS_GEM-CIS.csv")
+devtools::load_all()
 
 Cunningham_GEM <- read.csv("Data/IPD/IPD_Cunningham_OS_GEM.csv")
 Cunningham_GEMCAP <- read.csv("Data/IPD/IPD_Cunningham_OS_GEM-CAP.csv")
@@ -29,8 +26,6 @@ Goncalves_GEM <- read.csv("Data/IPD/IPD_Goncalves_OS_GEM.csv") |> mutate(Study =
 Goncalves_GEMSOR <- read.csv("Data/IPD/IPD_Goncalves_OS_SOR.csv") |> mutate(Study = "Goncalves") |> mutate(Treatment = "GEM-SOR")
 
 Net_Data <- bind_rows(
- Colucci_GEM,
- Colucci_GEMCIS,
  Cunningham_GEM,
  Cunningham_GEMCAP,
  Kindler_GEM,
@@ -50,9 +45,13 @@ Net_Data <- bind_rows(
   mutate(status = ifelse(status == FALSE, 1, 0)) |> 
   select(-c(PARAMCD))
 
+Net_Data$trtclass <- ifelse(Net_Data$Treatment == "GEM", "Placebo", "Active")
+
 net <- gen_network(Net_Data, "GEM", covs = read.xlsx("Data/DEF.xlsx") |> select(Study, Treatment = Trt, Male) |> filter(Study != "Ueno" | Study != "Heinemann"))
+
 p <- plot(net,
           nudge = 0.1,
+          weight_nodes = TRUE
           ) + 
   guides(edge_colour = guide_legend(override.aes = list(edge_width = 2))) +
   theme(legend.position = "bottom", legend.direction = "vertical")
@@ -67,16 +66,7 @@ p <- ggplot() +
   theme_bw()
 ggsave(p, file = "~/Documents/MScThesis/figures/OS_KMs.png", width = 12, height = 12, units = "in")
 
+
 net <- add_integration(net,
                        Male = distr(qbern, Male))
-
-FE_Gamma <- fit_model(net, effects = "fixed", iter = 4000, llhood = "gamma")
-FE_Gomp <- fit_model(net, effects = "fixed", iter = 4000, llhood = "gompertz")
-FE_Llogis <- fit_model(net, effects = "fixed", iter = 4000, llhood = "loglogistic")
-FE_Lnorm <- fit_model(net, effects = "fixed", iter = 4000, llhood = "lognormal")
-FE_Weib <- fit_model(net, effects = "fixed", iter = 4000, llhood = "weibull")
-
-RE_Gomp <- fit_model(net, effects = "random", iter = 4000, llhood = "gompertz")
-RE_Llogis <- fit_model(net, effects = "random", iter = 4000, llhood = "loglogistic")
-RE_Lnorm <- fit_model(net, effects = "random", iter = 4000, llhood = "lognormal")
-RE_Weib <- fit_model(net, effects = "random", iter = 4000, llhood = "weibull")
+saveRDS(net, "Data/network.RDs")
