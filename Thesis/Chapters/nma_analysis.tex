@@ -5,13 +5,13 @@ Figure~\ref{fig:osnet} presents the network of evidence for this NMA. Only aggre
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale = 0.6]{../figures/OS_Network.png}
+    \includegraphics[width = \textwidth]{../figures/OS_Network.png}
     \caption{Network of evidence}
     \label{fig:osnet}
 \end{figure}
 
 \section{Model Fitting and Selection}
-Both FE and RE models were fit using gamma, generlaised gamma, Gompertz, log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}.
+Both FE and RE models were fit using gamma, generlaised gamma, Gompertz, log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}, as defined in Defintion~\ref{def:hndef}. Figure~\ref{fig:hn} gives a visual example of the half-normal distribution compared to the normal distribution.
 
 \begin{definition}{Half Normal Distribution}
     LLet $X$ be a normal distribution such that $X \sim N(0, \sigma^2)$. Then $Y = |X|$ follows a half-normal distribution. In particular, the half-normal distribution has PDF 
@@ -19,11 +19,20 @@ Both FE and RE models were fit using gamma, generlaised gamma, Gompertz, log-log
         f(x, \sigma) = \frac{\sqrt{2}}{\sigma \sqrt{\pi}}\exp \left(-\frac{x^2}{2\sigma^2}\right)    
     \]
     With $x \in [0, \infty)$, and $\sigma > 0$.
+    \label{def:hndef}
 \end{definition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../figures/hN.png}
+    \caption{Half-normal and normal distribution (taken from 100 samples of $N(0,1)$)}
+    \label{fig:hn}
+\end{figure}
+
 
 For each model, sampling was done using 2000 iterations on four chains. The first 1000 iterations were warmup iterations. \\
 
-Table~\ref{tab:selectionstat} presents the selection statistics for each model. The FE log-normal model gave the lowest LOOIC and DIC score, indicating it was the best fitting model. The trace plot for this model is available in Appendix~\ref{NMAAppendix}, Figure~\ref{fig:trace}, and indicated good convergence due to consistent peaks and troughs across each treatment arm. The fixed effect model was also deemed to be clinically appropriate due to homogeneity in the patient population. 
+Table~\ref{tab:selectionstat} presents the selection statistics for each model. The fixed effect model was also deemed to be clinically appropriate due to homogeneity in the patient population. The FE gamma, FE and RE generalised gamma models failed to converge, meaning no DIC or LOOIC estimates could be obtained. The RE gamma and RE Gompertz models gave LOOIC and DIC scores so high that they were classified as Inf, indicating poor fit. The log-logistic, log-normal, and Weibull models gave similar LOOIC and DIC scores. In each case, the FE model had slightly lower LOOIC than the RE model for each likelihood. The FE log-normal model gave the lowest LOOIC and DIC score, indicating it was the best fitting model. The trace plot for this model is available in Appendix~\ref{NMAAppendix}, Figure~\ref{fig:trace}, and indicated good convergence due to consistent peaks and troughs across each treatment arm. \\
 
 \begin{table}[h]
     \centering
@@ -48,7 +57,6 @@ Table~\ref{tab:selectionstat} presents the selection statistics for each model. 
 \end{table}
 
 \section{Results}
-
 Figure~\ref{fig:pred_surv} and Figure~\ref{fig:pred_hazard} present the predicted survival and hazard of each treatment in study population, respectively. GEM-NAB and GEM-CAP had the highest OS and lowest hazard in each study population. The hazard curves for each study in each population followed a similar pattern, with peaks in the hazard just before ten months, before declining. GEM-SOR had the highest peak-hazard in each population, but crossed the GEM hazard curve in each population shortly after the peak, finishing with a lower hazard than GEM by the end of the observation period in each population. Further, in terms of hazard, the GEM-AXI and GEM-PEM curves were almost identical in each population. \\
 
 Figure~\ref{fig:pred_rmst} presents the estimated RMST of each treatment in each population. The GEM-SOR arm had large credible intervals in each population due to the lower number of patients for which GEM-SOR data was available. Further, GEM-SOR and GEM-IRI had the lowest and second-lowest RMST estimates in each population, respectively. The RMST estimates for GEM, GEM-AXI, and GEM-PEM were similar in each population, as were GEM-CAP, and GEM-NAB. GEM-NAB and GEM-CAP had the highest and second-highest RMST estimates respectively in every study population. \\
@@ -58,7 +66,7 @@ Figure~\ref{fig:pred_median} presents the estimated median OS of each treatment 
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{../Results/NMA/Survival_Plot.png}
-    \caption{Survival of each treatment in each population}
+    \caption{OS of each treatment in each population}
     \label{fig:pred_surv}
 \end{figure}
 
@@ -79,6 +87,6 @@ Figure~\ref{fig:pred_median} presents the estimated median OS of each treatment 
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{../Results/NMA/Median_Plot.png}
-    \caption{Median of each treatment in each population}
+    \caption{Median OS of each treatment in each population}
     \label{fig:pred_median}
 \end{figure}

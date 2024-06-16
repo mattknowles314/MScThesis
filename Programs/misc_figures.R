@@ -41,3 +41,33 @@ p <- ggplot(Comp_Studies, aes(y = index, x = Median)) +
   )
 ggsave(filename = "~/Documents/MScThesis/Results/Survival/Comp_Trial_Medians.png",
        width = 8, height = 6, units = "in")
+
+
+n <- 10000
+normal_data <- data.frame(
+  value = rnorm(n),
+  Distribution = "Normal"
+)
+
+# Generate data for half-normal distribution
+half_normal_data <- data.frame(
+  value = abs(rnorm(n)),
+  Distribution = "Half-Normal"
+)
+
+# Combine the data
+combined_data <- bind_rows(normal_data, half_normal_data)
+
+colours <- c(
+  "Normal" = "#7EBE91",
+  "Half-Normal" = "#7EABBE"
+)
+
+# Plot using ggplot2
+p <- ggplot(combined_data, aes(x = value, fill = Distribution)) +
+  geom_density(alpha = 0.5) +
+  labs(x = "x",
+       y = "f(x)") +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/figures/hN.png",
+       width = 8, height = 6, units = "in")

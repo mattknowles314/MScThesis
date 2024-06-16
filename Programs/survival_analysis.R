@@ -80,7 +80,6 @@ Spano_Medians <- summary(Spano_Models, median = TRUE)
 Goncalves_Medians <- summary(Goncalves_Models, median = TRUE)
 
 Param_Medians <- bind_rows(
-  Colucci_Medians |> mutate(Study = "Colucci"),
   Cunningham_Medians |> mutate(Study = "Cunningham"),
   Kindler_Medians |> mutate(Study = "Kindler"),
   Oettle_Medians |> mutate(Study = "Oettle"),

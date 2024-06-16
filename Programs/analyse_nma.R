@@ -43,21 +43,26 @@ write.csv(model_selection, "~/Documents/MScThesis/Results/NMA/Selection.csv")
 FE_Lnorm <- readRDS("Data/Models/FE_Lnorm.RDs")
 
 p <- plot(predict(FE_Lnorm, type = "hazard", quantiles = c(0.5))) +
-  theme_bw()
+  labs(x = "Time (Months)") +
+  theme_bw() 
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Hazard_Plot.png",
        height = 10, width = 12, units = "in")
 p <- plot(predict(FE_Lnorm, type = "survival", quantiles = c(0.5))) +
   geom_km(net) +
-  theme_bw()
+  labs(x = "Time (Months)",
+       y = "Overall Survival") +
+  theme_bw() 
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Survival_Plot.png",
        height = 10, width = 12, units = "in")
 p <- plot(predict(FE_Lnorm, type = "rmst")) +
+  labs(x = "RMST (Months)") +
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/RMST_Plot.png",
        height = 10, width = 12, units = "in")
 p <- plot(predict(FE_Lnorm, type = "median"))
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Median_Plot.png",
        height = 10, width = 12, units = "in") +
+  labs(x = "Median Overall Survival (Months)") +
   theme_bw()
 
 p <- mcmc_trace(FE_Lnorm, pars = parsForStan) +
