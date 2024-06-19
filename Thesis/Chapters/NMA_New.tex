@@ -60,10 +60,10 @@ The derivation in this chapter is based on the work of~\ref{phillippo2024}, but 
 
 It is clear to see how the model in Definition~\ref{def:mlnmrIPD} extends Equations~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}. Let $\xi = \{\mu_j, \beta_1, \beta_{2,k}, \gamma_k | \forall \ j,k \}$ be the parameter space. Using $\xi$, we can denote the individual conditional likelihood function by $L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x_{ijk})$. The form of $L_{ijk|x}^{\text{Con}}$ depends on $\pi_{Ind}$, $g$, and $\eta_{jk}$. 
 
-By integrating the individual conditional likelihood ovr the joint covariate distributoin $f_jk$, we obtain Equation~\ref{eq:marg}, the individual marginal likelihood function.
+By integrating the individual conditional likelihood ovr the joint covariate distributoin $f_{jk}$, we obtain Equation~\ref{eq:marg}, the individual marginal likelihood function.
 
 \begin{equation}
-    L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) = \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x) dx
+    L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) = \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx
     \label{eq:marg}
 \end{equation}
 
@@ -76,12 +76,109 @@ It is likeliy that a closed-form of Equation~\ref{eq:marg} does not exist. We ca
     \label{eq:margApprox}
 \end{equation}
 
+Consider a summary outcome $y_{\hat{jk}}$ aggregated over all individuals on treatment $k$ in study $j$. Each individual $i$ in on treatment $k$ in study $i$ contributes to the aggregate likelihood. Let $y_{ijk}$ denote the observed value of this summary measure for individual $i$. The aggregate maginal likelihood function is then the product of these $y_ijk$ up to a normalising constant, as in Equation~\ref{aggMargLik}.
+
+\begin{equation}
+    L_{\hat{jk}}^{\text{Mar}} \propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
+    \label{aggMargLik}
+\end{equation}
+
+The full, general, ML-NMR model is then given by 
+
+\begin{definition}{General ML-NMR Model}
+    IIndividual:
+    \begin{align}
+        L_{ijk|x}^{\text{Con}}(\xi;y_{ijk},x_{ijk}) &= \pi_{\text{Ind}}(y_{ijk}|\theta_{ijk}) \\
+        g(\theta_{ijk}) &= \eta_{jk}(x_{ijk}) = \mu_j + x_{ijk}^T(\beta_1 + \beta_{2,k}) + \gamma_k
+    \end{align}
+    Aggregate:
+    \begin{align}
+        L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \\
+        L_{\hat{jk}}^{\text{Mar}} &\propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
+    \end{align}
+        
+\end{definition}
+
+Under a Bayesian framework, priors are place on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$.
+
 \section{Survival ML-NMR}
 Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
+The censoring indicator is defined as in Equation~\ref{censInd}. 
+
+\begin{equation}
+    c_{ijk} = \begin{cases}
+        1 \ \text{If inividual has an event} \\
+        0 \ \text{If individual is censored}
+    \end{cases}
+    \label{censInd}  
+\end{equation}
+
+In practice, the censoring indicator can be the other way round. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition.
+
 Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|x)$ be the survival and hazard functions conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
 
 \begin{equation}
     L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}
 \end{equation}
 
-The forms of $S$ and $h$ depend on the specific survival models chosen.
+The forms of $S$ and $h$ depend on the specific survival models chosen. Starting from Equation~\ref{eq:marg}, the marginal likelihood equations for each event/censoring time in the aggregate data studies can be derived. Substituting $y_{ijk} = \{t_{ijk}, c_{ijk}\}$
+
+\begin{align}
+    L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \\ 
+    L_{ijk}^{\text{Mar}}(\xi; t_{ijk}, c_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; t_{ijk}, c_{ijk}, x)f_jk(x)dx \\
+                                       &= \int_{\mathfrak{X}} S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}} f_{jk}(x)dx\label{eq:survint}
+\end{align}
+
+As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evalueated with quasi-Monte Carlo integration to obtain Equation
+
+\begin{equation}
+    L_{ijk}^{\text{Mar}}(\xi; t_{ijk}, c_{ijk}) = \frac{1}{N}\sum_{\hat{x}}S_{jk}(t_{ijk}|\hat{x})h_{jk}(t_{ijk}|\hat{x})^{c_{ijk}}
+\end{equation}
+
+\section{Population-average estimates}
+Recall $d_{ab}$ is the relative effect of treatment b versus treatment a. Let $d_{ab(P)}$ be the population-average relative effect of b versus a in population P. $d_{ab(P)}$ can be calculated as in Equation~\ref{popavgd}. 
+
+\begin{align}
+    d_{ab(P)} &= \int_{\mathfrak{X}}(\eta_{(P)b}(x) - \eta_{(P)a}(x))f_{(P)}(x)dx \label{popavgdInt} \\
+              &= \gamma_b - \gamma_a + \bar{x}^T_{(P)}(\beta_{2,b}-\beta_{2,a}) \label{popavd}
+\end{align}
+
+For this dissertation, The estimates considered for results were the RMST and median OS. The survival and hazard functions were also analysed but were not primary outcomes for the NMA.
+
+\subsection{Survival function}
+Let $\bar{S}_{(P)k}(t)$ be the population-average marginal survival probability of treatmentt $k$ in population $P$ at time $t$. $\bar{S}_{(P)k}(t)$ is obtained by integrating $S_{(P)k}(t|x)$ over $f_{(P)}(x)$, as in Equation~\ref{popavgS}.
+
+\begin{equation}
+    \bar{S}_{(P)k}(t) = \int_{\mathfrak{X}}S_{(P)k}(t|x)f_{(P)}(x)dx
+    \label{popavgS}
+\end{equation}
+
+\subsection{Hazard function}
+
+The population-average marginal hazard function and cumulative hazard function are given by Equation~\ref{popavghaz}, and Equation~\ref{popavgcumhaz}, respectively.
+
+\begin{align}
+    \bar{h}_{(P)k}(t) &= \frac{\int_{\mathfrak{X}}S_{(P)k}(t|x)h_{(P)k}(t|x)f_{(P)k}(x)}{\bar{S}_{(P)k}(t)} \label{popavghaz}\\
+    \bar{H}{(P)k}(t) &= -\log(\bar{S}_{(P)k}(t)) \label{popavgcumhaz}
+\end{align}
+
+\subsection{RMST}
+Let $x$ be some time horizon. The population-average marginal RMST follows from Definition~\ref{def:rmst}.
+
+\begin{equation}
+    RMST_{(P)k}(x) = \int^{x}_{0} \bar{S}_{(P)k}(t)dt.
+\end{equation}
+
+\subsection{Median OS}
+In general, the $\alpha\%$ quantile is obtained by solving
+
+\begin{equation}
+    \bar{S}_{(P)k}(t) = 1 - \alpha.
+\end{equation}
+
+Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the population-average marginal median OS, $m$ is estimated by Equation~\ref{popavgmed}. 
+
+\begin{equation}
+    \bar{S}_{(P)k}(m) = \frac{1}{2}
+    \label{popavgmed}
+\end{equation}
