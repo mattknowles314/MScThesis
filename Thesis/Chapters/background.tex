@@ -1,16 +1,16 @@
 \chapter{Introduction}
 
 \section{Pancreatic Cancer}
-Pancreatic cancer is the $10^{th}$ most common cancer in the UK, accounting for $3\%$ of all new cases~\cite{pancStat}. Pancreatic cancer has a particularly poor prognosis. In 2016-2018, there were 9,558 deaths from 10,452 cases. Pancreatic cancer is hard to detect at early stages, meaning most people who present with symptoms already have advanced-stage pancreatic cancer. Often, patients only notice symptoms when the tumour has spread to surrounding tissues, or metastises to other organs~\cite{kelsen}. The liver is the most common site of pancreatic cancer metastases~\cite{deeb}. Common symptoms of pancreatic cancer include indigestion, stomach or back pain, loss of appeteite and jauncdice~\cite{pancSymp}. \\
+Pancreatic cancer is the $10^{th}$ most common cancer in the UK, accounting for $3\%$ of all new cancer cases~\cite{pancStat}. Pancreatic cancer has a particularly poor prognosis, with 9,558 deaths from 10,452 cases between 2016 and 2018. Part of the reason for the poor prognosis is that pancreatic cancer is hard to detect at early stages, meaning most people who present with symptoms already have advanced-stage pancreatic cancer by the time they present. Often, patients only notice symptoms when the tumour has spread to surrounding tissues, or metastises to other organs~\cite{kelsen}. The liver is the most common site of pancreatic cancer metastases~\cite{deeb}. Common symptoms of pancreatic cancer include indigestion, stomach or back pain, loss of appeteite and jauncdice~\cite{pancSymp}. \\
 
-Risk factors of pancreatic cancer include smoking, diabetes, obesity, and high-fat diets. Smoking is the dominant cause, with around $20\%$ of cases being caused by cigarette smoking. In addition, cancers from smokers contain more genetic mutations when compared to cancers from non-smokers~\cite{blackford}. 
+Risk factors of pancreatic cancer include smoking, diabetes, obesity, and high-fat diets. Smoking is the dominant risk factor, with around $20\%$ of cases being caused by cigarette smoking. In addition, cancers from smokers contain more genetic mutations when compared to cancers from non-smokers~\cite{blackford}. 
 
 \section{Treatment Landscape}
 Gemcitabine (GEM) ($C_9H_{11}F_2N_3O_4$) is a standard first-line treatment for pancreatic cancer administered intrveneously~\cite{NG85}. GEM is also used to treat other types of cancer, including breast cancer, bladder cancer and non-small-cell lung cancer~\cite{wong2009}. GEM can be administered alone or in combination with another medication.\\
 
 This dissertation considered six treatments that were given in combination with GEM: capecitabine (CAP) ($C_{15}H_{22}FN_3O_6$), axitinib (AXI) ($C_{22}H_{18}N_4OS$), pemetrexed (PEM) ($C_{20}H_{21}N_5O_6$), sorafenib (SOR) ($C_{21}H_{16}CIF_{3}N_4O_3)$, nab-paclitaxel (NAB)\footnote{As nab-paclitaxel is a mixture of paclitaxel ($C_{47}H_{51}NO_{14}$) with albumin protein, it does not have a standard chemical formula} and irinotecan (IRI) ($C_{33}H_{38}N_4O_6$). \\
 
-A Network Meta Analysis (NMA) conducted by~\cite{gresham2014}, which included GEM, GEM-NAB, and GEM-CAP, found all three to be associated with statisitically significant improvements in Overall Survival (OS) relative to GEM, and several other treatments. Their NMA was a Bayesian NMA for calculating survival outcomes. The primary result outcomes of their NMA were the HR, and survival gain, defined as in Equation~\ref{eq:gain}. 
+A Network Meta Analysis (NMA) conducted by~\cite{gresham2014}, which included GEM-NAB, and GEM-CAP, found both treatments to be associated with statisitically significant improvements in Overall Survival (OS) relative to GEM and several other treatments. Their NMA was a Bayesian NMA for calculating survival outcomes. The primary result outcomes of their NMA were the HR, and survival gain, as defined as in Equation~\ref{eq:gain}. 
 
 \begin{equation}
     \frac{\frac{\text{GEM Median OS}}{HR}-\text{GEM Median OS}}{\frac{\text{GEM Median PFS}}{HR}-\text{GEM Median PFS}}
@@ -18,5 +18,7 @@ A Network Meta Analysis (NMA) conducted by~\cite{gresham2014}, which included GE
 \end{equation}
 
 \section{Project Aim}
-To assess the efficacy of GEM alone versus GEM in combination with one of the six afforementioned treatments for the treatment of advanced/metastatic pancreatic cancer, a modified Multi-Level Network Meta Regression (ML-NMR) was used. As the focus of this project was not on a thoroguh literature review, but rather on the methodology, inclusion criteria were not particularly strict, but studies had to be a phase II or phase III trial, and contain published Kaplan-Meier (KM) curves with numbers at risk. In addition, studies had to report the proportion of male patients on each treatment arm. Only the OS endpoint was considered. 
+To assess the efficacy of GEM alone versus GEM in combination with one of the six afforementioned treatments for the treatment of advanced/metastatic pancreatic cancer, a modified Multi-Level Network Meta Regression (ML-NMR) was used. As the focus of this project was not on a thoroguh literature review, but rather on the methodology, inclusion criteria were not particularly strict, but studies had to be a phase II or phase III trial, and contain published Kaplan-Meier (KM) curves with numbers at risk. In addition, studies had to report the proportion of male patients on each treatment arm. Only the OS endpoint was considered. \\
+
+A secondary aim was to corroborate the findings of~\cite{gresham2014} by using different outcome measures. Indeed, survival gain could not be used in this NMA as Progression Free Survival (PFS), was not considered.
 

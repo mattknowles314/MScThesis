@@ -21,39 +21,39 @@ Given a homogeneous population of individuals, the time of death for each indivi
 
 \section{Regression Models for Survival}
 
-The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions.
+The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions. There are two forms of models for survival data. Accelerated Failure Time (AFT) models, and Proportional-Hazards (PH models).
 
-\subsection{Accelerated Failure Time (AFT) Models}
+\subsection{Accelerated Failure Time Models}
 
 Let $x$ be a vector of explanatory variables for each individual in a trial. The survival function can be extended to include this,
 
 \[
-    S(t, \bf{x}) = S_0(t\Psi(\bf{x})).
+    S(t, x) = S_0(t\Psi(x)).
 \]
 
-Here, $S_0(t) = S(t, \bf{x} = \bf{0})$, i.e the survival function at baseline. We define the density and hazard functions accordingly,
+Here, $S_0(t) = S(t, x = 0)$, i.e the survival function at baseline. We define the density and hazard functions accordingly,
 
 \begin{align*}
-    f(t, \bf{x}) &= f_0(t\Psi(\bf{x}))\Psi(\bf{x}) \\
-    h(t, \bf{x}) &= h_0(t\Psi(\bf{x}))\Psi(\bf{x}).
+    f(t, x) &= f_0(t\Psi(x))\Psi(x) \\
+    h(t, x) &= h_0(t\Psi(x))\Psi(x).
 \end{align*}
 
 This is equivalent to defining a random variable $T$ such that
 
 \[
-    T = T_0/\Psi(\bf{x}).  
+    T = T_0/\Psi(x).  
 \]
 
-Here, $T_0$ has survivor function $S_0$. It is required that $\Psi(\bf{x}) \geq 0$ and $\Psi(\bf{0}) = 1$ [[NOTE TO MATT: WHY?]], leading to the natural choice 
+Here, $T_0$ has survivor function $S_0$. It is required that $\Psi(x) \geq 0$ and $\Psi(0) = 1$, leading to the natural choice 
 
 \[
-    \Psi(\bf{x}) = \exp(-\beta'x).  
+    \Psi(x) = \exp(-\beta'x).  
 \]
 
 We can then write 
 
 \begin{align*}
-    T &= T_0/\Psi(\bf{x}) \\
+    T &= T_0/\Psi(x) \\
     \implies E(T) &= E(T_0)/E(e^{-\beta'x}) \\
     &= E(T_0)/e^{-\beta'x} \\
     &= E(T_0)e^{\beta'x}
@@ -61,12 +61,12 @@ We can then write
 
 In practice, we assume a distribution for $T$, and estimate parameters using maximum likelihood estimation. 
 
-\subsection{Proportional Hazards (PH) Models}
+\subsection{Proportional Hazards Models}
 
 Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $\bf{x}$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
 
 \begin{equation}
-    h(t, \bf{x}) = \exp(\beta'\bf{x}) \ h_0(t)
+    h(t, x) = \exp(\beta'x) \ h_0(t)
     \label{coxmodel}
 \end{equation}
 
@@ -82,10 +82,10 @@ The Cox model is semi-parametric then $\beta$ is of finite dimension and $h_0(t)
 \section{Key Survival Metrics}
 
 \subsection{The Hazard Ratio}
-The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, \bf{x}) = \exp(\beta'\textbf{x}) \ h_0(t)$ and $h_2(t, \bf{x}) = \exp(\beta'\textbf{x}) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
+The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
 
 \begin{equation}
-    HR = \frac{h_1}{h_2} = \exp(\beta' \textbf{x})
+    HR = \frac{h_1}{h_2} = \exp(\beta' x)
     \label{HReq}
 \end{equation}
 
@@ -147,8 +147,6 @@ All parameters may depend on $\bf{z}$, a vector of covariates. This is done thro
 
 $g$ is usally chosen to be $log()$ if the parameter is positive, or the identity function if the parameter is unrestricted.\\
 
-\verb|Flexsurv| contains several built-in models. Appendix~\ref{flexsurvDists} presents these models.
-
 \subsection{Fitting Models}
 Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ such that 
 
@@ -166,15 +164,15 @@ In the case of right-censoring and nothing else, the likelihood for the paramete
 
 \begin{equation}
     \label{flexsurvRightCens}
-    l(\bf{\theta}|\bf{t},\bf{c},\bf{s}) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
+    l(\bf{\theta}|t,c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
 \end{equation}
 
 \subsubsection{Interval Censoring}
-In the case of interval-censoring, where the survival time is censored on $(t_i^{\text{min}}, t_i^{\text{max}})$, the likelihood for $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ is 
+In the case of interval-censoring, where the survival time is censored on $(t_i^{\text{min}}, t_i^{\text{max}})$, the likelihood for $\theta = \{\gamma, \beta\}$ is 
 
 \begin{equation}
     \label{flexSurvIntCens}
-    l(\bf{\theta}|\bf{t^\text{min}}, \bf{t^\text{max}}, \bf{c},\bf{s}) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} \left(S_i(t_i^{\text{min}}) - S_i(t_i^{\text{max}}) \right)}{\prod_{i} S_i(s_i)}
+    l(\theta|t^\text{min}, t^\text{max}, c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} \left(S_i(t_i^{\text{min}}) - S_i(t_i^{\text{max}}) \right)}{\prod_{i} S_i(s_i)}
 \end{equation}
 
 Maximum Likelihood Estimation is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens}. 
