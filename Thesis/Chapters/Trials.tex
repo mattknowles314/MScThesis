@@ -1,14 +1,16 @@
-\chapter{Included Studies}
+\chapter{Included Studies}\label{trialschap}
 
-Table~\ref{tab:studies} presents the studies used in this NMA. In total, there were seven studies comparing GEM with one of six combination therapies. The studies were comparable in terms of median age and proportion male. The~\cite{cunningham2009} study, compared GEM and GEM-CAP. The~\cite{goldstein2015} study compared GEM and GEM-NAB. The~\cite{gonccalves2012} study compared GEM and GEM-SOR. The~\cite{kindler2011} and~\cite{spano2008} studies compared GEM and GEM-AXI. The~\cite{oettle2005} study compared GEM and GEM-PEM. The~\cite{rocha2004} study comapred GEM and GEM-IRI. All studies except Spano were phase III trials, however Spano was included as the OS data was quite mature.\\
+Table~\ref{tab:studies} presents the studies used in this NMA. In total, there were seven studies comparing GEM with one of six combination therapies. The studies were comparable in terms of median age and proportion male. The~\cite{cunningham2009} study, compared GEM and GEM-CAP. The~\cite{goldstein2015} study compared GEM and GEM-NAB. The~\cite{gonccalves2012} study compared GEM and GEM-SOR. The~\cite{kindler2011} and~\cite{spano2008} studies compared GEM and GEM-AXI. The~\cite{oettle2005} study compared GEM and GEM-PEM. The~\cite{rocha2004} study comapred GEM and GEM-IRI. All studies except Spano were phase III trials, however Spano was included as the OS data was quite mature. The~\cite{conroy} study was the only study to not comapre GEM with a combination therapy; comparing GEM and FOLFIRINOX in a phase 2-3 trial.\\
 
-Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest plots of the median OS of the GEM arm in each study, and the comparator arm in each study, respectively. In particuar, the GEM arms in the Cunningham, Oettle, Goldstein, and Rocha Lima studies were similar, while the Spano study was noted for having a large 95\% CI. This was to be expected given there were only 34 patients in the GEM arm. For the comarator arms, there was more variation in the reported median OS. Large 95\% CIs were present for the Spano and Goncalves studies, again due to the comparatively low number of patients in these studies. 
+Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest plots of the median OS of the GEM arm in each study, and the comparator arm in each study, respectively. In particuar, the GEM arms in the Conroy, Cunningham, Oettle, Goldstein, and Rocha Lima studies were similar, while the Spano study was noted for having a large 95\% CI. This was to be expected given there were only 34 patients in the GEM arm. For the comarator arms, there was more variation in the reported median OS. Large 95\% CIs were present for the Spano and Goncalves studies, again due to the comparatively low number of patients in these studies. The efficacy of FOLFIRINOX iss clear from Figure~\ref{fig:CompMedForest}. The median OS of FOLFIRINOX is above the upper bound of 95\% credible interval of all compataors. 
 
 \begin{table}[h]
     \centering
     \begin{tabular}{llllll}
     \hline
     Study      & Treatment & N & Medain Age & Proportion Male & Median OS (Months) \\ \hline
+    Conroy 2011     & GEM        & 171               & 61.0       & 0.620           &  6.8 (5.5,7.6) \\
+    Conroy 2011     & FOLFIRINOX & 171               & 61.0       & 0.614           & 11.1 (9.0, 13.1) \\
     Cunningham 2009 & GEM       & 266                & 62.0       & 0.580           & 6.2 (5.5, 7.2)     \\
     Cunningham 2009 & GEM-CAP   & 267                & 62.0       & 0.570           & 7.1 (6.2, 7.8)     \\
     Goldstein  2015 & GEM       & 430                & 63.0       & 0.600           & 6.6 (6.0, 7.2)     \\
@@ -49,4 +51,67 @@ Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each stu
     \includegraphics[width=\textwidth]{../figures/OS_KMs.png} 
     \caption{KM curves for each study}
     \label{fig:OSKMs}
+\end{figure}
+
+\section{Covariates}
+No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
+
+\section{Parametric Model Fitting}
+
+Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. Based on these plots, all other models were deemed to be appropriate for inclusion in the NMA. \\
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Cunningham.png}
+    \caption{Cunningham (2009) parametric model extrapolations}
+    \label{fig:cunninghamParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Conroy.png}
+    \caption{Conroy (2011) parametric model extrapolations}
+    \label{fig:conroyParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Goldstein.png}
+    \caption{Goldstein (2015) parametric model extrapolations}
+    \label{fig:goldsteinParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Goncalves.png}
+    \caption{Goncalves (2012) parametric model extrapolations}
+    \label{fig:goncalvesParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Kindler.png}
+    \caption{Kindler (2011) parametric model extrapolations}
+    \label{fig:kindlerParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Oettle.png}
+    \caption{Oettle (2005) parametric model extrapolations}
+    \label{fig:oettleParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Oettle.png}
+    \caption{Rocha Lima (2004) parametric model extrapolations}
+    \label{fig:rochaLimaParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Spano.png}
+    \caption{Spano (2008) parametric model extrapolations}
+    \label{fig:spanoParamExtrap}
 \end{figure}

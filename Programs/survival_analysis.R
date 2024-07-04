@@ -23,7 +23,12 @@ Spano_GEM <- read.csv("Data/IPD/IPD_Spano_OS_GEM.csv") |> mutate(Study = "Spano"
 Goncalves_GEM <- read.csv("Data/IPD/IPD_Goncalves_OS_GEM.csv") |> mutate(Study = "Goncalves") |> mutate(Treatment = "GEM")
 Goncalves_GEMSOR <- read.csv("Data/IPD/IPD_Goncalves_OS_SOR.csv") |> mutate(Study = "Goncalves") |> mutate(Treatment = "GEM-SOR")
 
+Conroy_FOL <- read.csv("Data/IPD/IPD_Conroy_OS_FOL.csv")
+Conroy_GEM <- read.csv("Data/IPD/IPD_Conroy_OS_GEM.csv") |> mutate(Study = "Conroy") |> mutate(Treatment = "GEM")
+
 Net_Data <- bind_rows(
+  Conroy_GEM,
+  Conroy_FOL,
   Cunningham_GEM,
   Cunningham_GEMCAP,
   Kindler_GEM,
@@ -32,17 +37,18 @@ Net_Data <- bind_rows(
   Oettle_GEMPEM,
   RochaLima_GEM,
   RochaLima_GEMIRI,
-  Goldstein_GEM,
-  Goldstein_NAB,
   Spano_GEM,
   Spano_GEMAXI,
   Goncalves_GEM,
+  Goldstein_GEM,
+  Goldstein_NAB,
   Goncalves_GEMSOR
 ) |> 
   rename(status = censored) |> 
   mutate(status = ifelse(status == FALSE, 1, 0)) |> 
-  select(-c(PARAMCD))
- 
+  select(-c(PARAMCD)) |> 
+  mutate(across(Treatment, as.factor))
+
 # Parametric
 
 Cunningham_Models <- fit_distribution(data = Net_Data |> filter(Study == "Cunningham"))
@@ -52,6 +58,7 @@ RochaLima_Models <- fit_distribution(data = Net_Data |> filter(Study == "RochaLi
 Goldstein_Models <- fit_distribution(data = Net_Data |> filter(Study == "Goldstein"))
 Spano_Models <- fit_distribution(data = Net_Data |> filter(Study == "Spano"))
 Goncalves_Models <- fit_distribution(data = Net_Data |> filter(Study == "Goncalves"))
+Conroy_Models <- fit_distribution(data = Net_Data |> filter(Study == "Conroy"))
 
 Cunningham_Models_Plot <- plot(Cunningham_Models, km = TRUE)
 Kindler_Models_Plot <- plot(Kindler_Models, km = TRUE)
@@ -60,6 +67,7 @@ RochaLima_Models_Plot <- plot(RochaLima_Models, km = TRUE)
 Goldstein_Models_Plot <- plot(Goldstein_Models, km = TRUE)
 Spano_Models_Plot <- plot(Spano_Models, km = TRUE)
 Goncalves_Models_Plot <- plot(Goncalves_Models, km = TRUE)
+Conroy_Models_Plot <- plot(Conroy_Models, km = TRUE)
 
 ggsave(plot = Cunningham_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Cunningham.png", width = 8, height = 6, units = "in")
 ggsave(plot = Kindler_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Kindler.png", width = 8, height = 6, units = "in")
@@ -68,6 +76,7 @@ ggsave(plot = RochaLima_Models_Plot, filename = "~/Documents/MScThesis/Results/S
 ggsave(plot = Goldstein_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Goldstein.png", width = 8, height = 6, units = "in")
 ggsave(plot = Spano_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Spano.png", width = 8, height = 6, units = "in")
 ggsave(plot = Goncalves_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Goncalves.png", width = 8, height = 6, units = "in")
+ggsave(plot = Conroy_Models_Plot, filename = "~/Documents/MScThesis/Results/Survival/Conroy.png", width = 8, height = 6, units = "in")
 
 param_model_table <- data.frame(Model = c("Exponential", "Gamma", "Generalised Gamma", "Gompertz", "Log-Logistic", "Log-Normal", "Weibull"))
 

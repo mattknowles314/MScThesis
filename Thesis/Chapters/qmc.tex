@@ -1,0 +1,40 @@
+\chapter{Quasi Monte-Carlo Integration}
+
+This chapter outlines some of the theory of quasi-Monte-Carlo (qMC) integration. qMC is used by the \verb|multinma| package.
+
+\section{Setup}
+
+Consider the integral $\int_{[0,1]^S}f(u)du$. Monte-Carlo integration aims to approximate the integral of the function $f$ by the average of the $f$ evaluated at a set of points $x_1, \lodts, x_n$, as in Equation~\ref{mcProblem}.
+
+\begin{equation}
+    \int_{[0,1]^S}f(u)du \approx \frac{1}{N}\sum_{i = 1}^{N}f(x_i)
+    \label{mcProblem}
+\end{equation}
+
+qMC differs from Monte-Carlo integration in the way the $x_i$ are chosen. In particular, qMC uses something called a low-discrepency sequence, which is a sequence such that for all $N$, the set $P = \{x_1, \ldots, x_N\}$ has low discrepency, as definted in Definition~\ref{discrepency}.
+
+\begin{definition}{Low-Discrepency Sequence}
+    CConsider the set $P = \{x_1, \ldots, x_N\}$. The \textbf{discrepency} of $P$, $D_N(P)$ is defined as in Equation~\ref{def:descrep}.
+
+    \begin{equation}
+        D_N(P) = \sup_{B \in J}\left|\frac{A(B;P)}{N} - \lambda_s(B)\right|
+        \label{def:descrep}
+    \end{equation}
+
+    Here, $A(B;P)$ is the number of points in $P$ that fall into $B$. $\lambda_s$ is the s-dimension Lebasgue measure, and $J$ is the set of $s$-dimensional intervals as in Equation~\ref{sbox}, where $0 \leq a_i < b_i \leq 1$.
+    
+    \begin{equation}
+        \prod_{i = 1}^{s} [a_i,b_i) = \{x \in \mathbb{R}^s | a_i \leq x_i < b_i \}
+        \label{sbox}
+    \end{equation}
+\label{discrepency}
+\end{definition}
+
+\section{The Sobol Sequence}
+In particular, \verb|multinma| constructs a Sobol sequence~\cite{sobol} to obtain a quasi-random sample of $\hat{x_{jk}}$ from the covariate distribution $f_{jk}$. To begin with, let $I^s = [0,1]^s$ be the $s$-dimensional hypercube. The aim is to construct a sequence $P = \{x_1, \ldots, x_N\}$ such that Equation~\ref{sobolaim} is satisfied for a real integrable function $f$ over $I^S$. In addition, the convergence of Equation~\ref{sobolaim} should be as fast as possible.
+
+\begin{equation}
+    \lim_{N \to \infty} \frac{1}{N}\sum_{i = 1}^{N} f(x_i) = \int_{I^s}f
+    \label{sobolaim}
+\end{equation}
+

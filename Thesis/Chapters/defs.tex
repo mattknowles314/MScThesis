@@ -1,0 +1,75 @@
+\chapter{Supplamentary Definitions}\label{suppdefs}
+
+This chapter contains several definitions used in the main project.
+
+\section{Model Selection}
+
+\begin{definition}{Deviation Information Criterion (DIC)}
+LLet $y$ be the data on which a model was fitted. Further, let $\theta$ and $p(y|\theta)$ be the unknown paramaeters and likelihood function respectively. Let $E(\theta) = \bar{\theta}$ be the expectationi of $\theta$. The deviance is defined as in Equation~\ref{eq:dev}. 
+
+\begin{equation}
+    D(\theta) = -2\log(p(y|\theta)) + C
+    \label{eq:dev}
+\end{equation}
+
+Here, $C$ is an unknown constant. $C$ cancels in all model comparisons so is of no importance, but is included here for completeness. Further, the effective number of parameters is given by Equation~\ref{pd}.
+
+\begin{equation}
+    p_D = \bar{D(\theta)} - D(\bar{\theta})
+    \label{pd}
+\end{equation}
+
+The \textbf{Deviation Information Criterion (DIC)} is then given by Equation~\ref{dic}.
+
+\begin{equation}
+    DIC = p_D + \bar{D(\theta)}
+    \label{dic}
+\end{equation}
+\label{def:dic}
+\end{definition}
+
+\\
+
+\begin{definition}{Leave-One-Out Information Criterion}
+BBegin by defining the expected log pointwise predictive density (elpd) as in Equation~\ref{elpd} for data $y$,
+
+\begin{equation}
+    elpd_{loo} = \sum_{i = 1}^n \log(p(y_i | y_{-i})
+    \label{elpd}
+\end{equation}
+
+Here, $p(y_i|y_{-i})$ is the LOO predictive density given the data $y$ with the $i^{th}$ data point removed.
+
+\begin{equation}
+    p(y_i | y_{-i}) = \int p(y_i|\theta)p(\theta|y_{-i})d\theta
+    \label{loopd}
+\end{equation}
+
+Define the \textbf{Leave One Out Information Criterion (LOOIC)} score as in Equation~\ref{looic}.
+
+\begin{equation}
+    LOOIC = -2elpd_{loo}
+    \label{looic}
+\end{equation}
+\label{def:looic}
+\end{definition}
+
+\\
+
+\section{Probability Distributions}
+
+\begin{definition}{Half Normal Distribution}
+    LLet $X$ be a normal distribution such that $X \sim N(0, \sigma^2)$. Then $Y = |X|$ follows a half-normal distribution. In particular, the half-normal distribution has PDF 
+    \[
+        f(x, \sigma) = \frac{\sqrt{2}}{\sigma \sqrt{\pi}}\exp \left(-\frac{x^2}{2\sigma^2}\right)    
+    \]
+    With $x \in [0, \infty)$, and $\sigma > 0$.
+    \label{def:hndef}
+\end{definition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../figures/hN.png}
+    \caption{Half-normal and normal distribution (taken from 100 samples of $N(0,1)$)}
+    \label{fig:hn}
+\end{figure}

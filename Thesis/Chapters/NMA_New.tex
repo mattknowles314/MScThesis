@@ -1,4 +1,4 @@
-\chapter{Network Meta Analysis Theory}
+\chapter{Network Meta Analysis Theory}\label{nmatheory}
 
 \section{Building a Network of Evidence}
 
@@ -33,18 +33,18 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
 \end{figure}
 
 \section{Standard NMA Model}
-Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$, the standard NMA model is written as in Equation~\ref{eq:standardNMA1}-Equation~\ref{eq:standardNMA2}. This summary outcome may be, for example, HRs, or RMST values. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
+Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-Equation~\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
 
 \begin{align}
     y_{jk} &\sim \pi_{Agg}(\theta_{jk}) \label{eq:standardNMA1} \\
     g(\theta_{jk}) &= \mu_j + \delta_{jk} \label{eq:standardNMA2}
 \end{align}
 
-The two types of NMA are fixed effect (FE) and relative effects (RE) NMAs. In an FE NMA, $\delta_{jk} = d_{1k} = d_k$, with $d_1 = 0$. In an RE NMA, $\delta_{jk} \sim N(d_k, \tau^2)$ for the heterogeneity variance $\tau^2$, with $\delta_j1 = d_1 = 0$. \\
+There are two types of NMAs: fixed effect (FE) and relative effects (RE) NMAs. In an FE NMA, $\delta_{jk} = d_{1k} = d_k$, with $d_1 = 0$. In an RE NMA, $\delta_{jk} \sim N(d_k, \tau^2)$ for the heterogeneity variance $\tau^2$, with $\delta_j1 = d_1 = 0$. \\
 
-The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and Multi-Level Network-Meta-Regression (ML-NMR) have saught to relax this assumption by using IPD from at least one of the studies in a population.
+The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and mlnmragg have saught to relax this assumption by using IPD from at least one of the studies in a population.
 
-\section{Multi-Level Network Meta Regression}
+\section{Multilevel Network Meta-Regression}
 The derivation in this chapter is based on the work of~\cite{phillippo2024}. Under an NMA framewrok, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Depending on data avialbility, we may have individual-patient-data (IPD) for some studies, and only aggregate data for the remaining. This would be an ideal scenario, however it is not always the case.
 
 \begin{definition}{General IPD Meta-Regression Model}
@@ -89,31 +89,20 @@ The full, general, ML-NMR model is then given by
     IIndividual:
     \begin{align}
         L_{ijk|x}^{\text{Con}}(\xi;y_{ijk},x_{ijk}) &= \pi_{\text{Ind}}(y_{ijk}|\theta_{ijk}) \\
-        g(\theta_{ijk}) &= \eta_{jk}(x_{ijk}) = \mu_j + x_{ijk}^T(\beta_1 + \beta_{2,k}) + \gamma_k
+        g(\theta_{ijk}) &= \eta_{jk}(x_{ijk}) = \mu_j + x_{ijk}^T(\beta_1 + \beta_{2,k}) + \gamma_k \label{mlnmragg}
     \end{align}
     Aggregate:
     \begin{align}
-        L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \\
+        L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \label{mlnnmrint}\\
         L_{\hat{jk}}^{\text{Mar}} &\propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
     \end{align}
-        
 \end{definition}
 
 Under a Bayesian framework, priors are place on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$.
 
 \section{Survival ML-NMR}
 Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
-The censoring indicator is defined as in Equation~\ref{censInd}. 
-
-\begin{equation}
-    c_{ijk} = \begin{cases}
-        1 \ \text{If inividual has an event} \\
-        0 \ \text{If individual is censored}
-    \end{cases}
-    \label{censInd}  
-\end{equation}
-
-In practice, the censoring indicator can be the other way round. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition.
+The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be the other way round- i.e $1$ denotes censoring instead of an event, as in Equation~\ref{censInd}. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition.
 
 Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|x)$ be the survival and hazard functions conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
 
@@ -129,13 +118,50 @@ The forms of $S$ and $h$ depend on the specific survival models chosen. Starting
                                        &= \int_{\mathfrak{X}} S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}} f_{jk}(x)dx\label{eq:survint}
 \end{align}
 
-As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evalueated with quasi-Monte Carlo integration to obtain Equation
+As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evalueated with quasi-Monte Carlo integration to obtain Equation~\ref{lijk}. 
 
 \begin{equation}
     L_{ijk}^{\text{Mar}}(\xi; t_{ijk}, c_{ijk}) = \frac{1}{N}\sum_{\hat{x}}S_{jk}(t_{ijk}|\hat{x})h_{jk}(t_{ijk}|\hat{x})^{c_{ijk}}
+    \label{lijk}
 \end{equation}
 
-All of these calculations are performed in Stan using the \verb|multinma| R package~\cite{multinma}.
+Quasi-Monte-Carlo (QMC) is a method for efficient numerical integration. Equation~\ref{mcProblem} gives the form of a Mote-Carlo integration problem for a real integrable function $f$ over the $s$-dimensional hypercube $I^s = [0,1]^s$. QMC differs from standard Monte-Carlo (MC) integration in the way the $x_i$ are chosen for which $f$ is evaluated at. 
+
+\begin{equation}
+    \int_{[0,1]^S}f(u)du \approx \frac{1}{N}\sum_{i = 1}^{N}f(x_i)
+    \label{mcProblem}
+\end{equation}
+
+Regular MC integration uses random numbers\footnote{Strictly speaking, these are pseudo-random numbers when considering the implementation of this method.}, whereas QMC uses a low-discrepencey sequence, which is a sequence such that for all $N$, the set $P = \{x_1, \ldots, x_N\}$ has low discrepency, as definted in Definition~\ref{discrepency}.
+
+\begin{definition}{Low-Discrepency Sequence}
+    CConsider the set $P = \{x_1, \ldots, x_N\}$. The \textbf{discrepency} of $P$, $D_N(P)$ is defined as in Equation~\ref{def:descrep}.
+
+    \begin{equation}
+        D_N(P) = \sup_{B \in J}\left|\frac{A(B;P)}{N} - \lambda_s(B)\right|
+        \label{def:descrep}
+    \end{equation}
+
+    Here, $A(B;P)$ is the number of points in $P$ that fall into $B$. $\lambda_s$ is the s-dimension Lebasgue measure, and $J$ is the set of $s$-dimensional intervals as in Equation~\ref{sbox}, where $0 \leq a_i < b_i \leq 1$.
+    
+    \begin{equation}
+        \prod_{i = 1}^{s} [a_i,b_i) = \{x \in \mathbb{R}^s | a_i \leq x_i < b_i \}
+        \label{sbox}
+    \end{equation}
+\label{discrepency}
+\end{definition}
+
+In particular, \verb|multinma| uses a Sobol sequence~\cite{sobol} to sample $\hat{x_{jk}}$ from the covariate distribution $f_{jk}$~\cite{phillippo2020}. For each covariate in the analysis, the Sobol sequence generates points in $I^s = [0,1]^s$ with a dimension for each covariate. The Smirnov transform (Definition~\ref{smirnov}) is then used to transform the points generated by the Sobol sequence to the required distribution. 
+
+\begin{definition}{Smirnov Transformation}
+    LLet $X \in \mathbb{R}$ be any random variable. Then the random variable $F_X^{-1}(U)$ has the same distribution as $X$. Here, $F_X^{-1}$ is the generalised inverse of the cumulative distribution function $F_X$ of $X$, as defined in Equation~\ref{eq:invF} for all $p \in [0,1]$. Further, $U \sim Uniform[0,1]$.
+
+    \begin{equation}
+        F^{-1}(p) = \inf \{x \in \mathbb{R} | F(x) \geq p \}
+        \label{eq:invF}
+    \end{equation}
+    \label{smirnov}
+\end{definition}
 
 \section{Population-average estimates}
 Recall $d_{ab}$ is the relative effect of treatment b versus treatment a. Let $d_{ab(P)}$ be the population-average relative effect of b versus a in population P. $d_{ab(P)}$ can be calculated as in Equation~\ref{popavd}. 
@@ -184,3 +210,6 @@ Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the p
     \bar{S}_{(P)k}(m) = \frac{1}{2}
     \label{popavgmed}
 \end{equation}
+
+\section{Model Selection and Convergence}
+Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo}. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit. 

@@ -1,4 +1,4 @@
-\documentclass[11pt]{report}
+\documentclass[10pt]{report}
 %\documentclass[working]{tufte-book}
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper, total={6in,8in}, portrait, margin=1in]{geometry}
@@ -36,6 +36,7 @@
 \pagestyle{fancy}
 \usepackage[Bjarne]{fncychap}
 \usepackage{tcolorbox}
+
 \tcbuselibrary{theorems}
 \topskip0pt
 
@@ -106,10 +107,10 @@ colbacktitle=yellow!75!black,fonttitle=\bfseries}{re}
 %\includepdf{toMom.pdf}
 
 \section*{Abstract}
-Gemcitabine (GEM) in combination with nab-paclitaxel (NAB) or capecitabine (CAP) provides improved median OS and restricted mean survival time (RMST) estimates for the the treatment of advance/metastatic pancreatic cancer comared to GEM monotherapy. 
+A modified Multilevel Network Meta-Regression (ML-NMR) was performed on data from eight studies comparing Gemcitabine (GEM) with six combination therapies and one standalone therapy. The comparative efficacy of the combination therapies was assessed in terms of the median overall survival (OS) and restricted mean survival time (RMST) estimates. GEM in combination with nab-paclitaxel (NAB) or capecitabine (CAP) provides improved median OS and RMST estimates for the treatment of advanced/metastatic pancreatic cancer compared to GEM monotherapy.
 
 \section*{Acknowledgements}
-I would like to thank Dr Kate Ren for her invaluable supervision throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by. Thank you to my friends and family for putting up with me talking about network meta analysis for the past two years.
+I would like to thank Dr Kate Ren for her invaluable supervision throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by. Finally, thank you to my friends and family for putting up with me talking about network meta analysis for the past two years.
 
 \clearpage
 \begin{center}
@@ -135,8 +136,6 @@ I would like to thank Dr Kate Ren for her invaluable supervision throughout this
 
 \input{Chapters/Trials.tex}
 
-\input{Chapters/Surv_Analysis.tex}
-
 \input{Chapters/nma_analysis.tex}
 
 \input{Chapters/conclusions.tex}
@@ -146,6 +145,8 @@ I would like to thank Dr Kate Ren for her invaluable supervision throughout this
 
 \appendix
 \appendixpage
+
+\input{Chapters/defs.tex}
 
 \input{Chapters/NMA_Results_Appendix.tex}
 

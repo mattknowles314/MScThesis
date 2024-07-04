@@ -9,7 +9,7 @@ The central function in the package for survival analysis is the \textit{fit\_di
     distributions <- list("Weibull" = "weibull")
 \end{lstlisting}
 
-The reason for defining the distributions in this way is because the default \verb|Flexsurv| arguments are somewhat untitdy. For example, the exponential distribution is passed as just ``exp''. The beauty of the \textit{fit\_distribution} function is that several distributions can be passed with a tidier name, which \textit{flexsurvreg} never sees. This purely aesthetic change can be seen by comparing Figure~\ref{fig:flexsurvlabelexample}, and Figure~\ref{fig:fitdistributionexampleplot}. \\
+The reason for defining the distributions in this way is because the default \verb|flexsurv| arguments look untidy by default when plotting. For example, the exponential distribution is passed as just ``exp''. The beauty of the \textit{fit\_distribution} function is that several distributions can be passed with a tidier name, which \textit{flexsurvreg} never sees. This purely aesthetic change can be seen by comparing Figure~\ref{fig:flexsurvlabelexample}, and Figure~\ref{fig:fitdistributionexampleplot}. \\
 
 \begin{figure}[h]
     \includegraphics{../figures/flexsurvExamplePlot.png}
@@ -26,3 +26,6 @@ The reason for defining the distributions in this way is because the default \ve
 Any default \verb|flexsurv| distribution will work with \textit{fit\_distribution}, it just needs a suitable name in the list object . The \textit{fit\_distribution} function itself doesn't actually fit any distributions. There is a sub-function, \textit{.fit\_distribution} which takes a single distribution as an argument, and some data on which to fit that distribution. This function takes the ``weibull'' element of the above list and passes it to flexsurv. The \textit{fit\_distribution} function maps \textit{.fit\_distribution} across the list of distributions, using the \verb|purrr::map| function~\cite{purrr}. After some data cleaning, the object that is returned by \textit{fit\_distribution} is given the class ``fitted\_distribution''.  \\
 
 Several S3 methods exist for objects of class ``fitted\_distribution'', these are \textit{plot.fitted\_distribution}, \textit{summary.fitted\_distribution}, and \textit{coef.fitted\_distribution}. These functions allow for plotting fitted models, accessing information such as AIC scores, and accessing the model coefficients respectively.
+
+\section{NMA Functions}
+The NMA part of the \verb|PCNMA| package is a wrapper around \verb|multinma|. In particluar, the \textit{fit\_model} function is a wrapper around \textit{multinma::nma}.

@@ -1,0 +1,68 @@
+\chapter{NMA without IPD}\label{noIPD}
+
+When no IPD is available, it is still possible to obtain results from \verb|multinma|. This chapter presents the results of an NMA which did not use the proportion of male patients as a covariate in the ML-NMR.
+
+\section{Model Fitting and Selection}
+Both FE and RE models were fit using gamma, generlaised gamma, Gompertz, log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}, as defined in Defintion~\ref{def:hndef}. For each model, sampling was done using 2000 iterations on four chains. The first 1000 iterations were warmup iterations. \\
+
+Table~\ref{tab:selectionstat} presents the selection statistics for each model. The fixed effect model was also deemed to be clinically appropriate due to homogeneity in the patient population. The FE gamma, FE and RE generalised gamma models failed to converge, meaning no DIC or LOOIC estimates could be obtained. The RE gamma and RE Gompertz models gave LOOIC and DIC scores so high that they were classified as Inf, indicating poor fit. The log-logistic, log-normal, and Weibull models gave similar LOOIC and DIC scores. In each case, the FE model had slightly lower LOOIC than the RE model for each likelihood. The FE log-normal model gave the lowest LOOIC and DIC score, indicating it was the best fitting model. The trace plot for this model is available in Appendix~\ref{NMAAppendix}, Figure~\ref{fig:trace}, and indicated good convergence due to consistent peaks and troughs across each treatment arm. \\
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llll}
+    \hline
+    Likelihood   & Effect & DIC         & LOOIC      \\ \hline
+    Gamma        & Fixed  & NA          & NA         \\
+    Gamma        & Random & Inf         & Inf        \\
+    Gen Gamma    & Fixed  & NA          & NA         \\
+    Gen Gamma    & Random & NA          & NA         \\
+    Gompertz     & Fixed  & 15388.1764  & 15381.1184 \\
+    Gompertz     & Random & Inf         & Inf        \\
+    Log-logistic & Fixed  & 15176.9789  & 15176.0719 \\
+    Log-logistic & Random & 15175.2325  & 15176.2254 \\
+    Log-normal   & Fixed  & 15172.3036 $\leftarrow$ & 15173.0542 $\leftarrow$ \\
+    Log-normal   & Random & 15172.7801  & 15173.3975 \\
+    Weibull      & Fixed  & 15200.20470 & 15200.1331 \\
+    Weibull      & Random & 15199.29711 & 15200.6538 \\ \hline
+    \end{tabular}
+    \caption{Model selection statistics for each model}
+    \label{tab:selectionstat}
+\end{table}
+
+\section{Results}
+Figure~\ref{fig:pred_surv} and Figure~\ref{fig:pred_hazard} present the predicted survival and hazard of each treatment in study population, respectively. GEM-NAB and GEM-CAP had the highest OS and lowest hazard in each study population. The hazard curves for each study in each population followed a similar pattern, with peaks in the hazard just before ten months, before declining. GEM-SOR had the highest peak-hazard in each population, but crossed the GEM hazard curve in each population shortly after the peak, finishing with a lower hazard than GEM by the end of the observation period in each population. Further, in terms of hazard, the GEM-AXI and GEM-PEM curves were almost identical in each population. \\
+
+Figure~\ref{fig:pred_rmst} presents the estimated RMST of each treatment in each population. The GEM-SOR arm had large credible intervals in each population due to the lower number of patients for which GEM-SOR data was available. Further, GEM-SOR and GEM-IRI had the lowest and second-lowest RMST estimates in each population, respectively. The RMST estimates for GEM, GEM-AXI, and GEM-PEM were similar in each population, as were GEM-CAP, and GEM-NAB. GEM-NAB and GEM-CAP had the highest and second-highest RMST estimates respectively in every study population. \\
+
+Figure~\ref{fig:pred_median} presents the estimated median OS of each treatment in each population. The median OS estimates followest the same pattern as the RMST estimates. Namely, GEM-SOR and GEM-IRI gave the lowest and second-lowest estimates for median OS in each study population, GEM, GEM-AXI, and GEM-PEM gave similar estimates, and GEM-NAB and GEM-CAP gave the highest and second-highest estimates of median OS, respectively. The median OS estimates of GEM-NAB and GEM-CAP were further apart than the RMST estimates for the same two treatments. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Naiive/Survival_Plot.png}
+    \caption{OS of each treatment in each population}
+    \label{fig:pred_surv}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Naiive/Hazard_Plot.png}
+    \caption{Hazards of each treatment in each population}
+    \label{fig:pred_hazard}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Naiive/RMST_Plot.png}
+    \caption{RMST of each treatment in each population}
+    \label{fig:pred_rmst}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Naiive/Median_Plot.png}
+    \caption{Median OS of each treatment in each population}
+    \label{fig:pred_median}
+\end{figure}
+
+\section{Conclusion}
+GEM-NAB and GEM-CAP offer a better alternative to GEM monotherapy for the treatment of advanced/metastatic pancreatic cancer in terms of median OS and RMST. GEM-AXI and GEM-PEM do not significantly improve median OS or RMST compared to GEM monotherapy, and GEM-IRI and GEM-SOR both give worse median OS and RMST compared to GEM alone. 

@@ -1,6 +1,6 @@
 \chapter{Survival Analysis Bakground}\label{survchap}
 
-\section{Background and Survival Functions}
+\section{Survival Functions}
 
 Given a homogeneous population of individuals, the time of death for each individual is drawn from a continuous random variable $T > 0$ with probability density function $f(t)$ and distribution function $F(t) = \int_{0}^{t}f(\tau)d\tau$. Survival analysis is concerned with estimating the distribution $T$ from Time-To-Event (TTE) data. There are two functions central to survival analysis, the \textit{survival function} and \textit{hazard function}.
 
@@ -18,6 +18,20 @@ Given a homogeneous population of individuals, the time of death for each indivi
         h(t) = -\frac{d}{dt}\log S(t)  
     \]
 \end{definition}
+
+\section{The Kaplan-Meier Estimator and Digitisin Survival Curves}
+\subsection{The Kaplam-Meier Estimator}
+The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. %FINISH THIS OFF!
+
+\begin{equation}
+    c_{i} = \begin{cases}
+        1 \ \text{If inividual i has an event} \\
+        0 \ \text{If individual i is censored}
+    \end{cases}
+    \label{censInd}  
+\end{equation}
+
+
 
 \section{Regression Models for Survival}
 
@@ -101,7 +115,7 @@ In practice, the HR is a useful endpoint in performing network meta-analyses on 
 By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$. When plotting this for both arms of a clinical trial, if the curves remain roughly parallel, the PHA is likely satisfied, but if they curves cross, it indicates violation of the PHA.
 
 \subsection{Restriced Mean Survival Time}
-The Restricted Mean Survival Time (RMST) is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. We therefore define it formally as
+The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. Definition~\ref{def:rmst} presents the formal definition.
 
 \begin{definition}{RMST}
     AFor a survival function $S(t)$, the \textbf{RMST} for some pre-specified time $x > 0$,
@@ -110,6 +124,9 @@ The Restricted Mean Survival Time (RMST) is alternative measure to the (log) HR 
     \] 
     \label{def:rmst}
 \end{definition}
+
+\subsection{Median Survival}
+Median survival is simply the earliest timepoint at which 50\% of patients have died. 
 
 \section{Parametric Models for Survival Analysis}
 This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the National Institute for Health and Care Excellence (NICE) in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
@@ -138,7 +155,6 @@ Then we have a PH model. On the other hand, an AFT model would be written as
 
 All parameters may depend on $\bf{z}$, a vector of covariates. This is done through the link-transformed linear models
 
-% MATT: THERE IS BOLD TEXT HERE THAT SHOULDNT BE!
 \begin{align}
     \label{flexsurvMLE}
     g_0(\mu(\bf{z})) &= \gamma_0 + \bf{\beta}_0^Tz \nonumber \\

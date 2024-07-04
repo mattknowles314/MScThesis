@@ -7,6 +7,9 @@ devtools::load_all()
 Cunningham_GEM <- read.csv("Data/IPD/IPD_Cunningham_OS_GEM.csv")
 Cunningham_GEMCAP <- read.csv("Data/IPD/IPD_Cunningham_OS_GEM-CAP.csv")
 
+Conroy_FOL <- read.csv("Data/IPD/IPD_Conroy_OS_FOL.csv")
+Conroy_GEM <- read.csv("Data/IPD/IPD_Conroy_OS_GEM.csv") |> mutate(Study = "Conroy") |> mutate(Treatment = "GEM")
+
 Kindler_GEM <- read.csv("Data/IPD/IPD_Kindler_OS_GEM.csv")
 Kindler_GEMAXI <- read.csv("Data/IPD/IPD_Kindler_OS_GEM-AXI.csv")
 
@@ -26,6 +29,8 @@ Goncalves_GEM <- read.csv("Data/IPD/IPD_Goncalves_OS_GEM.csv") |> mutate(Study =
 Goncalves_GEMSOR <- read.csv("Data/IPD/IPD_Goncalves_OS_SOR.csv") |> mutate(Study = "Goncalves") |> mutate(Treatment = "GEM-SOR")
 
 Net_Data <- bind_rows(
+ Conroy_GEM,
+ Conroy_FOL,
  Cunningham_GEM,
  Cunningham_GEMCAP,
  Kindler_GEM,
@@ -34,8 +39,6 @@ Net_Data <- bind_rows(
  Oettle_GEMPEM,
  RochaLima_GEM,
  RochaLima_GEMIRI,
- Goldstein_GEM,
- Goldstein_NAB,
  Spano_GEM,
  Spano_GEMAXI,
  Goncalves_GEM,
@@ -43,11 +46,107 @@ Net_Data <- bind_rows(
 ) |> 
   rename(status = censored) |> 
   mutate(status = ifelse(status == FALSE, 1, 0)) |> 
-  select(-c(PARAMCD))
+  select(-c(PARAMCD)) |> 
+  mutate(across(Treatment, as.factor))
 
-Net_Data$trtclass <- ifelse(Net_Data$Treatment == "GEM", "Placebo", "Active")
+Net_Data$trtclass <- ifelse(Net_Data$Treatment == "GEM", "Placebo", "CombChemo")
 
-net <- gen_network(Net_Data, "GEM", covs = read.xlsx("Data/DEF.xlsx") |> select(Study, Treatment = Trt, Male) |> filter(Study != "Ueno" | Study != "Heinemann"))
+#net <- gen_network(Net_Data, "GEM", covs = read.xlsx("Data/DEF.xlsx") |> select(Study, Treatment = Trt, Male) |> filter(Study != "Ueno" | Study != "Heinemann"))
+
+covs = read.xlsx("Data/DEF.xlsx") |> 
+  select(Study, Treatment = Trt, Male) |> 
+  filter(Study != "Ueno" | Study != "Heinemann" | Study != "Goldstein")
+
+# Males in Goldsteing
+
+n_GEM_patients <- 430
+prop_GEM_male <- 0.6
+n_GEM_males <- rbinom(1, n_GEM_patients, prop_GEM_male)
+n_GEM_females <- n_GEM_patients - n_GEM_males
+genders_GEM <- c(rep("Male", n_GEM_males), rep("Female", n_GEM_females))
+genders <- sample(genders_GEM)
+
+Goldstein_GEM <- Goldstein_GEM |> 
+  mutate(Male = ifelse(genders == "Male", 1, 0))
+
+n_NAB_patients <- 431
+prop_NAB_male <- 0.57
+n_NAB_males <- rbinom(1, n_NAB_patients, prop_NAB_male)
+n_NAB_females <- n_NAB_patients - n_NAB_males
+genders_NAB <- c(rep("Male", n_NAB_males), rep("Female", n_NAB_females))
+genders <- sample(genders_NAB)
+
+Goldstein_NAB <- Goldstein_NAB |> 
+  mutate(Male = ifelse(genders == "Male", 1, 0))
+
+Goldstein <- bind_rows(
+  Goldstein_GEM,
+  Goldstein_NAB) |> 
+  rename(status = censored) |> 
+  mutate(status = ifelse(status == FALSE, 1, 0)) |> 
+  mutate(across(Treatment, as.factor))
+
+Goldstein$trtclass <- ifelse(Goldstein$Treatment == "GEM", "Placebo", "Active")
+
+net <- combine_network(
+  set_ipd(
+    Goldstein,
+    trt = Treatment,
+    study = Study,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Cunningham"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Kindler"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Oettle"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "RochaLima"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Spano"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Goncalves"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass),
+  set_agd_surv(
+    Net_Data |> filter(Study == "Conroy"),
+    trt = Treatment,
+    study = Study,
+    covariates = covs,
+    Surv = Surv(time, status),
+    trt_class = trtclass
+  ),
+  trt_ref = "GEM"
+)
 
 p <- plot(net,
           nudge = 0.1,
@@ -65,7 +164,6 @@ p <- ggplot() +
   theme(legend.position = "top", legend.box.spacing = unit(0, "lines")) +
   theme_bw()
 ggsave(p, file = "~/Documents/MScThesis/figures/OS_KMs.png", width = 12, height = 12, units = "in")
-
 
 net <- add_integration(net,
                        Male = distr(qbern, Male))
