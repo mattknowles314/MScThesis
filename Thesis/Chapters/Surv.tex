@@ -21,7 +21,7 @@ Given a homogeneous population of individuals, the time of death for each indivi
 
 \section{The Kaplan-Meier Estimator and Digitisin Survival Curves}
 \subsection{The Kaplam-Meier Estimator}
-The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. %FINISH THIS OFF!
+The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies after being hit by a bus not their cancer) occurs.
 
 \begin{equation}
     c_{i} = \begin{cases}
@@ -31,7 +31,49 @@ The KM estimator is a non-parametric method for estimating the survival function
     \label{censInd}  
 \end{equation}
 
+Let $d_i$ and $n_i$ be the number of events and total individuals at risk at the $i^{th}$ timepoint, $t_i$. Define the discrete hazard rate $h_i$ as the probability that individual experiences an event at time $t_i$. The survival rate is then defined as in Equation~\ref{survrate}, and the likelihood function for the hazard function up to time $t_i$ is given by Equation~\ref{hazllhood}.
 
+\begin{equation}
+    S(t) = \prod_{i:t_i \leq t} (1 - h_i)
+    \label{survrate}
+\end{equation}
+
+\begin{equation}
+    \mathcal{L}(h_{j\leq i}|d_{j:j\leq i}, n_{j:j\leq i}) = \prod_{j=1}^i h_j^{d_j}(1-h_j)^{n_j-d_j}\binom{n_j}{d_j}
+    \label{hazllhood}
+\end{equation}
+
+The KM estimator can be derived by Maximum Likelihood Estimation (MLE) of the discrete hazard function. By obtaining an maximum likelihood estimate of $h_i$, $\hat{h_i}$, and substituting it into Equation~\ref{survrate}, the resulting estimate of the survival function, $\hat{S(t)}$, is the KM estimator.
+
+Taking logs of Equation~\ref{hazllhood} gives Equation~\ref{loghazlik}.
+
+\begin{equation}
+    log(\mathcal{L}) = \sum_{j=1}^i \left(d_j\log(h_j)+(n_j-d_j)\log(1-h_j) + \log \binom{n_j}{d_j}\right)
+    \label{loghazlik}
+\end{equation}
+
+By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and setting the resulting fraction equal to zero, $\hat{h_i}$ is obtained as in Equation~\ref{kmHaz}.
+
+\begin{align}
+    \frac{\partial \log(\mathcal{L})}{\partial h_i} &= \frac{\partial}{\partial h_i}\left(\sum_{j=1}^i \left(d_j\log(h_j)+(n_j-d_j)\log(1-h_j) + \log \binom{n_j}{d_j}\right)\right) \\
+    &= \frac{d_i}{\hat{h_i}} - \frac{n_i - d_i}{1 - \hat{h_i}}
+\end{align}
+
+\begin{equation}
+    \frac{\partial \log (\partial )}{\partial h_i} = 0 \Rightarrow \hat{h_i} = \frac{d_i}{n_i}
+    \label{kmHaz}
+\end{equation}
+
+\begin{definition}{Kaplain-Meier Estimator}
+    TThe \textbf{Kaplan-Meier Estimator}, $\hat{S(t)}$, estimates the survival probability that an individual survives longer than time $t$, and is given by Equation~\ref{kmeq}. 
+\begin{equation}
+    \hat{S(t)} = \prod_{i:t_i \leq t}\left(1 - \frac{d_i}{n_i}\right)
+    \label{kmeq}
+\end{equation}
+\end{definition}
+
+\section{Reconstructing Survival Data from Published Curves}
+The ML-NMR method requires aggregate survival data to be in the form of the TTE data previously described. Often, the actual patient level event and censoring times/indicators are not published, and therefore must be reconstructed from the published KM curves, which are usually readily available. Indeed, one of the study selection criteria outlined in Section~\ref{sec:aims} was that studies must publish KM curves with numbers at risk. This was motivated by the method for reconstructing patient-level data from KM curves, the Guyot algorithm~\cite{guyotipd} requiring numbers at risk.
 
 \section{Regression Models for Survival}
 
