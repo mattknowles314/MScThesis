@@ -19,7 +19,7 @@ Given a homogeneous population of individuals, the time of death for each indivi
     \]
 \end{definition}
 
-\section{The Kaplan-Meier Estimator and Digitisin Survival Curves}
+\section{The Kaplan-Meier Estimator and Reconcstructing Patient-Level Data}
 \subsection{The Kaplam-Meier Estimator}
 The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies after being hit by a bus not their cancer) occurs.
 
@@ -43,9 +43,7 @@ Let $d_i$ and $n_i$ be the number of events and total individuals at risk at the
     \label{hazllhood}
 \end{equation}
 
-The KM estimator can be derived by Maximum Likelihood Estimation (MLE) of the discrete hazard function. By obtaining an maximum likelihood estimate of $h_i$, $\hat{h_i}$, and substituting it into Equation~\ref{survrate}, the resulting estimate of the survival function, $\hat{S(t)}$, is the KM estimator.
-
-Taking logs of Equation~\ref{hazllhood} gives Equation~\ref{loghazlik}.
+The KM estimator can be derived by MLE of the discrete hazard function. By obtaining an maximum likelihood estimate of $h_i$, $\hat{h_i}$, and substituting it into Equation~\ref{survrate}, the resulting estimate of the survival function, $\hat{S(t)}$, is the KM estimator. Taking the logarithm of both sides of Equation~\ref{hazllhood} gives Equation~\ref{loghazlik}.
 
 \begin{equation}
     log(\mathcal{L}) = \sum_{j=1}^i \left(d_j\log(h_j)+(n_j-d_j)\log(1-h_j) + \log \binom{n_j}{d_j}\right)
@@ -60,7 +58,7 @@ By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and 
 \end{align}
 
 \begin{equation}
-    \frac{\partial \log (\partial )}{\partial h_i} = 0 \Rightarrow \hat{h_i} = \frac{d_i}{n_i}
+    \Rightarrow \frac{\partial \log (\partial )}{\partial h_i} = 0 \Rightarrow \hat{h_i} = \frac{d_i}{n_i}
     \label{kmHaz}
 \end{equation}
 
@@ -171,7 +169,7 @@ The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean surviv
 Median survival is simply the earliest timepoint at which 50\% of patients have died. 
 
 \section{Parametric Models for Survival Analysis}
-This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the National Institute for Health and Care Excellence (NICE) in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
+This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
 
 \subsection{Model Setup}
 The general model of a \verb|flexsurv| survival model takes the form 
@@ -206,16 +204,7 @@ All parameters may depend on $\bf{z}$, a vector of covariates. This is done thro
 $g$ is usally chosen to be $log()$ if the parameter is positive, or the identity function if the parameter is unrestricted.\\
 
 \subsection{Fitting Models}
-Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ such that 
-
-\[
-    c_i = \begin{cases*}
-        1 & \text{if $t_i$ is an observed death time} \\
-        0 & \text{if $t_i$ is censored} 
-    \end{cases*}  
-.\]
-
-Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. $s_i = 0$ when there is no delayed-entry. \\
+Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ as in Equation~\ref{censInd}. Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. $s_i = 0$ when there is no delayed-entry. \\
 
 \subsubsection{Right Censoring}
 In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE} is given by 
