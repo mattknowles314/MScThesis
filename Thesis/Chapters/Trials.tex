@@ -9,22 +9,22 @@ Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest 
     \begin{tabular}{llllll}
     \hline
     Study      & Treatment & N & Medain Age & Proportion Male & Median OS (Months) \\ \hline
-    Conroy 2011     & GEM        & 171               & 61.0       & 0.620           &  6.8 (5.5,7.6) \\
-    Conroy 2011     & FOLFIRINOX & 171               & 61.0       & 0.614           & 11.1 (9.0, 13.1) \\
-    Cunningham 2009 & GEM       & 266                & 62.0       & 0.580           & 6.2 (5.5, 7.2)     \\
-    Cunningham 2009 & GEM-CAP   & 267                & 62.0       & 0.570           & 7.1 (6.2, 7.8)     \\
-    Goldstein  2015 & GEM       & 430                & 63.0       & 0.600           & 6.6 (6.0, 7.2)     \\
-    Goldstein  2015 & GEM-NAB   & 431                & 62.0       & 0.570           & 8.7 (7.9, 9.7)     \\
-    Goncalves  2012 & GEM       & 52                 & 64.0       & 0.620           & 9.2 (7.7, 11.6)    \\
-    Goncalves  2012 & GEM-SOR   & 52                 & 61.0       & 0.580           & 8.0 (6.0, 10.8)    \\
-    Kindler    2011 & GEM       & 316                & 61.0       & 0.590           & 8.3 (6.9, 10.3)    \\
-    Kindler    2011 & GEM-AXI   & 314                & 61.0       & 0.610           & 8.5 (6.9, 9.5)     \\
-    Oettle     2005 & GEM       & 282                & 63.0       & 0.535           & 6.3 (5.4, 6.9)     \\
-    Oettle     2005 & GEM-PEM   & 283                & 63.0       & 0.604           & 6.2 (5.4, 6.9)     \\
-    Rocha Lima 2004 & GEM       & 180                & 60.2       & 0533            & 6.6 (5.2, 7.8)     \\
-    Rocha Lima 2004 & GEM-IRI   & 180                & 63.2       & 0.572           & 6.3 (4.7, 7.5)     \\
-    Spano      2008 & GEM       & 34                 & 61.0       & 0.470           & 5.6 (3.9, 8.8)     \\
-    Spano      2008 & GEM-AXI   & 69                 & 65.0       & 0.510           & 6.9 (5.3, 10.1)    \\ \hline
+    Conroy 2011     & GEM        & 171               & 61.0 (34, 75)      & 0.620           &  6.8 (5.5,7.6) \\
+    Conroy 2011     & FOLFIRINOX & 171               & 61.0 (25, 76)      & 0.614           & 11.1 (9.0, 13.1) \\
+    Cunningham 2009 & GEM       & 266                & 62.0 (26, 83)      & 0.580           & 6.2 (5.5, 7.2)     \\
+    Cunningham 2009 & GEM-CAP   & 267                & 62.0 (37, 82)      & 0.570           & 7.1 (6.2, 7.8)     \\
+    Goldstein  2015 & GEM       & 430                & 63.0 (32, 88)      & 0.600           & 6.6 (6.0, 7.2)     \\
+    Goldstein  2015 & GEM-NAB   & 431                & 62.0 (27, 86)      & 0.570           & 8.7 (7.9, 9.7)     \\
+    Goncalves  2012 & GEM       & 52                 & 64.0 (40, 82)      & 0.620           & 9.2 (7.7, 11.6)    \\
+    Goncalves  2012 & GEM-SOR   & 52                 & 61.0 (42, 85)      & 0.580           & 8.0 (6.0, 10.8)    \\
+    Kindler    2011 & GEM       & 316                & 61.0 (35, 89)      & 0.590           & 8.3 (6.9, 10.3)    \\
+    Kindler    2011 & GEM-AXI   & 314                & 61.0 (34, 84)      & 0.610           & 8.5 (6.9, 9.5)     \\
+    Oettle     2005 & GEM       & 282                & 63.0 (28, 82)      & 0.535           & 6.3 (5.4, 6.9)     \\
+    Oettle     2005 & GEM-PEM   & 283                & 63.0 (27, 82)      & 0.604           & 6.2 (5.4, 6.9)     \\
+    Rocha Lima 2004 & GEM       & 180                & 60.2 (32, 83)      & 0533            & 6.6 (5.2, 7.8)     \\
+    Rocha Lima 2004 & GEM-IRI   & 180                & 63.2 (39, 81)      & 0.572           & 6.3 (4.7, 7.5)     \\
+    Spano      2008 & GEM       & 34                 & 61.0 (36, 78)      & 0.470           & 5.6 (3.9, 8.8)     \\
+    Spano      2008 & GEM-AXI   & 69                 & 65.0 (44, 81)      & 0.510           & 6.9 (5.3, 10.1)    \\ \hline
     \end{tabular}
     \caption{Included studies with summary statistics}
     \label{tab:studies}
@@ -46,7 +46,7 @@ Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest 
 
 Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each study. It was clear that the PHA would need to be relaxed when fitting NMA models from the shape of the curves in Figure~\ref{fig:OSKMs}, due to the amount of crossing. Most of the studies had mature data, however the Kindler and Concalves studies were noted for only dropping to an OS of around 0.25 at the end of the observation period. Conroy, and Goldstein were the only studies that showed a clearly higher OS for the comparator compared to GEM. The curves in the Cunningham, Goncalves, and Spano studies showed slight improvement in the comparator compared to GEM. The curves in the Kindler, Oettle, and Rocha Lima studies showed little to no benefit between the comparator and GEM curves. \\
 
-To assess the PHA more formally, the log-cumulative hazard plot was used. If the curves cross, this indicates violation of the PHA. Figure~\ref{fig:OSLCs} presents the log-cumulative hazard function for each study. None of the studies have non-crossing log-cumulative hazard curves. In particular, the Kindler and Oettle studies had log-cumulative hazard curves that were almost identical. 
+To assess the PHA more formally, the log-cumulative hazard plot was used. If the curves cross, this indicates violation of the PHA. Figure~\ref{fig:OSLCs} presents the log-cumulative hazard function for each study. None of the studies have non-crossing log-cumulative hazard curves. In particular, the Kindler and Oettle studies had log-cumulative hazard curves that were almost identical. \\
 
 \begin{figure}[h]
     \centering
@@ -62,11 +62,48 @@ To assess the PHA more formally, the log-cumulative hazard plot was used. If the
     \label{fig:OSLCs}
 \end{figure}
 
+\section{Study Eligibility Criteria}
+\subsection{Eligibility by study}
+Patients in the conroy study had to be aged 18 or over with cytologically confirmed, previously untreated, metastatic pancreatic adenocarcinoma. Patients had to have an ECOG score of 0 or 1. Patients were required to have bone marrow such that granulocyte count was $\geq1500/mm^3$ and platelet count was $\geq100,000/mm^3$. In addition to bone marrow, the renal and liver function had to be adequate. For the liver function, patients had to have bilirubin $\leq 1.5$ times the upper limit of the normal range. \\
+
+The Conroy study excluded patients who were aged 76 or over. In addition, endocrine or acinar pancreatic carcinoma, previous radiotherapy for measurable lesions, cerebral metastases, a history of another major cancer, active infection, chronic diarrhea, a clinically significant history of cardiac disease, and pregnancy or breast-feeding were all exclusion critera. \\
+
+The eligibility criteria in the Cunningham study were similar to Conroy, however patients with locally advanced disease were eligible in Cunningham. Patients could not have had previous chemotherapy or investigative treatment. Adequate bone marrow was required. There were no exclusion criteria. \\
+
+The Goldstein study had eligibility in terms of the type of cancer closer related to Conroy than Cunningham. Eligible patients had metastatic cancer. In terms of the liver function, the requirement was a bilirubin level below or equivalent to the upper limit of the normal range. In addition, eligible patients had an absolute neutrophil count of $\geq 1.5x10^9/L$ and a hemoglobin level $\geq 9g/dl$. The prior treatment eligibility was more relaxed in the Goldstein study. Treatment with either gemcitibine or flourouracil as a radion sensitizer was allowed if it had been at least six months before radnomisation. \\
+
+As in Conroy, there were exclusion criteria in the Goldstein study. Previous chemotherapy for metastatic disease was an exclusion criterion. In addition, patients with islet cell neoplasms or locally advanced adenocarcinoma were also excluded. Patients who received cytotoxic doses of any systemic
+chemotherapy, including gemcitabine, in the adjuvant setting were excluded. \\
+
+The eligibility criteria for the Goncalves study closer aligned with the Cunningham study. Patients with either locally advanced or metastatic cancer were eligible. An ECOG score between 0 and 2 was required, and patients had to be older than 18. In addition, the granulocyte and platelet counts were $>1.5x10^9/l$ and $>100x10^9/l$ respectively. Addequate bone marrow, liver, and renal function were requred. The total bilirubin was required to be $< 1.5$ times the upper limit of the normal range. 
+
+Exclusion criteria for the Goncalves study were brain metasteses, intestinal obstruction, a history of inflammatory bowel disease or extended small bowel resection. Patients could not have had any major surgery or radiotherapy within 28 days of randomisation. \\
+
+In the Kindler study, patients had to be at least 18, and could have either locally advanced or metastatic pancreatic cancer. The ECOG score needed to be either 0 or 1. Adequate bone marrow, renal, and liver function was required, but no strict criteria was given. Adjuvant therapy was allowed provided it did not contain GEM, and at least four weeks had passed since the last dose. \\
+
+Patients were excluded in the Kindler study if they had previous systemic chemotherapy for locally advanced or metastatic disease. In addition recent haemoptysis, myocardial infarction, symptomatic congestive heart failure, cerebrovascular accident, transient ischaemic attack, deepvein thrombosis, or pulmonary embolism in the past 12 months, peptic ulcer disease needing treatment in the past 6 months, active seizures or gastrointestinal bleeding were all exclusion criteria. \\
+
+The eligibility criteria for the Oettle study were patients aged at least 18 with either locally advanced or metastatic pancreatic cancer. Prior radiotherapy was allowed if it was completed at least four weeks before entry into the Oettle study. ECOG scores between 0 and 2 were acceptable. Addequate bone marrow, renal, and liver function was required, but no performance criteria given. The Kindler study also required patients to have a life expectancy of at least 12 weeks. \\
+
+Similar to the Goncalves study, patients with brain metastases were excluded. In addition, patients with significant weight loss were also excluded. This was defined as the loss of $>10\%$ of bodyweight in the previous six weeks. Patients who were unable to interrupt non-steroidal anti-inflammatory drugs for a 5- to 8-day period around PEM administration, or those unable to take folic acid or vitamin $B_{12}$ were also ineligible. \\
+
+The Rocha Lima study allowed for patients aged at least 18 with ocally advanced or metastatic pancreatic cancer. The required ECOG score was between 0 and 2. The absolute neutrophil count, platelet count, and bilirubin levels were $\geq 1500/\mu L$, $\geq 100,00/\mu L$ and $\leq 1.5$ times the upper limit of normal, respectively. These were in line with other studies included. \\
+
+Patients were excluded from the Rocha Lima study if they had recieved prior systemic therapy either in an adjuvant setting or for the treatment of advanced pancreati cancer. Patients could not be pregnant or breastfeeding, have active inflammatory bowel disease, significant bowel obstruction, chronic diarrhea, known brain disease, or myocardial infarction within the previous six months, uncontrollable high blood pressure, unstable angina, congestive heart failure, uncontrolled cardia arrhythmia, HIV/AIDCS or psychiatric illness that prevented the patient giving informed consent. \\
+
+In the Spano study, patients who were aged 18 or older with locally advanced or metastatic pancreatic cancer were eligible. An ECOG score between 0 and 2 was required. The absolute neutrophil count, platelet count, and hemoglobin levels were $\geq 1500/\mu L$, $\geq 100,00/\mu L$ and $\geq 90g/L$, respectively. \\
+
+Patients were excluded from Spano if they recieved prior treatment for metastatic disease or treatment with GEM. Pregnancy or breast feeding, prior
+cerebrovascular accident, major surgery within theprevious 4 weeks, brain metastases, active second malignancy, uncontrolled intercurrent illness, urine
+protein of $500mg$ or more in a 24 hour period, or ongoing uncontrolled hypertension were all exclusion criteria.
+
+\subsection{Analysis of eligibility}
+There was a lot of crossover in the eligibility criteria across the included studies. The two main differences is that the Conroy and Goldstein studies did not include patients with locally advanced disease, and that the Conroy study had an upper age limit for eligible patients. Based on this, it was deemed to be likely that the the populations were homgeneous. Without IPD it is impossible to fully assess homogeneity, but assuming the homogeneity based on the eligibility criteria, and summary statistics presented in Table~\ref{tab:studies} was deemed reasonable.
+
 \section{Covariates}
 No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
 
 \section{Parametric Model Fitting}
-
 Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. Based on these plots, all other models were deemed to be appropriate for inclusion in the NMA. \\
 
 
