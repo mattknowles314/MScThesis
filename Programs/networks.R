@@ -165,6 +165,15 @@ p <- ggplot() +
   theme_bw()
 ggsave(p, file = "~/Documents/MScThesis/figures/OS_KMs.png", width = 12, height = 12, units = "in")
 
+p <- ggplot() +
+  geom_km(net, transform = "cloglog") +
+  facet_wrap(~.study) +
+  labs(y = "Overall Survival",
+       x = "Time (Months)") +
+  theme(legend.position = "top", legend.box.spacing = unit(0, "lines")) +
+  theme_bw()
+ggsave(p, file = "~/Documents/MScThesis/figures/OS_LogCumulatives.png", width = 12, height = 12, units = "in")
+
 net <- add_integration(net,
                        Male = distr(qbern, Male))
 saveRDS(net, "Data/network.RDs")

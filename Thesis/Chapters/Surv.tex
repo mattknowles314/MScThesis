@@ -6,17 +6,29 @@ Given a homogeneous population of individuals, the time of death for each indivi
 
 \begin{definition}{Survival Function}{h}
     The \textbf{Survival Function} $S(t)$, gives the probability of an individual surviving longer than time $t$. 
-    \[
+    \begin{equation}
         S(t) = P(T \geq  t) = 1 - F(t) = \int_{t}^{\infty}f(\tau)d\tau  
-    \]
+    \end{equation}
 \end{definition}
 
-\begin{definition}{Hazard Function}{h}
+\begin{definition}{Hazard Function0}{h}
     The \textbf{Hazard Function} gives the risk of death at time $t$, given that the individual has survived up to time $t$. 
     
-    \[
+    \begin{equation}
         h(t) = -\frac{d}{dt}\log S(t)  
-    \]
+    \end{equation}
+\end{definition}
+
+Further to the survival and hazard function, the cumulative Hazard function, $H(t)$ (Definition~\ref{def:cumhazard}) gives the total accumulated risk up to time $t$. By nature of being cumulative, $H(t)$ is a monotonically non-decreasing function. 
+
+\begin{definition}{Log-Cumulative Hazard Function}{h}
+    The \textbf{Cumulative Hazard Function} 
+    
+    \begin{align}
+        H(t) &= \int_0^t h(\tau)d\tau \\
+             &= -\log (S(t))
+    \end{align}
+    \label{def:cumhazard}
 \end{definition}
 
 \section{The Kaplan-Meier Estimator and Reconcstructing Patient-Level Data}

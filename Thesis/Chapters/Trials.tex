@@ -44,7 +44,9 @@ Figure~\ref{fig:GEMMedForest} and Figure~\ref{fig:CompMedForest} present forest 
     \label{fig:CompMedForest}
 \end{figure}
 
-Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each study. It was clear that the PHA would need to be relaxed when fitting NMA models from the shape of the curves in Figure~\ref{fig:OSKMs}, due to the amount of crossing. Most of the studies had mature data, however the Kindler and Concalves studies were noted for only dropping to an OS of aroun 0.25 at the end of the observation period.
+Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each study. It was clear that the PHA would need to be relaxed when fitting NMA models from the shape of the curves in Figure~\ref{fig:OSKMs}, due to the amount of crossing. Most of the studies had mature data, however the Kindler and Concalves studies were noted for only dropping to an OS of around 0.25 at the end of the observation period. Conroy, and Goldstein were the only studies that showed a clearly higher OS for the comparator compared to GEM. The curves in the Cunningham, Goncalves, and Spano studies showed slight improvement in the comparator compared to GEM. The curves in the Kindler, Oettle, and Rocha Lima studies showed little to no benefit between the comparator and GEM curves. \\
+
+To assess the PHA more formally, the log-cumulative hazard plot was used. If the curves cross, this indicates violation of the PHA. Figure~\ref{fig:OSLCs} presents the log-cumulative hazard function for each study. None of the studies have non-crossing log-cumulative hazard curves. In particular, the Kindler and Oettle studies had log-cumulative hazard curves that were almost identical. 
 
 \begin{figure}[h]
     \centering
@@ -53,12 +55,21 @@ Figure~\ref{fig:OSKMs} presents the KM curves for each treatment arm in each stu
     \label{fig:OSKMs}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/OS_LogCumulatives.png} 
+    \caption{Log-cumulative hazard plot for each study}
+    \label{fig:OSLCs}
+\end{figure}
+
 \section{Covariates}
 No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
 
 \section{Parametric Model Fitting}
 
-Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. Based on these plots, all other models were deemed to be appropriate for inclusion in the NMA. \\
+Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. Based on these plots, all other models were deemed to be appropriate for inclusion in the NMA. \\
+
+
 
 \begin{figure}[h]
     \centering

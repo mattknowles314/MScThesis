@@ -17,13 +17,14 @@ Let
     E_{trials} &= \bigcup_{i=1}^{N} E_i
 .\end{align*}
 
-The incidence function becomes 
+The incidence function is given in Equation~\ref{incidenceFunc}.
 
-\[
+\begin{equation}
     \varphi : E_{trials} \to \{ \{x, y \} | x, y \in V_{trts} \ \text{such that} \ x = P \}
-.\] 
+    \label{incidenceFunc}
+\end{equation}
 
-Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of evidence given by these two arm trials that forms the basis of a network meta analysis. This process expands to trials that compare more than two treatments by weighting the edges by the number of trials making that particular comparison.
+Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of evidence given by these two arm trials that forms the basis of an NMA. This process expands to trials that compare more than two treatments by weighting the edges by the number of trials making that particular comparison. Figure~\ref{fig:comb_evi} illustrates combining treatments into a network of evidence.
 
 \begin{figure}[h]
     \centering
@@ -31,6 +32,8 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
     \caption{Visualisation of combining trials into a network of evidence}
     \label{fig:comb_evi}
 \end{figure}
+
+In some scenarios, a head-to-head (HtH) clinical trial may be included in an NMA. Including a HtH trial involves special consideration, since these trials do not compare a treatment versus a placebo, but against another active treatment. From a graph-theoretic perspective, this can create a loop. A loop is an edge that connects a vertex to itself, and makes a graph non-simple.
 
 \section{Standard NMA Model}
 Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-Equation~\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
@@ -67,23 +70,23 @@ By integrating the individual conditional likelihood ovr the joint covariate dis
     \label{eq:marg}
 \end{equation}
 
-It is clear from Equation~\ref{eq:marg} that $L_{ijk}^{\text{Mar}}$ does not depend on x. Let $i$ be an individual, on treatment $k$ in study $j$ with outcome $y_{ijk}$. If we don't know the covariate vector for $i$, $x_{ijk}$, but we do know $f_{jk}$, then we know that the likelihood contribution of $i$ is given by Equation~\ref{eq:marg}. \\
+It is clear from Equation~\ref{eq:marg} that $L_{ijk}^{\text{Mar}}$ does not depend on $x$. Let $i$ be an individual on treatment $k$ in study $j$ with outcome $y_{ijk}$. If we do not know the covariate vector for $i$, $x_{ijk}$, but we do know $f_{jk}$, then we know that the likelihood contribution of $i$ is given by Equation~\ref{eq:marg}. \\
 
-It is likeliy that a closed-form of Equation~\ref{eq:marg} does not exist. We can therefore take a set of $N$ integration points, $\hat{x}$ from $f_{jk}$, giving Equation~\ref{eq:margApprox}.
+It is likeliy that a closed-form of Equation~\ref{eq:marg} does not exist. We can therefore take a set of $N$ integration points, $\hat{x}$ from $f_{jk}$, and approximate the integral using Monte-Carlo methods, giving Equation~\ref{eq:margApprox}.
 
 \begin{equation}
     L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) \approx \frac{1}{N}\sum_{\hat{x}}L_{ijk|x}^{\text{Con}}(\xi;y_{ijk},x)
     \label{eq:margApprox}
 \end{equation}
 
-Consider a summary outcome $y_{\hat{jk}}$ aggregated over all individuals on treatment $k$ in study $j$. Each individual $i$ in on treatment $k$ in study $i$ contributes to the aggregate likelihood. Let $y_{ijk}$ denote the observed value of this summary measure for individual $i$. The aggregate maginal likelihood function is then the product of these $y_ijk$ up to a normalising constant, as in Equation~\ref{aggMargLik}.
+Consider now a summary outcome $y_{\hat{jk}}$ aggregated over all individuals on treatment $k$ in study $j$. Each individual $i$ in on treatment $k$ in study $j$ contributes to the aggregate likelihood. Let $y_{ijk}$ denote the observed value of this summary measure for individual $i$. The aggregate maginal likelihood function is then the product of these $y_ijk$ up to a normalising constant, as in Equation~\ref{aggMargLik}.
 
 \begin{equation}
     L_{\hat{jk}}^{\text{Mar}} \propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
     \label{aggMargLik}
 \end{equation}
 
-The full, general, ML-NMR model is then given by 
+The full, general, ML-NMR model is then given by combining the individual and aggregate level components, as in Definition~\ref{mlnmrdef}.
 
 \begin{definition}{General ML-NMR Model}
     IIndividual:
@@ -96,13 +99,16 @@ The full, general, ML-NMR model is then given by
         L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \label{mlnnmrint}\\
         L_{\hat{jk}}^{\text{Mar}} &\propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
     \end{align}
+    \label{mlnmrdef}
 \end{definition}
 
-Under a Bayesian framework, priors are place on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$.
+Under a Bayesian framework, priors are placed on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$. Uninformative priors were used.
 
 \section{Survival ML-NMR}
 Each study reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$. \\
-The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be the other way round- i.e $1$ denotes censoring instead of an event, as in Equation~\ref{censInd}. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition.
+With some covariates, the pseudo-IPD can include a recreated covariate column for each individual. For example, if the proportion of male patients is given for a summary study, pseudo-patients can be randomly assigned to be male or female such that the number matches that reported in the trial. This is not possible with covariates such as age, where a distribution is usully reported. The proportion of male patients is somewhat unique in this case. It would likely not be statistically sound to do this with a variable such as the site of any metastises. Despite this being a count variable in the same way, the site of metastises may have more influence on survival times than the sex of a patient, and therefore randomly assigning patients to have a given metastises based on the aggregate data may not align with what the original data found. \\ 
+
+The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be the other way round- i.e $1$ denotes censoring instead of an event, as in Equation~\ref{censInd}. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition. 
 
 Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|x)$ be the survival and hazard functions conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
 
@@ -212,4 +218,54 @@ Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the p
 \end{equation}
 
 \section{Model Selection and Convergence}
-Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo}. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit. 
+Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo}. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit. \\
+
+\begin{definition}{Leave-One-Out Information Criterion}
+    BBegin by defining the expected log pointwise predictive density (elpd) as in Equation~\ref{elpd} for data $y$,
+    
+    \begin{equation}
+        elpd_{loo} = \sum_{i = 1}^n \log(p(y_i | y_{-i})
+        \label{elpd}
+    \end{equation}
+    
+    Here, $p(y_i|y_{-i})$ is the LOO predictive density given the data $y$ with the $i^{th}$ data point removed.
+    
+    \begin{equation}
+        p(y_i | y_{-i}) = \int p(y_i|\theta)p(\theta|y_{-i})d\theta
+        \label{loopd}
+    \end{equation}
+    
+    Define the \textbf{Leave One Out Information Criterion (LOOIC)} score as in Equation~\ref{looic}.
+    
+    \begin{equation}
+        LOOIC = -2elpd_{loo}
+        \label{looic}
+    \end{equation}
+    \label{def:looic}
+\end{definition}
+
+\begin{definition}{Deviation Information Criterion (DIC)}
+    LLet $y$ be the data on which a model was fitted. Further, let $\theta$ and $p(y|\theta)$ be the unknown paramaeters and likelihood function respectively. Let $E(\theta) = \bar{\theta}$ be the expectationi of $\theta$. The deviance is defined as in Equation~\ref{eq:dev}. 
+
+    \begin{equation}
+        D(\theta) = -2\log(p(y|\theta)) + C
+        \label{eq:dev}
+    \end{equation}
+
+    Here, $C$ is an unknown constant. $C$ cancels in all model comparisons so is of no importance, but is included here for completeness. Further, the effective number of parameters is given by Equation~\ref{pd}.
+
+    \begin{equation}
+        p_D = \bar{D(\theta)} - D(\bar{\theta})
+        \label{pd}
+    \end{equation}
+
+    The \textbf{Deviation Information Criterion (DIC)} is then given by Equation~\ref{dic}.
+
+    \begin{equation}
+        DIC = p_D + \bar{D(\theta)}
+        \label{dic}
+    \end{equation}
+    \label{def:dic}
+\end{definition}
+
+The LOOIC score was preferred over the DIC score as the DIC score is based on a point estimate, and this NMA was performed in a Bayesian framewwork. As the LOOIC score is uses the posterior distribution, it is a fully Bayesian statistic. Traditionally, the DIC score has been used due to the extra computational steps required for the LOOIC score. However,~\cite{vehtari} implented Pareto-Smoothed Importance Sampling (PSIS) in the R package \verb|loo|~\cite{loo}, which enables easy, and stable, computation of the LOOIC score from the NMA models. 
