@@ -33,7 +33,7 @@ Further to the survival and hazard function, the cumulative Hazard function, $H(
 
 \section{The Kaplan-Meier Estimator and Reconcstructing Patient-Level Data}
 \subsection{The Kaplam-Meier Estimator}
-The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies after being hit by a bus not their cancer) occurs.
+The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies due to an adverse event unrelated to their cancer) occurs.
 
 \begin{equation}
     c_{i} = \begin{cases}
@@ -151,7 +151,7 @@ The Cox model is semi-parametric then $\beta$ is of finite dimension and $h_0(t)
 The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
 
 \begin{equation}
-    HR = \frac{h_1}{h_2} = \exp(\beta' x)
+    \varphi = \frac{h_1}{h_2} = \exp(\beta' x)
     \label{HReq}
 \end{equation}
 
