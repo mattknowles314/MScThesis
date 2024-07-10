@@ -223,7 +223,7 @@ Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the p
 \end{equation}
 
 \section{Model Selection and Convergence}
-Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo}. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit. \\
+Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo} for each model. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit.
 
 \begin{definition}{Leave-One-Out Information Criterion}
     BBegin by defining the expected log pointwise predictive density (elpd) as in Equation~\ref{elpd} for data $y$,
@@ -273,4 +273,4 @@ Model selection was based primarily on the Leave-One-Out Information Criterion (
     \label{def:dic}
 \end{definition}
 
-The LOOIC score was preferred over the DIC score as the DIC score is based on a point estimate, and this NMA was performed in a Bayesian framewwork. As the LOOIC score is uses the posterior distribution, it is a fully Bayesian statistic. Traditionally, the DIC score has been used due to the extra computational steps required for the LOOIC score. However,~\cite{vehtari} implented Pareto-Smoothed Importance Sampling (PSIS) in the R package \verb|loo|~\cite{loo}, which enables easy, and stable, computation of the LOOIC score from the NMA models. 
+The LOOIC score was preferred over the DIC score as the DIC score is based on a point estimate, and this NMA was performed in a Bayesian framewwork. As the LOOIC score is using the posterior distribution, it is a fully Bayesian statistic. Traditionally, the DIC score has been used due to the extra computational steps required for the LOOIC score. However,~\cite{vehtari} implented Pareto-Smoothed Importance Sampling (PSIS) in the R package \verb|loo|, which enables easy, and stable, computation of the LOOIC score from the NMA models. 

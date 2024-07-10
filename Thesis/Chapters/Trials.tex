@@ -1,6 +1,6 @@
 \chapter{Included Studies}\label{trialschap}
 
-\section{Overview of Studies.}
+\section{Overview of Studies}
 There was no systematic literature review (SLR) conducted for this study. Studies were searched using Google Scholar to identify Phase II/III studies that reported OS KM curves for GEM and a comparator. In addition, studies had to include the proportion of male patients on each treatment arm. The KM curves were required to present KM curves that could be digistised using WebPlotDigitizer~\cite{wpd}. This meant clear curves with labelling and numbers at risk presented at regular intervals. Studies for both locally advanced and/or metastatic pancreatic cancer were included. Studies could not include GEM-refractory patients.\\
 
 Table~\ref{tab:studies} presents the studies used in this NMA. In total, there were seven studies comparing GEM with one of six combination therapies. The studies were comparable in terms of median age and proportion male. The~\cite{cunningham2009} study, compared GEM and GEM-CAP. The~\cite{goldstein2015} study compared GEM and GEM-NAB. The~\cite{gonccalves2012} study compared GEM and GEM-SOR. The~\cite{kindler2011} and~\cite{spano2008} studies compared GEM and GEM-AXI. The~\cite{oettle2005} study compared GEM and GEM-PEM. The~\cite{rocha2004} study comapred GEM and GEM-IRI. All studies except Spano were phase III trials, however Spano was included as the OS data was quite mature. The~\cite{conroy} study was the only study to not comapre GEM with a combination therapy; comparing GEM and FOLFIRINOX in a phase 2-3 trial.\\
@@ -107,20 +107,22 @@ There was a lot of crossover in the eligibility criteria across the included stu
 No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
 
 \section{Parametric Model Fitting to KM Curves}
-Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. Based on these plots, all other models were deemed to be appropriate for inclusion in the NMA. \\
+Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. \\
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Cunningham.png}
-    \caption{Cunningham (2009) parametric model extrapolations}
-    \label{fig:cunninghamParamExtrap}
-\end{figure}
+Due to the long runtime of the ML-NMR models, it was not deemed feasible to include all the models in the NMA. From Figure~\ref{fig:conroyParamExtrap}-Figure~\ref{fig:spanoParamExtrap}, the log-logistic, log-normal, and Weibull models provided consistently reasonable fit to the observed KM curves. These models were therefore included in the NMA.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.9\textwidth]{../Results/Survival/Conroy.png}
     \caption{Conroy (2011) parametric model extrapolations}
     \label{fig:conroyParamExtrap}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{../Results/Survival/Cunningham.png}
+    \caption{Cunningham (2009) parametric model extrapolations}
+    \label{fig:cunninghamParamExtrap}
 \end{figure}
 
 \begin{figure}[h]
