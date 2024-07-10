@@ -19,18 +19,6 @@ Given a homogeneous population of individuals, the time of death for each indivi
     \end{equation}
 \end{definition}
 
-Further to the survival and hazard function, the cumulative Hazard function, $H(t)$ (Definition~\ref{def:cumhazard}) gives the total accumulated risk up to time $t$. By nature of being cumulative, $H(t)$ is a monotonically non-decreasing function. 
-
-\begin{definition}{Log-Cumulative Hazard Function}{h}
-    The \textbf{Cumulative Hazard Function} 
-    
-    \begin{align}
-        H(t) &= \int_0^t h(\tau)d\tau \\
-             &= -\log (S(t))
-    \end{align}
-    \label{def:cumhazard}
-\end{definition}
-
 \section{The Kaplan-Meier Estimator and Reconcstructing Patient-Level Data}
 \subsection{The Kaplam-Meier Estimator}
 The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies due to an adverse event unrelated to their cancer) occurs.
@@ -55,7 +43,7 @@ Let $d_i$ and $n_i$ be the number of events and total individuals at risk at the
     \label{hazllhood}
 \end{equation}
 
-The KM estimator can be derived by MLE of the discrete hazard function. By obtaining an maximum likelihood estimate of $h_i$, $\hat{h_i}$, and substituting it into Equation~\ref{survrate}, the resulting estimate of the survival function, $\hat{S(t)}$, is the KM estimator. Taking the logarithm of both sides of Equation~\ref{hazllhood} gives Equation~\ref{loghazlik}.
+The KM estimator can be derived by MLE of the discrete hazard function. By obtaining an maximum likelihood estimate of $h_i$, $\hat{h_i}$, and substituting it into Equation~\ref{survrate}, the resulting estimate of the survival function, $\hat{S(t)}$, will be the KM estimator. Taking the logarithm of both sides of Equation~\ref{hazllhood} gives Equation~\ref{loghazlik}.
 
 \begin{equation}
     log(\mathcal{L}) = \sum_{j=1}^i \left(d_j\log(h_j)+(n_j-d_j)\log(1-h_j) + \log \binom{n_j}{d_j}\right)
@@ -86,8 +74,7 @@ By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and 
 The ML-NMR method requires aggregate survival data to be in the form of the TTE data previously described. Often, the actual patient level event and censoring times/indicators are not published, and therefore must be reconstructed from the published KM curves, which are usually readily available. Indeed, one of the study selection criteria outlined in Section~\ref{sec:aims} was that studies must publish KM curves with numbers at risk. This was motivated by the method for reconstructing patient-level data from KM curves, the Guyot algorithm~\cite{guyotipd} requiring numbers at risk.
 
 \section{Regression Models for Survival}
-
-The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions. There are two forms of models for survival data. Accelerated Failure Time (AFT) models, and Proportional-Hazards (PH models).
+The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions. There are two forms of models for survival data: Accelerated Failure Time (AFT) models, and Proportional-Hazards (PH models).
 
 \subsection{Accelerated Failure Time Models}
 
@@ -110,7 +97,7 @@ This is equivalent to defining a random variable $T$ such that
     T = T_0/\Psi(x).  
 \]
 
-Here, $T_0$ has survivor function $S_0$. It is required that $\Psi(x) \geq 0$ and $\Psi(0) = 1$, leading to the natural choice 
+Here, $T_0$ has survival function $S_0$. It is required that $\Psi(x) \geq 0$ and $\Psi(0) = 1$, leading to the natural choice 
 
 \[
     \Psi(x) = \exp(-\beta'x).  
@@ -125,49 +112,54 @@ We can then write
     &= E(T_0)e^{\beta'x}
 \end{align*}
 
-In practice, we assume a distribution for $T$, and estimate parameters using maximum likelihood estimation. 
+In practice, we assume a distribution for $T$, and estimate parameters using MLE. 
 
 \subsection{Proportional Hazards Models}
 
-Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $\bf{x}$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
+Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $x$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
 
 \begin{equation}
     h(t, x) = \exp(\beta'x) \ h_0(t)
     \label{coxmodel}
 \end{equation}
 
-Consider the following defintion.
+The Cox model is semi-parametric model (Definition~\ref{semPam}) then $\beta$ is of finite dimension and $h_0(t)$ is infinite-dimensional and does not need to be specified. 
 
 \begin{definition}{Semi Parametric Model}{h}
     A statistical model is a parameterised family of distributions $\{P_{\theta} : \theta \in \Theta\}$. 
     For a parametric model, $\Theta \subseteq \mathbb{R}^k$ for $k \in \mathbb{N}$. Similarly, for a non-parametric model, $\Theta \subseteq V$, where $V$ is some (possibly infinite) dimensional space $V$. A \textbf{Semi-parametric} model is a statistical model with both parametric and non-parametrc components. For a semi-parametric model we have $\Theta \subseteq \mathbb{R}^k \times V$.
+    \label{semPam}
 \end{definition}
 
-The Cox model is semi-parametric then $\beta$ is of finite dimension and $h_0(t)$ is infinite-dimensional and does not need to be specified. 
 
 \section{Key Survival Metrics}
 
 \subsection{The Hazard Ratio}
-The Hazard Ratio (HR) follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
+The Hazard Ratio (HR), often denoted using $\varphi$, follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
 
 \begin{equation}
     \varphi = \frac{h_1}{h_2} = \exp(\beta' x)
     \label{HReq}
 \end{equation}
 
-In practice, the HR is a useful endpoint in performing network meta-analyses on survival outcomes. However, in order to conduct a HR-based Network Meta Analysis (NMA), the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by visual-inspection of a log-cumulative hazards plot. 
+In practice, the HR is a useful endpoint in performing NMAs on survival outcomes. However, in order to conduct a HR-based NMA, the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by, for example, visual-inspection of a log-cumulative hazards plot. The log-cumulative hazard plot comes from the cumulative hazard function (Definition~\ref{cumHazFun}), which gives the cumulated risk of experiencing an event. Given the cumulative nature of the cumulative hazard function, and the nature of $S(t)$ being monotonically decreasing, the cumulative hazard function is monotonically increasing.
 
 \begin{definition}{Cumulative Hazard Function}
     BThe \textbf{Cumulative Hazard Function}, $H(t)$ is given by 
-    \[
+    \begin{equation}
         H(t) = \int_{0}^{x}h(t)dt = -\log(S(t))  
-    \]
+    \end{equation}
+    \label{cumHazFun}
 \end{definition}
 
-By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$. When plotting this for both arms of a clinical trial, if the curves remain roughly parallel, the PHA is likely satisfied, but if they curves cross, it indicates violation of the PHA.
+By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$. When plotting this for both arms of a clinical trial, if the curves remain roughly parallel, the PHA is likely satisfied. If the curves cross and/or diverge, it indicates PHA has not been satisfied. Whether the PHA is satisfied has implications later on in the analysis. For example, if the PHA is not satisfied, then an individual model must be used for each treatment arm. If the PHA is satisfied, a model which does not include a treatment parameter may be appropriate. This fits a single model to one treatment arm, and then uses a linear coefficient used for obtaining estimates of survival for the non-reference treatment. It is clear to see why this would be be inappropriate if the PHA is not violated, since the difference betweem survival curves will not be linear. 
+
+\subsection{Median Survival}
+Median survival is simply the earliest timepoint after which 50\% of patients have died. 
 
 \subsection{Restriced Mean Survival Time}
 The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. Definition~\ref{def:rmst} presents the formal definition.
+
 
 \begin{definition}{RMST}
     AFor a survival function $S(t)$, the \textbf{RMST} for some pre-specified time $x > 0$,
@@ -176,9 +168,6 @@ The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean surviv
     \] 
     \label{def:rmst}
 \end{definition}
-
-\subsection{Median Survival}
-Median survival is simply the earliest timepoint at which 50\% of patients have died. 
 
 \section{Parametric Models for Survival Analysis}
 This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
@@ -193,30 +182,29 @@ The general model of a \verb|flexsurv| survival model takes the form
 
 Equation~\ref{fsurvmodel} gives the probability density for death at time $t \geq 0$. The \textit{mean} or \textit{location} of the distribution is given by $\mu = \alpha_0$. The remaining parameters, $\bf{\alpha^1} = (\alpha_1, \ldots, \alpha_R)$ are called \textit{ancillary} parameters. \\
 
-Chapter~\ref{survchap} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as 
+Chapter~\ref{survchap} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as in Equation~\ref{flex1}, then the model is a PH model. Alternatively, if the survival function is written as in Equation~\ref{flex2}, then the model is an AFT model.
 
-\[
-    h(t|\bf{\alpha}, \mu(\bf{z})) = \mu(\bf{z})h_0(t|\bf{\alpha}). 
-\] 
+\begin{equation}
+    h(t|\bf{\alpha}, \mu(z)) = \mu(z)h_0(t|\alpha). 
+    \label{flex1}
+\end{equation}
 
-Then we have a PH model. On the other hand, an AFT model would be written as
-
-\[
+\begin{equation}
     S(t|\mu(\bf{z}), \bf{\alpha}) = S_0(\mu(\bf{z})t/\bf{\alpha}).  
-\]
+    \label{flex2}
+\end{equation}
 
-All parameters may depend on $\bf{z}$, a vector of covariates. This is done through the link-transformed linear models
+All parameters may depend on $z$, a vector of covariates. This is done through the link-transformed linear models in Equation~\ref{flexsurvMLE1} and Equation~\ref{flexsurvMLE2}.
 
 \begin{align}
-    \label{flexsurvMLE}
-    g_0(\mu(\bf{z})) &= \gamma_0 + \bf{\beta}_0^Tz \nonumber \\
-    g_r(\alpha_r(\bf{z})) &= \gamma_r + \bf{\beta}_{\gamma}^T\bf{z}
+    g_0(\mu(z)) &= \gamma_0 + \beta_0^Tz \label{flexsurvMLE1}\\
+    g_r(\alpha_r(z)) &= \gamma_r + \beta_{\gamma}^Tz \label{flexsurvMLE2}
 \end{align}
 
-$g$ is usally chosen to be $log()$ if the parameter is positive, or the identity function if the parameter is unrestricted.\\
+In Equation~\ref{flexsurvMLE1} and Equation~\ref{flexsurvMLE2}, $g$ is usally chosen to be $log()$ if the parameter is positive, or the identity function if the parameter is unrestricted.
 
 \subsection{Fitting Models}
-Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ as in Equation~\ref{censInd}. Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. $s_i = 0$ when there is no delayed-entry. \\
+Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ as in Equation~\ref{censInd}. Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. Therefore, $s_i = 0$ when there is no delayed-entry. 
 
 \subsubsection{Right Censoring}
 In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE} is given by 
@@ -234,4 +222,4 @@ In the case of interval-censoring, where the survival time is censored on $(t_i^
     l(\theta|t^\text{min}, t^\text{max}, c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} \left(S_i(t_i^{\text{min}}) - S_i(t_i^{\text{max}}) \right)}{\prod_{i} S_i(s_i)}
 \end{equation}
 
-Maximum Likelihood Estimation is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens}. 
+MLE is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens} to obtain the required survival models. 

@@ -14,11 +14,11 @@ net <- readRDS("Data/network.RDs")
 # RE_GGam <- readRDS("Data/Models/RE_GGam.RDs")
 # FE_Gomp <- readRDS("Data/Models/FE_GGam.RDs")
 # RE_Gomp <- readRDS("Data/Models/RE_GGam.RDs")
-FE_LLogis <- readRDS("Data/Models/FE_Llogis.RDs")
+FE_Llogis <- readRDS("Data/Models/FE_Llogis.RDs")
 RE_Llogis <- readRDS("Data/Models/RE_Llogis.RDs")
 FE_Lnorm <- readRDS("Data/Models/FE_Lnorm.RDs")
 RE_Lnorm <- readRDS("Data/Models/RE_Lnorm.RDs")
-FE_LLogis <- readRDS("Data/Models/FE_Weib.RDs")
+FE_Weib <- readRDS("Data/Models/FE_Weib.RDs")
 RE_Weib <- readRDS("Data/Models/RE_Weib.RDs")
 
 # FE_Gamma_Summary <- summary(FE_Gamma, "Gamma", "Fixed")
@@ -52,30 +52,46 @@ model_selection <- bind_rows(
 write.xlsx(model_selection, "~/Documents/MScThesis/Results/NMA/Selection.xlsx")
 write.csv(model_selection, "~/Documents/MScThesis/Results/NMA/Selection.csv")
 
-p <- plot(predict(FE_Lnorm, type = "hazard"), width = c(0, 0)) +
+p <- plot(predict(FE_Llogis, type = "hazard")) +
   labs(x = "Time (Months)") +
   theme_bw() 
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Hazard_Plot.png",
        height = 10, width = 12, units = "in")
-p <- plot(predict(FE_Lnorm, type = "survival", width = c(0, 0)) +
-  geom_km(net) +
-  labs(x = "Time (Months)",
-       y = "Overall Survival") +
+
+p <- plot(predict(FE_Llogis, type = "survival", width = c(0, 0))) +
+  labs(x = "Time (Months)") +
   theme_bw() 
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Survival_Plot.png",
        height = 10, width = 12, units = "in")
-p <- plot(predict(FE_Lnorm, type = "rmst")) +
+p <- plot(FE_Llogis, type = "survival", study = "Goldstein")
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Goldstein_Survival_Plot.png",
+       height = 10, width = 12, units = "in")
+p <- plot(FE_Llogis, type = "survival", study = "Conroy")
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Conroy_Survival_Plot.png",
+       height = 10, width = 12, units = "in")
+
+p <- plot(predict(FE_Llogis, type = "rmst")) +
   labs(x = "RMST (Months)") +
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/RMST_Plot.png",
        height = 10, width = 12, units = "in")
-p <- plot(predict(FE_Lnorm, type = "median"))
-ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Median_Plot.png",
-       height = 10, width = 12, units = "in") +
+p <- plot(predict(FE_Llogis, type = "median")) +
   labs(x = "Median Overall Survival (Months)") +
   theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Median_Plot.png",
+       height = 10, width = 12, units = "in")
 
-p <- mcmc_trace(FE_Lnorm, pars = parsForStan) +
+p <- mcmc_trace(FE_Llogis, pars = parsForStan) +
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Trace.png",
        height = 10, width = 12, units = "in")
+p <- mcmc_trace(RE_Llogis, pars = parsForStan) +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/RE_Trace.png",
+       height = 10, width = 12, units = "in")
+
+p <- plot(relative_effects(FE_Llogis), ref_line = 0,
+          stat = "halfeye") +
+  ggplot2::aes(slab_fill = ggplot2::after_stat(ifelse(x < 0, "darkred", "#7EBE91"))) +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Releff.png")

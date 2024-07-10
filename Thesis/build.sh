@@ -18,3 +18,4 @@ xelatex main.tex
 bibtex main
 xelatex main.tex
 xelatex main.tex
+texcount -inc -html -v -sum main.tex > wordcount.html

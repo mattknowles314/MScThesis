@@ -8,7 +8,7 @@ Consider a set of $N$ two-arm randomised-controlled trials (RCTs). In each trial
 A  A \textbf{Graph} is an ordered triple $G = (V, E, \varphi)$. Where  $V$ is a set of nodes, E is a set  of edges, and $\varphi : E \to \{\{ x, y \} | x, y \in V \ \text{such that} \ x \neq y \}$ is an  \textbf{incidence function} mapping every edge to a pair of verticesa.
 \end{definition}
 
-We can construct $N$ graphs under the formal definition. Namely, for trial $T_i$, we have $G_i = (V_i, E_i, \varphi_i)$ where $V_i = \{ A_i, P_i \}$, $E_i = \{T_i\}$ and $\varphi_i : E_i \to \{ \{ x, y \} | x, y \in V_i \ \text{such that} \  x \neq y \}$. For construction of the grpahs, we can drop the subscript on $P_i$, and take the placebo as a reference treatment. This is done under the assumption that the effect of placebo is constant across all trials. This is a strong assumption, and implications of this are discussed later. Under this assumption however, each $V_i$ now contains a common element, $P$.
+We can construct $N$ graphs under the formal definition. Namely, for trial $T_i$, we have $G_i = (V_i, E_i, \varphi_i)$ where $V_i = \{ A_i, P_i \}$, $E_i = \{T_i\}$ and $\varphi_i : E_i \to \{ \{ x, y \} | x, y \in V_i \ \text{such that} \  x \neq y \}$. For construction of the grpahs, we drop the subscript on $P_i$, and take placebo (or any common treatment, not necessarily placebo) as a reference treatment. This is done under the assumption that the effect of placebo is constant across all trials. This is a strong assumption, and implications of this are discussed later. Under this assumption however, each $V_i$ now contains a common element, $P$.
 
 Let
 
@@ -24,7 +24,7 @@ The incidence function is given in Equation~\ref{incidenceFunc}.
     \label{incidenceFunc}
 \end{equation}
 
-Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of evidence given by these two arm trials that forms the basis of an NMA. This process expands to trials that compare more than two treatments by weighting the edges by the number of trials making that particular comparison. Figure~\ref{fig:comb_evi} illustrates combining treatments into a network of evidence.
+Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of evidence given by these two arm trials that forms the basis of an NMA. This process expands to trials that compare more than two treatments by weighting the edges by the number of trials making that particular comparison. Figure~\ref{fig:comb_evi} illustrates combining treatments into a network of evidence.\\
 
 \begin{figure}[h]
     \centering
@@ -49,7 +49,7 @@ There are two types of NMAs: fixed effect (FE) and relative effects (RE) NMAs. I
 The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and ML-NMR have saught to relax this assumption by using IPD from at least one of the studies in a population.
 
 \section{The General Multilevel Network Meta-Regression}
-The derivation in this chapter is based on the work of~\cite{phillippo2024}. Under an NMA framework, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Ideally, all IPD from the RCTs in a network would be available, however this is seldom the case. Certainly in a survival analysis context, often published KM curves accompanied by aggregate data are the only available data. From the perspective of a pharmaceutical company working on a Heatlth Technology Assessment (HEOR) submission, the likely scenario is that they have data from their own RCT comparing their drug with a key comparator, and then published KM curves and covariate summaries. Consider first the standard IPD network meta-regression (NMR), as given in Defintion~\ref{def:mlnmrIPD}.
+The derivation in this chapter is based on the work of~\cite{phillippo2024}. Under an NMA framework, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Ideally, all IPD from the RCTs in a network would be available, however this is seldom the case. Certainly in a survival analysis context, often published KM curves accompanied by aggregate data are the only available data. From the perspective of a pharmaceutical company working on a Heatlth Technology Assessment (HTA) submission, the likely scenario is that they have data from their own RCT comparing their drug with a key comparator, and then published KM curves and covariate summaries. Consider first the standard IPD network meta-regression (NMR), as given in Defintion~\ref{def:mlnmrIPD}.
 
 \begin{definition}{General IPD Meta-Regression Model}
     LLet $y_{ijk}$ be the IPD outcome for individual $i = 1, \ldots, N_{kj}$ in study $j$ recieving treatment $k \in K_j$ given the likelihood distribution $\pi_{Ind}(\theta_{ijk})$. 

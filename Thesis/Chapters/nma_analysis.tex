@@ -11,45 +11,68 @@ Figure~\ref{fig:osnet} presents the network of evidence for this NMA. There were
 \end{figure}
 
 \section{Model Fitting and Selection}
-Both FE and RE models were fit using gamma, generlaised gamma, Gompertz, log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}, as defined in Defintion~\ref{def:hndef}. For each model, sampling was done using 1000 iterations on four chains. The first 500 iterations were warmup iterations. \\
+Both FE and RE models were fit using log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}. For each model, sampling was done using 1000 iterations on four chains. The first 500 iterations were warmup iterations. \\
 
-Table~\ref{tab:selectionstatbc} presents the selection statistics for each model. The fixed effect model was also deemed to be clinically appropriate due to homogeneity in the patient population. The FE gamma, FE and RE generalised gamma models failed to converge, meaning no DIC or LOOIC estimates could be obtained. The RE gamma and RE Gompertz models gave LOOIC and DIC scores so high that they were classified as Inf, indicating poor fit. The log-logistic, log-normal, and Weibull models gave similar LOOIC and DIC scores. In each case, the FE model had slightly lower LOOIC than the RE model for each likelihood. The FE log-normal model gave the lowest LOOIC and DIC score, indicating it was the best fitting model. The trace plot for this model is available in Appendix~\ref{NMAAppendix}, Figure~\ref{fig:tracebc}, and indicated good convergence due to consistent peaks and troughs across each treatment arm. \\
+Table~\ref{tab:selectionstatbc} presents the selection statistics for each model. The RE log-logistic model performed best in terms of LOOIC and DIC score. The FE log-logistic was very similar to the RE log-logistic model. Indeed, the scores were only seperated by 0.0398. The RE log-normal model was only 0.9148 above the LOOIC score of the RE log-logistic model. Given the similarity in the LOOIC scores for the FE and RE log-logistic models, the final moel was selected based on model convergence.
+
+Figure~\ref{fig:tracebcFE} and Figure~\ref{fig:tracebcRE} present the trace plots for the FE and RE log-logistic models respectively. The FE model demonstrated much better convergence than the RE model. In the RE model, the traces for each treatment were very thin with lots of spikes. In paticular, for GEM-AXI, there was a clear issue with convergence just before iteration 300. Conversely, the FE traces for each treatment showed few spikes, and the chains were well mixed, indicating good convergence. Given the clinical plausibility of the FE model, as previously discussed, and the better convergence given by the FE model, the FE log-logistic model was selected.
 
 \begin{table}[h]
     \centering
     \begin{tabular}{llll}
     \hline
-    Likelihood   & Effect & DIC         & LOOIC      \\ \hline
-    Log-logistic & Fixed  & 15176.9789  & 15176.0719 \\
-    Log-logistic & Random & 15175.2325  & 15176.2254 \\
-    Log-normal   & Fixed  & 15172.3036 $\leftarrow$ & 15173.0542 $\leftarrow$ \\
-    Log-normal   & Random & 15172.7801  & 15173.3975 \\
-    Weibull      & Fixed  & 15200.20470 & 15200.1331 \\
-    Weibull      & Random & 15199.29711 & 15200.6538 \\ \hline
+    Likelihood   & Type & DIC         & LOOIC      \\ \hline
+    Log-logistic & FE  & 16974.3668  & 16972.9184 \\
+    Log-logistic & RE & 16972.2638  $\leftarrow$ & 16972.8786 $\leftarrow$ \\
+    Log-normal   & FE  & 107813403.9532  & 48652.0393 \\
+    Log-normal   & RE & 16977.7101  & 16973.7934 \\
+    Weibull      & FE  & 16989.2670 & 16992.9722 \\
+    Weibull      & RE & 3.1937e42 & 5.8355e21 \\ \hline
     \end{tabular}
     \caption{Model selection statistics for each model}
     \label{tab:selectionstatbc}
 \end{table}
 
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/Trace.png}
+        \caption{Trace plot for the FE log-logistic model ML-NMR}
+        \label{fig:tracebcFE}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/RE_Trace.png}
+        \caption{Trace plot for the RE log-logistic model ML-NMR}
+        \label{fig:tracebcRE}
+    \end{minipage}
+\end{figure}
+
 \section{Results}
-Figure~\ref{fig:pred_surv} and Figure~\ref{fig:pred_hazard} present the predicted survival and hazard of each treatment in study population, respectively. GEM-NAB and GEM-CAP had the highest OS and lowest hazard in each study population. The hazard curves for each study in each population followed a similar pattern, with peaks in the hazard just before ten months, before declining. GEM-SOR had the highest peak-hazard in each population, but crossed the GEM hazard curve in each population shortly after the peak, finishing with a lower hazard than GEM by the end of the observation period in each population. Further, in terms of hazard, the GEM-AXI and GEM-PEM curves were almost identical in each population. \\
+Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} present the KM curves of each treatment in the Conroy and Goldstein populations, respectively. Figure~\ref{fig:pred_survbc}, available in Appendix~\ref{NMAAppendix} presents the KM curves in each population. As Conroy and Goldstein had the most mature data of all studies, and contained the two main treatments, these plots were given more priority in the analysis. Both Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} showed superior OS for the FOLFIRINOX compared to all other treatments. GEM-NAB provides superior OS to GEM-CAP, but worse OS than FOL in the Conroy population. The same was observed in the Goldstein population. In both populations, GEM-SOR had the worst OS until between 12 and 15 months, but then crosses the GEM and GEM-AXI curves to give a higher OS at the end of the extrapolation period. \\
 
-Figure~\ref{fig:pred_rmstbc} presents the estimated RMST of each treatment in each population. The GEM-SOR arm had large credible intervals in each population due to the lower number of patients for which GEM-SOR data was available. Further, GEM-SOR and GEM-IRI had the lowest and second-lowest RMST estimates in each population, respectively. The RMST estimates for GEM, GEM-AXI, and GEM-PEM were similar in each population, as were GEM-CAP, and GEM-NAB. GEM-NAB and GEM-CAP had the highest and second-highest RMST estimates respectively in every study population. \\
+Figure~\ref{fig:pred_rmstbc} presents the estimated RMST of each treatment in each population. The credible intervals for GEM-SOR were very wide, likely due to the low number of patients in the GEM-SOR arm. The thin line for each treatment represents the 95\% credible interval. Based on this inteval, FOLFIRINOX was significantly better than GEM, GEM-AXI, GEM-PEM and GEM-SOR in the Conroy, Goldstein and Oettle studies. FOLFIRINOX was also significantly better than GEM-IRI in the Conroy, Cunningham, Goldstein, Kindler, Oettle and Rocha Lima studies. FOLFIRINOX was not significantly better than FOLFIRINOX in any study population. GEM-CAP and GEM-NAB gave similar RMST estimates in each study population. Indeed, GEM-NAB provided a higher RMST estiamte in each population, but this improvement was nigt significant. In addition, GEM, GEM-AXI and GEM-PEM gave similar estimates in each treatment arm, with GEM-PEM providing slightly better RMST then GEM and GEM-AXI in each case. GEM-IRI gave higher RMST estimates than GEM-SOR in each population, but worse RMST estimates than GEM, GEM-AXI, and GEM-PEM. \\
 
-Figure~\ref{fig:pred_medianbc} presents the estimated median OS of each treatment in each population. The median OS estimates followest the same pattern as the RMST estimates. Namely, GEM-SOR and GEM-IRI gave the lowest and second-lowest estimates for median OS in each study population, GEM, GEM-AXI, and GEM-PEM gave similar estimates, and GEM-NAB and GEM-CAP gave the highest and second-highest estimates of median OS, respectively. The median OS estimates of GEM-NAB and GEM-CAP were further apart than the RMST estimates for the same two treatments. 
+Figure~\ref{fig:pred_medianbc} presents the estimated median OS of each treatment in each population. The median OS estimates followes the same pattern as the RMST estimates. Namely, GEM-SOR and GEM-IRI gave the lowest and second-lowest estimates for median OS in each study population, GEM, GEM-AXI, and GEM-PEM gave similar estimates, and FOLFIRINOX and GEM-NAB gave the highest and second-highest estimates of median OS, respectively. Compared to the RMST estimates, the credible interval for FOLFIRINOX was quite word in the Goldstein, Goncalves, Kindler, and Spano studies. GEM-NAB provides higher median OS estimates than GEM-CAP in each popultion, but does not provide significant improvements. The similarity between GEM, GEM-AXI, and GEM-PEM that was observed in the RMST plots was also observed in the median OS plots. \\ 
+
+Figure~\ref{fig:releff} presents the population-average relative treatment effects of each treatment in terms of the log survival-time from the median OS estimates. FOLFIRINOX and GEM-NAB were both significantly better than GEM, but all other treatments crossed 0, indicating no significance. GEM-CAP did not provide a significant imporovement to OS comapred to GEM. \\
+
+Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatment. FOLFIRINOX had a considerably higher probability of being the best treatment. FOLFIRINOX had a probability of being the best treatment of 0.97. GEM-NAB and and GEM-CAP had probabilities of being the best treatment of 0.02 and 0.01 respectively. The cumulative probability of GEM-NAB increased quicker than GEM-CAP, having a cumulative probability of being the second best treatment of 0.66, compared to GEM-CAP having a cumulative probability of $0.28$. FOLFIRINOX achies a cumulative probability of 1 by rank three, and GEM-NAB and GEM-CAP achieved a cumulative probability of 1 at rank five and seven resepectively. Figure~\ref{fig:rankplot}, available in Appendix~\ref{NMAAppendix} presents the non-cumulative posterior ranks. 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = \textwidth]{../Results/NMA/Survival_Plot.png}
-    \caption{OS of each treatment in each population}
-    \label{fig:pred_survbc}
+    \includegraphics[width = \textwidth]{../Results/NMA/Conroy_Survival_Plot.png}
+    \caption{OS of each treatment in the Conroy population}
+    \label{fig:pred_survbc_conroy}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = \textwidth]{../Results/NMA/Hazard_Plot.png}
-    \caption{Hazards of each treatment in each population}
-    \label{fig:pred_hazardbc}
+    \includegraphics[width = \textwidth]{../Results/NMA/Goldstein_Survival_Plot.png}
+    \caption{OS of each treatment in the Goldstein population}
+    \label{fig:pred_survbc_goldstein}
 \end{figure}
 
 \begin{figure}[h]
@@ -66,3 +89,16 @@ Figure~\ref{fig:pred_medianbc} presents the estimated median OS of each treatmen
     \label{fig:pred_medianbc}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Releff.png}
+    \caption{Log Survival Time Ratio}
+    \label{fig:releff}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SUCRA.png}
+    \caption{Cumulative rank probability for each treatment}
+    \label{fig:sucra}
+\end{figure}

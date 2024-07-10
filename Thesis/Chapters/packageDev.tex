@@ -28,4 +28,7 @@ Any default \verb|flexsurv| distribution will work with \textit{fit\_distributio
 Several S3 methods exist for objects of class ``fitted\_distribution'', these are \textit{plot.fitted\_distribution}, \textit{summary.fitted\_distribution}, and \textit{coef.fitted\_distribution}. These functions allow for plotting fitted models, accessing information such as AIC scores, and accessing the model coefficients respectively.
 
 \section{NMA Functions}
-The NMA part of the \verb|PCNMA| package is a wrapper around \verb|multinma|. In particluar, the \textit{fit\_model} function is a wrapper around \textit{multinma::nma}.
+The NMA part of the \verb|PCNMA| package is a wrapper around \verb|multinma|. In particluar, the \textit{fit\_model} function is a wrapper around \textit{multinma::nma}. \\
+
+Once a network has been created using the \verb|multinma| functions \textit{set\_ipd} and \textit{set\_agd}, the \textit{fit\_model} function, with arguments such as iterations and chains can be used to fit an ML-NMR method for a given likelihood. Models fit in this way are given the class \textit{fitted\_model}. An object of class \textit{fitted\_model} has two S3 methods: \textit{plot.fitted\_distribution}, used for plotting trace plots and posterior results, such as predicted KM curves for a given study population, and \textit{summary.fitted\_distribution}, which is used for obtaining the LOOIC and DIC scores for the model. \\
+

@@ -1,20 +1,26 @@
-\chapter{A Review of NMAs for Pancreatic Cancer}\label{litChap}
+\chapter{A Review of Meta-Analyses for Pancreatic Cancer}\label{litChap}
 
-Prior to conducting this NMA, the literature was searched to identify NMAs comparing treatments for pancreatic cancer that included either all, or a subset of, the treatments included in this NMA. 
+Prior to conducting this NMA, the literature was searched to identify meta-analyses (ideall NMAs) comparing treatments for pancreatic cancer that included either all, or a subset of, the treatments included in this NMA. The literature on meta-analyses, and in particular NMAs is quite spares. Unfortunately, as a result of this, an NMA using an ML-NMR approach could not be found. Six meta-analyses were found, using a range of methods.
 
+\section{An overview of meta-analyses}
 In~\cite{chen}, the authors used a frequentist model to analyse both survival and toxicity data between modified FLOFIRINOX, regular FOLFIRINOX, and GEM-NAB. Data from 22 studies were includeed. The results of this NMA suggest that GEM-NAB and FOLFIRINOX are similarly efficacious, but FOLORINOX provides superior OS compared to GEM than GEM-NAB does. The results suggested that the improved efficacy of FOLFIRINOX and GEM-NAB were statistically significant, but GEM-NAB and FOLFIRINOX were not significantly different. \\
 
 The NMA conducted in~\cite{lin} included 31 studies in an efficacy meta-analysis and 32 studies in a safety meta-analysis. Naturally, only the efficacy analysis was relevant for this NMA. As with the Chen NMA, the authors used a frequentist NMA, and assessed the HRs. The focus of the Lin NMA was the first-line treatment of advanced pancreatic cancer. The only treatment included in the Lin NMA that was also relevant to this NMA was FOLFIRINOX. They found that FOLFIRINOX-based therapy was the best treatment. \\
 
 The Nichetti meta-analysis~\cite{nichetti} was not an NMA, but instead reconstructed KM data from seven studies, and then pooled the reconstructed IPD to compare the efficacy of FOLFIRINOX, NALIRIFOX, and GEM-NAB. They found that FOLFIRINOX provided superior OS to GEM-NAB. They did validate their results with an NMA, although this was not reported in the main paper. The median OS of all treatments in this study was below 12 months. \\
 
-An NMA conducted by~\cite{gresham2014}, which included FOLFIRINOX, GEM-NAB, and GEM-CAP, found all three treatments to be associated with statisitically significant improvements in OS relative to GEM and several other treatments. Their NMA was a Bayesian NMA for calculating survival outcomes. The primary result outcomes of their NMA were the HR and survival gain, as defined as in Equation~\ref{eq:gain}. 
+An NMA conducted by~\cite{gresham2014}, which included FOLFIRINOX, GEM-NAB, and GEM-CAP, found all three treatments to be associated with statisitically significant improvements in OS relative to GEM and several other treatments. Their NMA was a Bayesian NMA for calculating survival outcomes. The primary result outcomes of their NMA were the HR and survival gain, as defined as in Equation~\ref{eq:gain}. \\
 
 \begin{equation}
     \frac{\frac{\text{GEM Median OS}}{HR}-\text{GEM Median OS}}{\frac{\text{GEM Median PFS}}{HR}-\text{GEM Median PFS}}
     \label{eq:gain}
 \end{equation}
 
-The Takumoto~\cite{takumoto} study considered only first line patients in Japan. They found FOLFIRINOX and GEM-NAB offered improved OS compared to GEM. The reported HRs indicated that FOLFIRINOX was more efficacious than GEM-NAB. The Takumoto NMA was performed in a Bayesian framework, using an RE model. 
+The Takumoto~\cite{takumoto} study considered only first line patients in Japan. They found FOLFIRINOX and GEM-NAB offered improved OS compared to GEM. The reported HRs indicated that FOLFIRINOX was more efficacious than GEM-NAB. The Takumoto NMA was performed in a Bayesian framework, using an RE model. \\
 
-The~\cite{zhang} NMA inlcuded several treatments that were also included in this NMA. They found FOLFIRINOX was the best treatment in the network. They used a RE model and summarised the results using the Surface Under the Cumulative Ranking Score (SUCRA) values. In terms of SUCRA values of 12-month OS, FOLFIRINOX performed best, followed by GEM+S1 (not included in this NMA) and GEM-NAB. 
+The~\cite{zhang} NMA inlcuded several treatments that were also included in this NMA. They found FOLFIRINOX was the best treatment in the network. They used an RE model and summarised the results using the Surface Under the Cumulative Ranking Score (SUCRA) values. In terms of SUCRA values of 12-month OS, FOLFIRINOX performed best, followed by GEM+S1 (not included in this NMA) and GEM-NAB. 
+
+\section{Implications of the Literature Review}
+The literature showed that FOLFIRINOX and GEM-NAB are the best performing treatments for pancreatic cancer, which was to be expected given the treatment landscape. The papers consistently stated that more trials were needed, which would of course be ideal, but FOLFIRINOX and GEM-NAB are both very expensive treatments, so this is unlikely. \\
+
+None of the NMAs performed any covariate adjustment, meaning there is a gap in the literature that could be filled using an ML-NMR. The issue with this is that IPD is of course required to do any meaningful covariate population adjustment. This NMA could therefore not be used to plug this gap, as only the proportion male was considered as a covariate. It was only included to facilitate using the ML-NMR method.  
