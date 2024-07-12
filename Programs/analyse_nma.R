@@ -95,3 +95,28 @@ p <- plot(relative_effects(FE_Llogis), ref_line = 0,
   ggplot2::aes(slab_fill = ggplot2::after_stat(ifelse(x < 0, "darkred", "#7EBE91"))) +
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Releff.png")
+
+color_scheme_set("green")
+p <- mcmc_parcoord(FE_Llogis, pars = parsForStan, np = nuts_params(FE_Llogis$stanfit), transformations = function(x) {(x - mean(x))/sd(x)}) +
+  labs(x = "Parameter") +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Parcoord.png", 
+       height = 10, width = 12, units = "in")
+p <- mcmc_parcoord(RE_Llogis, pars = parsForStan, np = nuts_params(RE_Llogis$stanfit), transformations = function(x) {(x - mean(x))/sd(x)}) +
+  labs(x = "Parameter") +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/RE_Parcoord.png", 
+       height = 10, width = 12, units = "in")
+
+p <- mcmc_pairs(FE_Llogis, np = nuts_params(FE_Llogis$stanfit), pars = parsForStan, off_diag_args = list(size = 0.75)) 
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/FE_Pairs.png", width = 12, height = 10, units = "in")
+p <- mcmc_pairs(RE_Llogis, np = nuts_params(RE_Llogis$stanfit), pars = parsForStan, off_diag_args = list(size = 0.75))
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/RE_Pairs.png", width = 12, height = 10, units = "in")
+
+p <- plot_prior_posterior(FE_Llogis, prior = "trt", overlay = "posterior",
+                     post_args = list(fill = "#7EBE91"),
+                     prior_args = list(colour = "darkred", size = 1)) +
+  labs(x = "Value",
+       y = "Density") +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/prior_post.png", width = 12, height = 10, units = "in")

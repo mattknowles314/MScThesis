@@ -17,7 +17,7 @@ p <- ggplot(df, aes(x = Year, y = Incidence, group = Sex)) +
   labs(x = "Year",
        y = "Incidence Rate (Per 100,000 people)") +
   scale_y_continuous(breaks = seq(0, 20, 1), limits = c(0, 20))
-ggsave(p, filename = "~/Documents/MScThesis/figures/IncStat.png", width = 12, height = 10, units = "in")
+ggsave(p, filename = "~/Documents/MScThesis/figures/IncStat.png", width = 6, height = 5, units = "in")
 
 location_df <- readxl::read_xlsx("Data/cases_rates_mfp_pancreatic_i19.xlsx", range = "A5:G20") |> 
   filter(Metric == "Cases") |> 

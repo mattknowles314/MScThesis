@@ -13,9 +13,20 @@ Figure~\ref{fig:osnet} presents the network of evidence for this NMA. There were
 \section{Model Fitting and Selection}
 Both FE and RE models were fit using log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}. For each model, sampling was done using 1000 iterations on four chains. The first 500 iterations were warmup iterations. \\
 
-Table~\ref{tab:selectionstatbc} presents the selection statistics for each model. The RE log-logistic model performed best in terms of LOOIC and DIC score. The FE log-logistic was very similar to the RE log-logistic model. Indeed, the scores were only seperated by 0.0398. The RE log-normal model was only 0.9148 above the LOOIC score of the RE log-logistic model. Given the similarity in the LOOIC scores for the FE and RE log-logistic models, the final moel was selected based on model convergence.
+Table~\ref{tab:selectionstatbc} presents the selection statistics for each model. The RE log-logistic model performed best in terms of LOOIC and DIC score. The FE log-logistic was very similar to the RE log-logistic model. Indeed, the scores were only seperated by 0.0398. The RE log-normal model was only 0.9148 above the LOOIC score of the RE log-logistic model. Given the similarity in the LOOIC scores for the FE and RE log-logistic models, the final moel was selected based on model convergence. \\
 
-Figure~\ref{fig:tracebcFE} and Figure~\ref{fig:tracebcRE} present the trace plots for the FE and RE log-logistic models respectively. The FE model demonstrated much better convergence than the RE model. In the RE model, the traces for each treatment were very thin with lots of spikes. In paticular, for GEM-AXI, there was a clear issue with convergence just before iteration 300. Conversely, the FE traces for each treatment showed few spikes, and the chains were well mixed, indicating good convergence. Given the clinical plausibility of the FE model, as previously discussed, and the better convergence given by the FE model, the FE log-logistic model was selected.
+Figure~\ref{fig:tracebcFE} and Figure~\ref{fig:tracebcRE} present the trace plots for the FE and RE log-logistic models respectively. The FE model demonstrated much better convergence than the RE model. In the RE model, the traces for each treatment were very thin with lots of spikes. In paticular, for GEM-AXI, there was a clear issue with convergence just before iteration 300. Conversely, the FE traces for each treatment showed few spikes, and the chains were well mixed, indicating good convergence. \\
+
+Figure~\ref{fig:parcoord} presents the (standardized) parallel coordinates plot for the FE log-logistic model. Each green line represents an iteration, connecting the values of the parameter corresponding to each treatment. The value of each parameter has been standardized by the transformation given in Equation~\ref{eq:trans_parcoord}. The purpose of a parallel coordinates plot is to show divergent transitions. Figure~\ref{fig:parcoord} shows, by nature of all the iterations being green, that there were no divergent transitions. Figure~\ref{fig:RE_parcoord} shows the parallel coordinates plot for the RE log-logistic model, for which the divergent transitions are clear.\\
+
+\begin{equation}
+    f(x) = \frac{x - \mu_x}{\sigma_x}
+    \label{eq:trans_parcoord}
+\end{equation}
+
+Figure~\ref{fig:pairs} and Figure~\ref{fig:RE_pairs} present the univariate histograms and bivariate scatter plots for the parameters of each treatment in the FE and RE log-logistic models respectively. The FE log-logistic histograms were much wider than there RE model counterparts. The scatter plots for each parameter were much sparser and scattered in the RE model than in the FE model. The divergent transitions are shown as red points in the scatter plot. \\
+
+Given the clinical plausibility of the FE model and the demonstrated superior convergence compared to the RE model, the FE log-logistic model was selected.
 
 \begin{table}[h]
     \centering
@@ -50,7 +61,41 @@ Figure~\ref{fig:tracebcFE} and Figure~\ref{fig:tracebcRE} present the trace plot
     \end{minipage}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/Parcoord.png}
+        \caption{Parallel coordinates plot of the FE log-logistic model}
+        \label{fig:parcoord}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/RE_Parcoord.png}
+        \caption{Parallel coordinates plot of the RE log-logistic model}
+        \label{fig:RE_parcoord}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/FE_Pairs.png}
+    \caption{Pairs plot for the FE log-logistic model}
+    \label{fig:pairs}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/RE_Pairs.png}
+    \caption{Pairs plot for the RE log-logistic model}
+    \label{fig:RE_pairs}
+\end{figure}
+
+
 \section{Results}
+Figure~\ref{fig:prior_post} presents a density plot of the prior versus posterior distribution for each treatment. The posterior distribution is shown in green, and the prior in red. The priors were of course uninformative priors. There were two key takeaways from Figure~\ref{fig:prior_post}. Firstly, the good convergence of this model was demonstrated by the shape of the posterior histogram through the consistent and unimodal shape of the distributions. Secondly, the shape of the posterior distributions being significantly different from the shape of the prior showed that the data were the primary influence on the parameter estimates. If the posterior were a similar shape to the prior, it would indicate the data has not contributed much to the model. Some inference about the effectiveness of these treatments compared to GEM could already be drawn from this plot. For example, FOLFIRINOX, GEM-NAB, and GEM-CAP are all centered above zero, indicating superior OS compared to GEM. Figure~\ref{fig:prior_post} also demonstrates the uncertainty for each interval. Indeed, GEM-SOR has a particularly wide posterior distribution, and GEM-NAB had quite a thin posterior distribution. This was to be expected as there is more uncertainty in the GEM-SOR arm due to fewer patients in the GEM-SOR arm of the network.
+
 Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} present the KM curves of each treatment in the Conroy and Goldstein populations, respectively. Figure~\ref{fig:pred_survbc}, available in Appendix~\ref{NMAAppendix} presents the KM curves in each population. As Conroy and Goldstein had the most mature data of all studies, and contained the two main treatments, these plots were given more priority in the analysis. Both Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} showed superior OS for the FOLFIRINOX compared to all other treatments. GEM-NAB provides superior OS to GEM-CAP, but worse OS than FOL in the Conroy population. The same was observed in the Goldstein population. In both populations, GEM-SOR had the worst OS until between 12 and 15 months, but then crosses the GEM and GEM-AXI curves to give a higher OS at the end of the extrapolation period. \\
 
 Figure~\ref{fig:pred_rmstbc} presents the estimated RMST of each treatment in each population. The credible intervals for GEM-SOR were very wide, likely due to the low number of patients in the GEM-SOR arm. The thin line for each treatment represents the 95\% credible interval. Based on this inteval, FOLFIRINOX was significantly better than GEM, GEM-AXI, GEM-PEM and GEM-SOR in the Conroy, Goldstein and Oettle studies. FOLFIRINOX was also significantly better than GEM-IRI in the Conroy, Cunningham, Goldstein, Kindler, Oettle and Rocha Lima studies. FOLFIRINOX was not significantly better than FOLFIRINOX in any study population. GEM-CAP and GEM-NAB gave similar RMST estimates in each study population. Indeed, GEM-NAB provided a higher RMST estiamte in each population, but this improvement was nigt significant. In addition, GEM, GEM-AXI and GEM-PEM gave similar estimates in each treatment arm, with GEM-PEM providing slightly better RMST then GEM and GEM-AXI in each case. GEM-IRI gave higher RMST estimates than GEM-SOR in each population, but worse RMST estimates than GEM, GEM-AXI, and GEM-PEM. \\
@@ -60,6 +105,14 @@ Figure~\ref{fig:pred_medianbc} presents the estimated median OS of each treatmen
 Figure~\ref{fig:releff} presents the population-average relative treatment effects of each treatment in terms of the log survival-time from the median OS estimates. FOLFIRINOX and GEM-NAB were both significantly better than GEM, but all other treatments crossed 0, indicating no significance. GEM-CAP did not provide a significant imporovement to OS comapred to GEM. \\
 
 Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatment. FOLFIRINOX had a considerably higher probability of being the best treatment. FOLFIRINOX had a probability of being the best treatment of 0.97. GEM-NAB and and GEM-CAP had probabilities of being the best treatment of 0.02 and 0.01 respectively. The cumulative probability of GEM-NAB increased quicker than GEM-CAP, having a cumulative probability of being the second best treatment of 0.66, compared to GEM-CAP having a cumulative probability of $0.28$. FOLFIRINOX achies a cumulative probability of 1 by rank three, and GEM-NAB and GEM-CAP achieved a cumulative probability of 1 at rank five and seven resepectively. Figure~\ref{fig:rankplot}, available in Appendix~\ref{NMAAppendix} presents the non-cumulative posterior ranks. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/prior_post.png}
+    \caption{Priort versus posterior distribution for each treatment}
+    \label{fig:prior_post}
+\end{figure}
+
 
 \begin{figure}[h]
     \centering
