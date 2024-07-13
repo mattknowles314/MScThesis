@@ -107,9 +107,11 @@ There was a lot of crossover in the eligibility criteria across the included stu
 No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
 
 \section{Parametric Model Fitting to KM Curves}
-Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. \\
+Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. This was further supported by the AIC scores as in Table~\ref{AIC1}-\ref{AIC2}, in which the exponential model performs poorly compared to all other models in terms of AIC score in each study.\\
 
-Due to the long runtime of the ML-NMR models, it was not deemed feasible to include all the models in the NMA. From Figure~\ref{fig:conroyParamExtrap}-Figure~\ref{fig:spanoParamExtrap}, the log-logistic, log-normal, and Weibull models provided consistently reasonable fit to the observed KM curves. These models were therefore included in the NMA.
+Table~\ref{AIC1} and Table~\ref{AIC2} present the AIC scores of all models in each treatment arm for each study. In the Conroy study, the log-normal model and Weibull model performed best in the GEM and FOLFIRINOX arms respectively. In the Cunningham study, the generalised-gamma and gamma models performed best in the GEM and GEM-CAP arms respeectively. In the Goldstein study, the log-normal and generalised gamma mdoel performed best in the GEM and GEM-NAB arms respectively. In the Goncalves study, the Weibull and Gompertz models performed best in the GEM and GEM-SOR arms respectively. In the Kindler and Spano studies, the log-normal models performed best in the GEM and GEM-AXI arms respectively. In the Oettle study, the log-normal and generalised gamma models performed best in the GEM and GEM-IRI models, respectively. In the Rocha-Lima study, the generalised gamma and gamma model performed best in the GEM and GEM-IRI arm, respectively. The log-normal model performed particularly well in the GEM treatment arms. The log-logistic model scored within a score of two of the log-normal model in every treatment arm except the Oettle GEM arm in Table~\ref{AIC2}, but was further apart in the studies in Table~\ref{AIC1}. The Weibull and generalised gamma models also performed well in a few treatment arms. \\
+
+Due to the long runtime of the ML-NMR models, it was not deemed feasible to include all the models in the NMA. From Figure~\ref{fig:conroyParamExtrap}-Figure~\ref{fig:spanoParamExtrap}, the log-logistic, log-normal, and Weibull models provided consistently reasonable fit to the observed KM curves. These models, in particular the log-normal model, all performed well in terms of AIC score too. The generalised gamma model performed well in terms of AIC in a few studies, but preliminary testsing lead to divergent transitions and poor fit when using the generalised gamma model in the NMA. Therefore, the log-logistic, log-normal, and Weibull models were included in the NMA.
 
 \begin{figure}[h]
     \centering
@@ -166,3 +168,39 @@ Due to the long runtime of the ML-NMR models, it was not deemed feasible to incl
     \caption{Spano (2008) parametric model extrapolations}
     \label{fig:spanoParamExtrap}
 \end{figure}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcccccccc}
+    \hline
+    \multirow{2}{*}{Distribution} & \multicolumn{2}{c}{Conroy} & \multicolumn{2}{c}{Cunningham} & \multicolumn{2}{c}{Goldstein} & \multicolumn{2}{c}{Goncalves} \\ \cline{2-9} 
+                                  & GEM      & FOL          & GEM            & GEM-CAP       & GEM           & GEM-NAB       & GEM           & GEM-SOR       \\ \hline
+    Exponential                   & 907.972  & 914.205      & 1603.030       & 1644.664      & 2293.908      & 2474.915      & 235.672       & 238.206       \\
+    Gamma                         & 886.935  & 901.431      & 1571.884       & 1620.928      & 2213.465      & 2426.651      & 229.716       & 236.692       \\
+    Generalised Gamma             & 880.810  & 900.895      & 1571.503       & 1621.730      & 2200.958      & 2424.823      & 229.933       & 238.145       \\
+    Gompertz                      & 908.673  & 903.763      & 1591.597       & 1638.689      & 2274.688      & 2461.935      & 228.423       & 236.361       \\
+    Log-Logistic                  & 880.525  & 913.903      & 1583.669       & 1625.987      & 2206.054      & 2432.977      & 231.154       & 238.465       \\
+    Log-normal                    & 879.209  & 924.412      & 1576.771       & 1637.253      & 2199.876      & 2432.134      & 233.065       & 239.090       \\
+    Weibull                       & 893.895  & 899.301      & 1576.493       & 1624.699      & 2230.390      & 2434.184      & 228.917       & 236.447       \\ \hline
+    \end{tabular}
+    \caption{AIC scores in the Conroy, Cunningham, Goldstein, and Goncalves studies}
+    \label{AIC1}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcccccccc}
+    \hline
+    \multirow{2}{*}{Distribution} & \multicolumn{2}{c}{Kindler} & \multicolumn{2}{c}{Oettle} & \multicolumn{2}{c}{Rocha Lima} & \multicolumn{2}{c}{Spano} \\ \cline{2-9} 
+                                  & GEM          & GEM-AXI      & GEM          & GEM-PEM     & GEM           & GEM-IRI        & GEM         & GEM-AXI     \\ \hline
+    Exponential                   & 812.560      & 791.128      & 1452.727     & 1452.816    & 998.183       & 996.717        & 156.984     & 343.492     \\
+    Gamma                         & 774.152      & 760.757      & 1422.005     & 1423.437    & 982.324       & 994.286        & 157.256     & 337.054     \\
+    Generalised Gamma             & 774.842      & 761.238      & 1418.603     & 1420.779    & 982.183       & 996.231        & 158.536     & 336.439     \\
+    Gompertz                      & 788.471      & 775.646      & 1444.122     & 1445.120    & 992.905       & 996.677        & 158.635     & 342.885     \\
+    Log-Logistic                  & 774.915      & 760.016      & 1421.247     & 1421.733    & 985.566       & 1004.260       & 156.674     & 335.106     \\
+    Log-normal                    & 773.184      & 759.797      & 1418.315     & 1421.474    & 983.702       & 1005.959       & 156.652     & 334.439     \\
+    Weibull                       & 776.307      & 763.113      & 1427.514     & 1428.696    & 985.016       & 994.628        & 157.630     & 338.687     \\ \hline
+    \end{tabular}
+    \caption{AIC scores in the Kindler, Oettle, Rocha Lima and Spano studies}
+    \label{AIC2}
+\end{table}

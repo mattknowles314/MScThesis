@@ -207,11 +207,11 @@ In Equation~\ref{flexsurvMLE1} and Equation~\ref{flexsurvMLE2}, $g$ is usally ch
 Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ as in Equation~\ref{censInd}. Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. Therefore, $s_i = 0$ when there is no delayed-entry. 
 
 \subsubsection{Right Censoring}
-In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE} is given by 
+In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE1}-\ref{flexsurvMLE2} is given by 
 
 \begin{equation}
-    \label{flexsurvRightCens}
     l(\bf{\theta}|t,c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
+    \label{flexsurvRightCens}
 \end{equation}
 
 \subsubsection{Interval Censoring}
@@ -223,3 +223,63 @@ In the case of interval-censoring, where the survival time is censored on $(t_i^
 \end{equation}
 
 MLE is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens} to obtain the required survival models. 
+
+\subsection{Model selection Considerations}
+Once a set of models has been fit to the data from a trial, the best model must be selected. NICE DSU TSD 14~\cite{tsd14} gives guidance on the model selection process. \\
+
+The first thing to consider is the visual fit. By overlaying the fitted model(s) over the observed data, it is easy to see how well the two align. Indeed, this is not a particularly robust method of selection, but does provide a quick way to discount certain models. \\
+
+The second, more robust, method is to examine the Akaike\'s Information Criterion (AIC) score~\cite{akaike} (Definition~\ref{def:AIC}). The values of the AIC scores for each model do not intrinsicly reflect the best fitting model, but instead the model with the lowest value is considered to be the best fitting. TSD 14 discusses the use of the Bayesian Information Criterion (BIC) score~\cite{schwarz} (Definition~\ref{def:BIC}) in addition to the AIC score due to the ability to account for the number of model parameters. The model with the lowest AIC (or BIC) score is deemed to be the best fitting model. Futher to this, models that score within a score of two of the best fitting model are also appropriate models. The AIC and BIC scores do not give any information about the quality of the models, so further assessment of the best\-fitting models is therefore required.
+
+\begin{definition}{AIC Score}
+    CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. TThe Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:AIC}.
+
+    \begin{equation}
+        AIC = 2(k - \log(\hat{L}))
+        \label{eq:AIC}
+    \end{equation}
+    \label{def:AIC}
+\end{definition}
+
+\begin{definition}{BIC Score}
+    CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. Further, et $n$ be the number of data points in the observed data to which the model was fitted. The Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:BIC}.
+
+    \begin{equation}
+        BIC =  k\log(n) - 2\log(\hat{L})
+        \label{eq:BIC}
+    \end{equation}
+    \label{def:BIC}
+\end{definition}
+
+In the context of parametric survival models, the BIC score may be surplus to requirements two reasons.
+
+\begin{enumerate}
+    \item Five of the seven parametric models recommended by NICE have the same number of parameters, $k = 2$, so no extra information is gained by using the BIC score. \\
+    \item The AIC score is preferable for models being used in a predictive context, which is of course the case for survival analysis.
+\end{enumerate}
+
+Consider item (1). This can be further reduced based on whether or not the PHA holds. If the PHA has been deemed to be violated by sufficient testing, then the exponential model is not an appropriate model, leaving five models with $k = 2$ and one model, the generalised gamma model with $k = 3$. Let $k_A = 3$ and $k_B = 2$ be such that model $A$ is the generalised gamma model, and model $B$ is one of the other five models. The AIC score difference is given in Equation~\ref{eq:aicdiff1}\-\ref{eq:aicdiff3}, and the BIC score difference is given in Equation~\ref{eq:bicdiff1}\-\ref{eq:bicdiff3}, the difference between the difference of the differences reduces to  Equation~\ref{eq:dicDiff}, which shows that each comparison of the generalised gamma model to another model will be offset by the same amount. Further to this, since five of the models all have $k = 2$, Equations~\ref{eq:aicdiff1}-\ref{eq:aicdiff3} and Equations~\ref{eq:bicdiff1}-\ref{eq:bicdiff3} both reduce to $\log\left(\frac{\hat{L_B}}{\hat{L_A}}\right)$. Since the difference between BIC scores for each $k = 2$ model and the generalised gamma model is offset by a linear amount, the same conclusions would be drawn whether using AIC or BIC scores. \\
+
+If the PHA holds, then exponential model is of course acceptable, then the reasoning the PHA-violated case holds for comparing $k = 2$ models to the exponential model, and the generalised gamma model to the $k = 2$ models, however, the difference between the generalised gamma model and exponential model will replace $\log(n)$ with $2\log(n)$ in Equation~\ref{eq:bicdiff3} and replace $2$ with $4$ in Equation~\ref{eq:aicdiff3}, but the same argument as before follows, since the likelihood is still the main driver of difference. As the number of model parameters increases, this argument breaks down, since the $2(k_A - k_A)$ term in the AIC difference will grown much quicker then $(k_B-k_A)\log(n)$ term, leading to unnecssarily large AIC values. However, when the maximum difference between the $k$ terms is $2$, as in the case of parametric survival models, little to no extra information is gained by using the BIC score over the AIC score. 
+
+\begin{align}
+    \delta_{AIC} &= AIC_A - AIC_B \label{eq:aicdiff1}\\
+           &= 6 - 2\log(\hat{L_A}) - (4 - 2\log(\hat{L_B})) \\
+           &= 2 + 2\log\left(\frac{\hat{L_B}}{\hat{L_A}}\right) \label{eq:aicdiff3}
+\end{align}
+
+\begin{align}
+    \delta_{BIC} &= BIC_A - BIC_B \label{eq:bicdiff1}\\
+           &= 3\log(n) - 2\log(\hat{L_A}) - (2\log(n) - 2\log(\hat{L_B})) \\
+           &= \log(n) + 2\log(\hat{L_B}) - 2\log(\hat{L_A}) \\
+           &= \log(n) + 2\log\left(\frac{\hat{L_B}}{\hat{L_A}}\right) \label{eq:bicdiff3}
+\end{align}
+
+\begin{align}
+    \delta_{IC} &= \delta_{BIC} - \delta_{AIC} \\
+                &= \log(n) - 2 \label{eq:dicDiff}
+\end{align}
+
+Item (2), which is the more important, and slightly less specific to this particular scenario, reason for prioritising the AIC score. Survival models are inherently predictive. The purpose is to assess how the survival of a population will evolve over an unseen period without having to keep an RCT running for an indefinite amount of time until all patients have left the study. The AIC method is \textit{minimax\-rate optimal}~\cite{ding}, meaning the the maximum loss of information reduces at an optimal rate as the sample size increases. These definitions are information theoretic, and beyond the scope of this dissertation, but it does mean that the AIC model is more appropriate for predictive models. \\
+
+For these reasons, only the AIC score was used for survival model selection in this dissertation. The BIC score would be used if the AIC scores gave inconclusive estimates. 

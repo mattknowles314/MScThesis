@@ -51,20 +51,59 @@ Net_Data <- bind_rows(
 
 # Parametric
 
-Cunningham_Models <- fit_distribution(data = Net_Data |> filter(Study == "Cunningham"))
-Kindler_Models <- fit_distribution(data = Net_Data |> filter(Study == "Kindler"))
-Oettle_Models <- fit_distribution(data = Net_Data |> filter(Study == "Oettle"))
-RochaLima_Models <- fit_distribution(data = Net_Data |> filter(Study == "RochaLima"))
-Goldstein_Models <- fit_distribution(data = Net_Data |> filter(Study == "Goldstein"))
-Spano_Models <- fit_distribution(data = Net_Data |> filter(Study == "Spano"))
-Goncalves_Models <- fit_distribution(data = Net_Data |> filter(Study == "Goncalves"))
-Conroy_Models <- fit_distribution(data = Net_Data |> filter(Study == "Conroy"))
+Cunningham_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Cunningham") |> filter(Treatment == "GEM")) 
+Cunningham_CAP <- fit_distribution(data = Net_Data |> filter(Study == "Cunningham") |> filter(Treatment == "GEM-CAP"))
+Conroy_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Conroy") |> filter(Treatment == "GEM"))
+Conroy_FOL <- fit_distribution(data = Net_Data |> filter(Study == "Conroy") |> filter(Treatment == "FOL")) 
+Goldstein_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Goldstein") |> filter(Treatment == "GEM")) 
+Goldstein_NAB <- fit_distribution(data = Net_Data |> filter(Study == "Goldstein") |> filter(Treatment == "GEM-NAB"))
+Goncalves_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Goncalves") |> filter(Treatment == "GEM")) 
+Goncalves_SOR <- fit_distribution(data = Net_Data |> filter(Study == "Goncalves") |> filter(Treatment == "GEM-SOR")) 
+Kindler_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Kindler") |> filter(Treatment == "GEM")) 
+Kindler_AXI <- fit_distribution(data = Net_Data |> filter(Study == "Kindler") |> filter(Treatment == "GEM-AXI")) 
+Spano_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Spano") |> filter(Treatment == "GEM")) 
+Spano_AXI <- fit_distribution(data = Net_Data |> filter(Study == "Spano") |> filter(Treatment == "GEM-AXI"))
+Oettle_GEM <- fit_distribution(data = Net_Data |> filter(Study == "Oettle") |> filter(Treatment == "GEM"))
+Oettle_PEM <- fit_distribution(data = Net_Data |> filter(Study == "Oettle") |> filter(Treatment == "GEM-PEM"))
+RochaLima_GEM <- fit_distribution(data = Net_Data |> filter(Study == "RochaLima") |> filter(Treatment == "GEM"))
+RochaLima_IRI <- fit_distribution(data = Net_Data |> filter(Study == "RochaLima") |> filter(Treatment == "GEM-IRI"))
 
-Cunningham_Models_Plot <- plot(Cunningham_Models, km = TRUE)
+Cunningham_AICs <- bind_rows(summary(Cunningham_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Cunningham_CAP, AIC = TRUE) |> mutate(Treatment = "GEM-CAP"))
+Conroy_AICs <- bind_rows(summary(Conroy_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Conroy_FOL, AIC = TRUE) |> mutate(Treatment = "FOL"))
+Goldstein_AICs <- bind_rows(summary(Goldstein_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Goldstein_NAB, AIC = TRUE) |> mutate(Treatment = "GEM-NAB"))
+Goncalves_AICs <- bind_rows(summary(Goncalves_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Goncalves_SOR, AIC = TRUE) |> mutate(Treatment = "GEM-SOR"))
+Kindler_AICs <- bind_rows(summary(Kindler_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Kindler_AXI, AIC = TRUE) |> mutate(Treatment = "GEM-AXI"))
+Spano_AICs <- bind_rows(summary(Spano_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                          summary(Spano_AXI, AIC = TRUE) |> mutate(Treatment = "GEM-AXI"))
+Oettle_AICs <- bind_rows(summary(Oettle_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(Oettle_PEM, AIC = TRUE) |> mutate(Treatment = "GEM-PEM"))
+RochaLima_AICs <- bind_rows(summary(RochaLima_GEM , AIC = TRUE) |> mutate(Treatment = "GEM"),
+                             summary(RochaLima_IRI, AIC = TRUE) |> mutate(Treatment = "GEM-IRI"))
+
+Param_AICs <- bind_rows(
+  Conroy_AICs |> mutate(Study = "Conroy"),
+  Cunningham_AICs |> mutate(Study = "Cunningham"),
+  Kindler_AICs |> mutate(Study = "Kindler"),
+  Oettle_AICs |> mutate(Study = "Oettle"),
+  RochaLima_AICs |> mutate(Study = "Rocha Lima"),
+  Goldstein_AICs |> mutate(Study = "Goldstein"),
+  Spano_AICs |> mutate(Study = "Spano"),
+  Goncalves_AICs |> mutate(Study = "Goncalves")
+)
+
+write.xlsx(Param_AICs, "~/Documents/MScThesis/Results/Survival/AICs.xlsx", overwrite = TRUE)
+write.csv(Param_AICs, "~/Documents/MScThesis/Results/Survival/AICs.csv")
+
+Cunningham_Models_Plot <- plot(Cunningham_Models |> filter(Treatment == "GEM"), km = TRUE)
 Kindler_Models_Plot <- plot(Kindler_Models, km = TRUE)
 Oettle_Models_Plot <- plot(Oettle_Models, km = TRUE)
 RochaLima_Models_Plot <- plot(RochaLima_Models, km = TRUE)
-Goldstein_Models_Plot <- plot(Goldstein_Models, km = TRUE)
+Kindler_Models_Plot <- plot(Kindler_Models, km = TRUE)
 Spano_Models_Plot <- plot(Spano_Models, km = TRUE)
 Goncalves_Models_Plot <- plot(Goncalves_Models, km = TRUE)
 Conroy_Models_Plot <- plot(Conroy_Models, km = TRUE)
@@ -99,3 +138,6 @@ Param_Medians <- bind_rows(
 )
 
 write.xlsx(Param_Medians, "~/Documents/MScThesis/Results/Survival/Medians.xlsx", overwrite = TRUE)
+
+
+

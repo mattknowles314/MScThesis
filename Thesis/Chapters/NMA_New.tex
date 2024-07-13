@@ -222,6 +222,9 @@ Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the p
     \label{popavgmed}
 \end{equation}
 
+\section{Treatment Ranking}
+The other result considered by this NMA was the treatment ranking. This was done through the Surface Under the Cumulative Ranking Curve (SUCRA) values for each treatment to determine an overall ranking of each treatment. SUCRA values are in the range $0\%$ (worst treatment) to $100\%$ (best treatment)~\cite{mbuag}.
+
 \section{Model Selection and Convergence}
 Model selection was based primarily on the Leave-One-Out Information Criterion (LOOIC) score (Defintion~\ref{def:looic}). The LOOIC was calculated using the \verb|LOO| R package~\cite{loo} for each model. The model with the lowest LOOIC score was selected as the best fitting model. The Deviation Information Criterion (DIC) score (Definition~\ref{def:dic}) was used a secondary selection criterion. Again, models with lower DIC indicated better fit.
 
