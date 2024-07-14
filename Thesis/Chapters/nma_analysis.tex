@@ -102,7 +102,7 @@ Figure~\ref{fig:pred_rmstbc} presents the estimated RMST of each treatment in ea
 
 Figure~\ref{fig:pred_medianbc} presents the estimated median OS of each treatment in each population. The median OS estimates followes the same pattern as the RMST estimates. Namely, GEM-SOR and GEM-IRI gave the lowest and second-lowest estimates for median OS in each study population, GEM, GEM-AXI, and GEM-PEM gave similar estimates, and FOLFIRINOX and GEM-NAB gave the highest and second-highest estimates of median OS, respectively. Compared to the RMST estimates, the credible interval for FOLFIRINOX was quite word in the Goldstein, Goncalves, Kindler, and Spano studies. GEM-NAB provides higher median OS estimates than GEM-CAP in each popultion, but does not provide significant improvements. The similarity between GEM, GEM-AXI, and GEM-PEM that was observed in the RMST plots was also observed in the median OS plots. \\ 
 
-Figure~\ref{fig:releff} presents the population-average relative treatment effects of each treatment in terms of the log survival-time from the median OS estimates. FOLFIRINOX and GEM-NAB were both significantly better than GEM, but all other treatments crossed 0, indicating no significance. GEM-CAP did not provide a significant imporovement to OS comapred to GEM. \\
+Figure~\ref{fig:releff} presents the population-average relative treatment effects of each treatment in terms of the log survival-time from the median OS estimates. FOLFIRINOX and GEM-NAB were both significantly better than GEM, but all other treatments crossed 0, indicating no significance. GEM-CAP did not provide a significant imporovement to OS comapred to GEM. In addition, Figure~\ref{fig:pair_releff} presents the relative treatment effects for all constrats in the network. As expected, all studies except GEM-CAP and GEM-NAB are significantly worse than FOLFIRINOX.  \\
 
 Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatment. FOLFIRINOX had a considerably higher probability of being the best treatment. FOLFIRINOX had a probability of being the best treatment of 0.97. GEM-NAB and and GEM-CAP had probabilities of being the best treatment of 0.02 and 0.01 respectively. The cumulative probability of GEM-NAB increased quicker than GEM-CAP, having a cumulative probability of being the second best treatment of 0.66, compared to GEM-CAP having a cumulative probability of $0.28$. FOLFIRINOX achies a cumulative probability of 1 by rank three, and GEM-NAB and GEM-CAP achieved a cumulative probability of 1 at rank five and seven resepectively. Figure~\ref{fig:rankplot}, available in Appendix~\ref{NMAAppendix} presents the non-cumulative posterior ranks. The SUCRA value of FOLFIRINOX, GEM-NAB, and GEM-CAP was $99.5\%$, $80.3\%$, and $71.0\%$ respectively. The SUCRA values of GEM-SOR and GEM-IRI were $15.8\%$ and $20.7\%$, respectively which were the lowest SUCRA values in the netork. GEM-AXI, GEM-PEM, and GEM had SUCRA values of $37.8\%$, $39.0\%$, and $36.0\%$, respectively. 
 
@@ -145,8 +145,15 @@ Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatme
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{../Results/NMA/Releff.png}
-    \caption{Log Survival Time Ratio}
+    \caption{Relative treatment effects for all treatments versus GEM}
     \label{fig:releff}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Pair_Releff.png}
+    \caption{Pairwise relative treatment effects for all treatments}
+    \label{fig:pair_releff}
 \end{figure}
 
 \begin{figure}[h]

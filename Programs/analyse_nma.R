@@ -96,6 +96,13 @@ p <- plot(relative_effects(FE_Llogis), ref_line = 0,
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Releff.png")
 
+p <- plot(relative_effects(FE_Llogis, all_contrasts = TRUE), ref_line = 0,
+          stat = "halfeye") +
+  ggplot2::aes(slab_fill = ggplot2::after_stat(ifelse(x < 0, "darkred", "#7EBE91"))) +
+  theme_bw()
+ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/Pair_Releff.png",
+       height = 14, width = 10, units = "in")
+
 color_scheme_set("green")
 p <- mcmc_parcoord(FE_Llogis, pars = parsForStan, np = nuts_params(FE_Llogis$stanfit), transformations = function(x) {(x - mean(x))/sd(x)}) +
   labs(x = "Parameter") +
@@ -120,3 +127,5 @@ p <- plot_prior_posterior(FE_Llogis, prior = "trt", overlay = "posterior",
        y = "Density") +
   theme_bw()
 ggsave(p, filename = "~/Documents/MScThesis/Results/NMA/prior_post.png", width = 12, height = 10, units = "in")
+
+write.csv(posterior_rank_probs(FE_Llogis, sucra = TRUE, cumulative = TRUE), "~/Documents/MScThesis/Results/NMA/SUCRA.csv")

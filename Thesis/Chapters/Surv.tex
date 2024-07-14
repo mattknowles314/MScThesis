@@ -62,7 +62,7 @@ By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and 
     \label{kmHaz}
 \end{equation}
 
-\begin{definition}{Kaplain-Meier Estimator}
+\begin{definition}[label={kmEst}]{Kaplain-Meier Estimator}
     TThe \textbf{Kaplan-Meier Estimator}, $\hat{S(t)}$, estimates the survival probability that an individual survives longer than time $t$, and is given by Equation~\ref{kmeq}. 
 \begin{equation}
     \hat{S(t)} = \prod_{i:t_i \leq t}\left(1 - \frac{d_i}{n_i}\right)
@@ -125,10 +125,9 @@ Let $h_0$ represent the hazard function for an individual at baseline. In additi
 
 The Cox model is semi-parametric model (Definition~\ref{semPam}) then $\beta$ is of finite dimension and $h_0(t)$ is infinite-dimensional and does not need to be specified. 
 
-\begin{definition}{Semi Parametric Model}{h}
+\begin{definition}[label=semPam]{Semi Parametric Model}{h}
     A statistical model is a parameterised family of distributions $\{P_{\theta} : \theta \in \Theta\}$. 
     For a parametric model, $\Theta \subseteq \mathbb{R}^k$ for $k \in \mathbb{N}$. Similarly, for a non-parametric model, $\Theta \subseteq V$, where $V$ is some (possibly infinite) dimensional space $V$. A \textbf{Semi-parametric} model is a statistical model with both parametric and non-parametrc components. For a semi-parametric model we have $\Theta \subseteq \mathbb{R}^k \times V$.
-    \label{semPam}
 \end{definition}
 
 
@@ -144,12 +143,11 @@ The Hazard Ratio (HR), often denoted using $\varphi$, follows from Equation~\ref
 
 In practice, the HR is a useful endpoint in performing NMAs on survival outcomes. However, in order to conduct a HR-based NMA, the proportional hazards assumption (PHA), must be satisfied. The PHA is the assumtpion that the HR remains constant throughout the observation period of a trial. It can be tested by, for example, visual-inspection of a log-cumulative hazards plot. The log-cumulative hazard plot comes from the cumulative hazard function (Definition~\ref{cumHazFun}), which gives the cumulated risk of experiencing an event. Given the cumulative nature of the cumulative hazard function, and the nature of $S(t)$ being monotonically decreasing, the cumulative hazard function is monotonically increasing.
 
-\begin{definition}{Cumulative Hazard Function}
+\begin{definition}[label=cumHazFun]{Cumulative Hazard Function}
     BThe \textbf{Cumulative Hazard Function}, $H(t)$ is given by 
     \begin{equation}
         H(t) = \int_{0}^{x}h(t)dt = -\log(S(t))  
     \end{equation}
-    \label{cumHazFun}
 \end{definition}
 
 By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$. When plotting this for both arms of a clinical trial, if the curves remain roughly parallel, the PHA is likely satisfied. If the curves cross and/or diverge, it indicates PHA has not been satisfied. Whether the PHA is satisfied has implications later on in the analysis. For example, if the PHA is not satisfied, then an individual model must be used for each treatment arm. If the PHA is satisfied, a model which does not include a treatment parameter may be appropriate. This fits a single model to one treatment arm, and then uses a linear coefficient used for obtaining estimates of survival for the non-reference treatment. It is clear to see why this would be be inappropriate if the PHA is not violated, since the difference betweem survival curves will not be linear. 
@@ -161,12 +159,11 @@ Median survival is simply the earliest timepoint after which 50\% of patients ha
 The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. Definition~\ref{def:rmst} presents the formal definition.
 
 
-\begin{definition}{RMST}
+\begin{definition}[label=def:rmst]{RMST}
     AFor a survival function $S(t)$, the \textbf{RMST} for some pre-specified time $x > 0$,
-    \[
+    \begin{equation}
         RMST = \int_{0}^{x} S(t)dt
-    \] 
-    \label{def:rmst}
+    \end{equation}
 \end{definition}
 
 \section{Parametric Models for Survival Analysis}
@@ -231,24 +228,22 @@ The first thing to consider is the visual fit. By overlaying the fitted model(s)
 
 The second, more robust, method is to examine the Akaike\'s Information Criterion (AIC) score~\cite{akaike} (Definition~\ref{def:AIC}). The values of the AIC scores for each model do not intrinsicly reflect the best fitting model, but instead the model with the lowest value is considered to be the best fitting. TSD 14 discusses the use of the Bayesian Information Criterion (BIC) score~\cite{schwarz} (Definition~\ref{def:BIC}) in addition to the AIC score due to the ability to account for the number of model parameters. The model with the lowest AIC (or BIC) score is deemed to be the best fitting model. Futher to this, models that score within a score of two of the best fitting model are also appropriate models. The AIC and BIC scores do not give any information about the quality of the models, so further assessment of the best\-fitting models is therefore required.
 
-\begin{definition}{AIC Score}
+\begin{definition}[label=def:AIC]{AIC Score}
     CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. TThe Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:AIC}.
 
     \begin{equation}
         AIC = 2(k - \log(\hat{L}))
         \label{eq:AIC}
     \end{equation}
-    \label{def:AIC}
 \end{definition}
 
-\begin{definition}{BIC Score}
+\begin{definition}[label=def:BIC]{BIC Score}
     CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. Further, et $n$ be the number of data points in the observed data to which the model was fitted. The Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:BIC}.
 
     \begin{equation}
         BIC =  k\log(n) - 2\log(\hat{L})
         \label{eq:BIC}
     \end{equation}
-    \label{def:BIC}
 \end{definition}
 
 In the context of parametric survival models, the BIC score may be surplus to requirements two reasons.
