@@ -1,18 +1,17 @@
 \chapter{Survival Analysis Bakground}\label{survchap}
 
 \section{Survival Functions}
-
-Given a homogeneous population of individuals, the time of death for each individual is drawn from a continuous random variable $T > 0$ with probability density function $f(t)$ and distribution function $F(t) = \int_{0}^{t}f(\tau)d\tau$. Survival analysis is concerned with estimating the distribution $T$ from Time-To-Event (TTE) data. There are two functions central to survival analysis, the \textit{survival function} and \textit{hazard function}.
+Given a  population of individuals, assume the time of death for each individual is drawn from a continuous random variable $T > 0$ with probability density function $f(t)$ and distribution function $F(t) = \int_{0}^{t}f(\tau)d\tau$. Survival analysis is concerned with estimating the distribution $T$ from Time-To-Event (TTE) data. There are two functions central to survival analysis, the \textit{survival function} and \textit{hazard function}.
 
 \begin{definition}{Survival Function}{h}
-    The \textbf{Survival Function} $S(t)$, gives the probability of an individual surviving longer than time $t$. 
+    The \textbf{Survival function} $S(t)$, gives the probability of an individual surviving longer than time $t$. 
     \begin{equation}
         S(t) = P(T \geq  t) = 1 - F(t) = \int_{t}^{\infty}f(\tau)d\tau  
     \end{equation}
 \end{definition}
 
 \begin{definition}{Hazard Function0}{h}
-    The \textbf{Hazard Function} gives the risk of death at time $t$, given that the individual has survived up to time $t$. 
+    The \textbf{Hazard function} gives the risk of death at time $t$, given that the individual has survived up to time $t$. 
     
     \begin{equation}
         h(t) = -\frac{d}{dt}\log S(t)  
@@ -20,8 +19,8 @@ Given a homogeneous population of individuals, the time of death for each indivi
 \end{definition}
 
 \section{The Kaplan-Meier Estimator and Reconcstructing Patient-Level Data}
-\subsection{The Kaplam-Meier Estimator}
-The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The Censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies due to an adverse event unrelated to their cancer) occurs.
+\subsection{The Kaplan-Meier Estimator}
+The KM estimator is a non-parametric method for estimating the survival function from event and censoring times. TTE data contains, at a bare minimum, a subject identifier, an event time, and a censoring indicator. The censoring indicator is given in Equation~\ref{censInd}. The time column of data gives the time that either the event (i.e, death due to the disease being investigated, in overall survival), or censoring (i.e a chemotherapy patient dies due to an adverse event unrelated to their cancer) occurs.
 
 \begin{equation}
     c_{i} = \begin{cases}
@@ -73,7 +72,7 @@ By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and 
 \section{Reconstructing Survival Data from Published Curves}
 The ML-NMR method requires aggregate survival data to be in the form of the TTE data previously described. Often, the actual patient level event and censoring times/indicators are not published, and therefore must be reconstructed from the published KM curves, which are usually readily available. Indeed, one of the study selection criteria outlined in Section~\ref{sec:aims} was that studies must publish KM curves with numbers at risk. This was motivated by the method for reconstructing patient-level data from KM curves, the Guyot algorithm~\cite{guyotipd} requiring numbers at risk.
 
-\section{Regression Models for Survival}
+\section{Regression Models for Survival}\label{survReg}
 The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions. There are two forms of models for survival data: Accelerated Failure Time (AFT) models, and Proportional-Hazards (PH models).
 
 \subsection{Accelerated Failure Time Models}
@@ -115,7 +114,6 @@ We can then write
 In practice, we assume a distribution for $T$, and estimate parameters using MLE. 
 
 \subsection{Proportional Hazards Models}
-
 Let $h_0$ represent the hazard function for an individual at baseline. In addition, let $x$ be a vector of explanatory variables. The proportional hazards model, also known as the Cox model~\cite{cox1972} is then given by 
 
 \begin{equation}
@@ -134,7 +132,7 @@ The Cox model is semi-parametric model (Definition~\ref{semPam}) then $\beta$ is
 \section{Key Survival Metrics}
 
 \subsection{The Hazard Ratio}
-The Hazard Ratio (HR), often denoted using $\varphi$, follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
+The Hazard Ratio (HR), often denoted by $\varphi$, follows from Equation~\ref{coxmodel}. Consider two treatments, $i = 1, 2$, then $h_1(t, x) = \exp(\beta'x) \ h_0(t)$ and $h_2(t, x) = \exp(\beta'x) \ h_0(t)$. The HR is obtained as in Equation~\ref{HReq}.
 
 \begin{equation}
     \varphi = \frac{h_1}{h_2} = \exp(\beta' x)
@@ -156,30 +154,29 @@ By extention, the log-cumulative hazard function is given by $\log(-\log(S(t)))$
 Median survival is simply the earliest timepoint after which 50\% of patients have died. 
 
 \subsection{Restriced Mean Survival Time}
-The RMST is alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time. This measure can be thought of visually as the area under the survival curve. Definition~\ref{def:rmst} presents the formal definition.
-
+The RMST is an alternative measure to the (log) HR in NMAs. RMST is the mean survival time up to a pre-specified time, $\tau$. This measure can be thought of visually as the area under the survival curve. Definition~\ref{def:rmst} presents the formal definition. When no time $\tau$ is specified, it is taken such that $S(\tau) = 0$.
 
 \begin{definition}[label=def:rmst]{RMST}
     AFor a survival function $S(t)$, the \textbf{RMST} for some pre-specified time $x > 0$,
     \begin{equation}
-        RMST = \int_{0}^{x} S(t)dt
+        RMST = \int_{0}^{\tau} S(t)dt
     \end{equation}
 \end{definition}
 
 \section{Parametric Models for Survival Analysis}
-This section discusses the parametric models commonly used in Survival Analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. The first section outlines how the \verb|flexsurv| package works.
+This section discusses the parametric models commonly used in survival analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. Section~\ref{flexSetup} outlines how the \verb|flexsurv| package works.
 
-\subsection{Model Setup}
+\subsection{Model Setup}\label{flexSetup}
 The general model of a \verb|flexsurv| survival model takes the form 
 
 \begin{equation}
     \label{fsurvmodel}
-    f(t|\mu(\bf{z}), \bf{\alpha}(\bf{z})).
+    f(t|\mu(z), \alpha(z)).
 \end{equation}
 
-Equation~\ref{fsurvmodel} gives the probability density for death at time $t \geq 0$. The \textit{mean} or \textit{location} of the distribution is given by $\mu = \alpha_0$. The remaining parameters, $\bf{\alpha^1} = (\alpha_1, \ldots, \alpha_R)$ are called \textit{ancillary} parameters. \\
+Equation~\ref{fsurvmodel} gives the probability density for death at time $t \geq 0$. The \textit{mean} or \textit{location} of the distribution is given by $\mu = \alpha_0$. The remaining parameters, $\alpha^1 = (\alpha_1, \ldots, \alpha_R)$ are called \textit{ancillary} parameters. \\
 
-Chapter~\ref{survchap} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as in Equation~\ref{flex1}, then the model is a PH model. Alternatively, if the survival function is written as in Equation~\ref{flex2}, then the model is an AFT model.
+Section~\ref{survReg} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as in Equation~\ref{flex1}, then the model is a PH model. Alternatively, if the survival function is written as in Equation~\ref{flex2}, then the model is an AFT model.
 
 \begin{equation}
     h(t|\bf{\alpha}, \mu(z)) = \mu(z)h_0(t|\alpha). 
@@ -187,7 +184,7 @@ Chapter~\ref{survchap} discussed AFT and PH models. Under the \verb|flexsurv| fr
 \end{equation}
 
 \begin{equation}
-    S(t|\mu(\bf{z}), \bf{\alpha}) = S_0(\mu(\bf{z})t/\bf{\alpha}).  
+    S(t|\mu(z), \bf{\alpha}) = S_0(\mu(z)t/\alpha).  
     \label{flex2}
 \end{equation}
 
@@ -229,7 +226,7 @@ The first thing to consider is the visual fit. By overlaying the fitted model(s)
 The second, more robust, method is to examine the Akaike\'s Information Criterion (AIC) score~\cite{akaike} (Definition~\ref{def:AIC}). The values of the AIC scores for each model do not intrinsicly reflect the best fitting model, but instead the model with the lowest value is considered to be the best fitting. TSD 14 discusses the use of the Bayesian Information Criterion (BIC) score~\cite{schwarz} (Definition~\ref{def:BIC}) in addition to the AIC score due to the ability to account for the number of model parameters. The model with the lowest AIC (or BIC) score is deemed to be the best fitting model. Futher to this, models that score within a score of two of the best fitting model are also appropriate models. The AIC and BIC scores do not give any information about the quality of the models, so further assessment of the best\-fitting models is therefore required.
 
 \begin{definition}[label=def:AIC]{AIC Score}
-    CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. TThe Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:AIC}.
+    Consider a statistical model with $k$ estimated parameters and let $\hat{L}$ be the maximised value of the likelihood function of the model. The Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:AIC}.
 
     \begin{equation}
         AIC = 2(k - \log(\hat{L}))
@@ -238,7 +235,7 @@ The second, more robust, method is to examine the Akaike\'s Information Criterio
 \end{definition}
 
 \begin{definition}[label=def:BIC]{BIC Score}
-    CConsider a statistical model with $k$ estimated parameters and $\hat{L}$ be the maximised value of the likelihood function of the model. Further, et $n$ be the number of data points in the observed data to which the model was fitted. The Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:BIC}.
+    Consider a statistical model with $k$ estimated parameters and let $\hat{L}$ be the maximised value of the likelihood function of the model. Further, let $n$ be the number of data points in the observed data to which the model was fitted. The Akaikie's Information Criterion (AIC) score for this model is given as in Equation~\ref{eq:BIC}.
 
     \begin{equation}
         BIC =  k\log(n) - 2\log(\hat{L})
@@ -246,14 +243,14 @@ The second, more robust, method is to examine the Akaike\'s Information Criterio
     \end{equation}
 \end{definition}
 
-In the context of parametric survival models, the BIC score may be surplus to requirements two reasons.
+In the context of parametric survival models, the BIC score may be surplus to requirements for two reasons.
 
 \begin{enumerate}
     \item Five of the seven parametric models recommended by NICE have the same number of parameters, $k = 2$, so no extra information is gained by using the BIC score. \\
     \item The AIC score is preferable for models being used in a predictive context, which is of course the case for survival analysis.
 \end{enumerate}
 
-Consider item (1). This can be further reduced based on whether or not the PHA holds. If the PHA has been deemed to be violated by sufficient testing, then the exponential model is not an appropriate model, leaving five models with $k = 2$ and one model, the generalised gamma model with $k = 3$. Let $k_A = 3$ and $k_B = 2$ be such that model $A$ is the generalised gamma model, and model $B$ is one of the other five models. The AIC score difference is given in Equation~\ref{eq:aicdiff1}\-\ref{eq:aicdiff3}, and the BIC score difference is given in Equation~\ref{eq:bicdiff1}\-\ref{eq:bicdiff3}, the difference between the difference of the differences reduces to  Equation~\ref{eq:dicDiff}, which shows that each comparison of the generalised gamma model to another model will be offset by the same amount. Further to this, since five of the models all have $k = 2$, Equations~\ref{eq:aicdiff1}-\ref{eq:aicdiff3} and Equations~\ref{eq:bicdiff1}-\ref{eq:bicdiff3} both reduce to $\log\left(\frac{\hat{L_B}}{\hat{L_A}}\right)$. Since the difference between BIC scores for each $k = 2$ model and the generalised gamma model is offset by a linear amount, the same conclusions would be drawn whether using AIC or BIC scores. \\
+Consider item (1). This can be further reduced based on whether or not the PHA holds. If the PHA has been deemed to be violated by sufficient testing, then the exponential model is not an appropriate model, leaving five models with $k = 2$ and one model, the generalised gamma model with $k = 3$. Let $k_A = 3$ and $k_B = 2$ be such that model $A$ is the generalised gamma model, and model $B$ is one of the other five models. The AIC score difference is given in Equation~\ref{eq:aicdiff1}-\ref{eq:aicdiff3}, and the BIC score difference is given in Equation~\ref{eq:bicdiff1}-\ref{eq:bicdiff3}, the difference between the difference of the differences reduces to  Equation~\ref{eq:dicDiff}, which shows that each comparison of the generalised gamma model to another model will be offset by the same amount. Further to this, since five of the models all have $k = 2$, Equations~\ref{eq:aicdiff1}-\ref{eq:aicdiff3} and Equations~\ref{eq:bicdiff1}-\ref{eq:bicdiff3} both reduce to $\log\left(\frac{\hat{L_B}}{\hat{L_A}}\right)$. Since the difference between BIC scores for each $k = 2$ model and the generalised gamma model is offset by a linear amount, the same conclusions would be drawn whether using AIC or BIC scores. \\
 
 If the PHA holds, then exponential model is of course acceptable, then the reasoning the PHA-violated case holds for comparing $k = 2$ models to the exponential model, and the generalised gamma model to the $k = 2$ models, however, the difference between the generalised gamma model and exponential model will replace $\log(n)$ with $2\log(n)$ in Equation~\ref{eq:bicdiff3} and replace $2$ with $4$ in Equation~\ref{eq:aicdiff3}, but the same argument as before follows, since the likelihood is still the main driver of difference. As the number of model parameters increases, this argument breaks down, since the $2(k_A - k_A)$ term in the AIC difference will grown much quicker then $(k_B-k_A)\log(n)$ term, leading to unnecssarily large AIC values. However, when the maximum difference between the $k$ terms is $2$, as in the case of parametric survival models, little to no extra information is gained by using the BIC score over the AIC score. 
 
@@ -275,6 +272,6 @@ If the PHA holds, then exponential model is of course acceptable, then the reaso
                 &= \log(n) - 2 \label{eq:dicDiff}
 \end{align}
 
-Item (2), which is the more important, and slightly less specific to this particular scenario, reason for prioritising the AIC score. Survival models are inherently predictive. The purpose is to assess how the survival of a population will evolve over an unseen period without having to keep an RCT running for an indefinite amount of time until all patients have left the study. The AIC method is \textit{minimax\-rate optimal}~\cite{ding}, meaning the the maximum loss of information reduces at an optimal rate as the sample size increases. These definitions are information theoretic, and beyond the scope of this dissertation, but it does mean that the AIC model is more appropriate for predictive models. \\
+Item (2), which is the more important and slightly less specific to this particular scenario reason for prioritising the AIC score comes from the fact that survival models are inherently predictive. The purpose of survival models is to assess how the survival of a population will evolve over an unseen period without having to keep an RCT running for an indefinite amount of time until all patients have left the study. The AIC method is \textit{minimax\-rate optimal}~\cite{ding}, meaning the the maximum loss of information reduces at an optimal rate as the sample size increases. These definitions are information theoretic, and beyond the scope of this dissertation, but it does mean that the AIC model is more appropriate for predictive models. \\
 
 For these reasons, only the AIC score was used for survival model selection in this dissertation. The BIC score would be used if the AIC scores gave inconclusive estimates. 
