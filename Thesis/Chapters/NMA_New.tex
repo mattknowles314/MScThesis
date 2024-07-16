@@ -2,20 +2,20 @@
 
 \section{Building a Network of Evidence}
 
-Consider a set of $N$ two-arm randomised-controlled trials (RCTs). In each trial $i \in 1,\ldots,N$, the patients are randomised to recieve a treatment $A_i$, or a placebo $P_i$. This can be represented as N graphs with two nodes, $A_i$ and $P_i$, connected by an edge representing the trial comparing $A_i$ and $P_i$. It is useful at this stage to recall the formal definition of an (undirected) graph, as presented in Defintion~\ref{graph}. 
+Consider a set of $J$ two-arm randomised-controlled trials (RCTs). In each trial $j \in 1,\ldots,J$, the patients are randomised to recieve a treatment $A_j$, or a placebo $P_j$. This can be represented as $J$ graphs with two nodes, $A_j$ and $P_j$, connected by an edge representing the trial comparing $A_j$ and $P_j$. It is useful at this stage to recall the formal definition of an (undirected) graph, as presented in Defintion~\ref{graph}. 
 
 \begin{definition}[label=graph]{Graph}
 A  A \textbf{Graph} is an ordered triple $G = (V, E, \varphi)$. Where  $V$ is a set of nodes, E is a set  of edges, and $\varphi : E \to \{\{ x, y \} | x, y \in V \ \text{such that} \ x \neq y \}$ is an  \textbf{incidence function} mapping every edge to a pair of verticesa.
 \end{definition}
 
-We can construct $N$ graphs under the formal definition. Namely, for trial $T_i$, we have $G_i = (V_i, E_i, \varphi_i)$ where $V_i = \{ A_i, P_i \}$, $E_i = \{T_i\}$ and $\varphi_i : E_i \to \{ \{ x, y \} | x, y \in V_i \ \text{such that} \  x \neq y \}$. For construction of the grpahs, we drop the subscript on $P_i$, and take placebo (or any common treatment, not necessarily placebo) as a reference treatment. This is done under the assumption that the effect of placebo is constant across all trials. This is a strong assumption, and implications of this are discussed later. Under this assumption however, each $V_i$ now contains a common element, $P$.
+We can construct $J$ graphs under the formal definition. Namely, for trial $T_i$, we have $G_i = (V_i, E_i, \varphi_i)$ where $V_i = \{ A_i, P_i \}$, $E_i = \{T_i\}$ and $\varphi_i : E_i \to \{ \{ x, y \} | x, y \in V_i \ \text{such that} \  x \neq y \}$. For construction of the grpahs, we drop the subscript on $P_i$, and take placebo (or any common treatment, not necessarily placebo) as a reference treatment. This is done under the assumption that the effect of placebo is constant across all trials. This is a strong assumption, and implications of this are discussed later. Under this assumption however, each $V_i$ now contains a common element, $P$.
 
 Let
 
-\begin{align*}
-    V_{trts} &= \bigcup_{i=1}^{N} V_i \\
-    E_{trials} &= \bigcup_{i=1}^{N} E_i
-.\end{align*}
+\begin{align}
+    V_{trts} &= \bigcup_{j=1}^{J} V_j \\
+    E_{trials} &= \bigcup_{j=1}^{J} E_j
+.\end{align}
 
 The incidence function is given in Equation~\ref{incidenceFunc}.
 
@@ -36,8 +36,7 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
 In some scenarios, a head-to-head (HtH) clinical trial may be included in an NMA. Including a HtH trial involves special consideration, since these trials do not compare a treatment versus a placebo, but against another active treatment. From a graph-theoretic perspective, this can create a loop. A loop is an edge that connects a vertex to itself, and makes a graph non-simple.
 
 \section{Standard NMA Model}
-Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-Equation~\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ 
-n study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
+Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
 
 \begin{align}
     y_{jk} &\sim \pi_{Agg}(\theta_{jk}) \label{eq:standardNMA1} \\
@@ -49,19 +48,19 @@ There are two types of NMAs: fixed effect (FE) and relative effects (RE) NMAs. I
 The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and ML-NMR have saught to relax this assumption by using IPD from at least one of the studies in a population.
 
 \section{The General Multilevel Network Meta-Regression}
-The derivation in this chapter is based on the work of~\cite{phillippo2024}. Under an NMA framework, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Ideally, all IPD from the RCTs in a network would be available, however this is seldom the case. Certainly in a survival analysis context, often published KM curves accompanied by aggregate data are the only available data. From the perspective of a pharmaceutical company working on a Heatlth Technology Assessment (HTA) submission, the likely scenario is that they have data from their own RCT comparing their drug with a key comparator, and then published KM curves and covariate summaries. Consider first the standard IPD network meta-regression (NMR), as given in Defintion~\ref{def:mlnmrIPD}.
+The derivation in this chapter outlines the work of~\cite{phillippo2024}. Under an NMA framework, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Ideally, all IPD from the RCTs in a network would be available, however this is seldom the case. Certainly in a survival analysis context, often published KM curves accompanied by aggregate data are the only available data. From the perspective of a pharmaceutical company working on a Heatlth Technology Assessment (HTA) submission, the likely scenario is that they have data from their own RCT comparing their drug with a key comparator, and then published KM curves and covariate summaries. Consider first the standard IPD network meta-regression (NMR), as given in Defintion~\ref{def:mlnmrIPD}.
 
 \begin{definition}[label=def:mlnmrIPD]{General IPD Meta-Regression Model}
-    LLet $y_{ijk}$ be the IPD outcome for individual $i = 1, \ldots, N_{kj}$ in study $j$ recieving treatment $k \in K_j$ given the likelihood distribution $\pi_{Ind}(\theta_{ijk})$. 
+    LLet $y_{ijk}$ be the IPD outcome for individual $i = 1, \ldots, N_{kj}$ in study $j$ recieving treatment $k \in K_j$ given the likelihood distribution $\pi_{Ind}(\theta_{ijk})$, where $N_{kj}$ is the number of patients on treatment $k$ in study $j$.
     \begin{align*}
         y_{ijk} &\sim \pi_{Ind}(\theta_{ijk}) \\
         g(\theta_{ijk}) &= \mu_j + x^T_{ijk}(\beta_1 + \beta_{2,k}) + \gamma_k \\
                         &= \eta_{jk}(x_{ijk})
     \end{align*}
-    Here, $g$ links the likelihood parameter $\theta_{ijk}$ to $\eta_{jk}(x_ijk)$. The $\mu_j$ are study-specific intercepts, and $\beta_1$, $\beta_{2,k}$ are regression coefficients for prognostic and effect-modifying covariates respectively. Additionally, the $\gamma_k$ are individual-level treatment effects. For the reference treatment, $\beta_{2,1} = \gamma_1 = 0$.
+    Here, $g$ links the likelihood parameter $\theta_{ijk}$ to $\eta_{jk}(x_{ijk})$. The $\mu_j$ are study-specific intercepts, and $\beta_1$, $\beta_{2,k}$ are regression coefficients for prognostic and effect-modifying covariates respectively. Additionally, the $\gamma_k$ are individual-level treatment effects. For the reference treatment, $\beta_{2,1} = \gamma_1 = 0$.
 \end{definition}
 
-It is clear to see how the model in Definition~\ref{def:mlnmrIPD} extends Equations~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}.  Indeed, the model in Definition~\ref{def:mlnmrIPD} is based only on IPD. But the aim is to expand the model in order to incorperate aggregate data. By integrating the individual conditional likelihood function over the joint covariate distribution from an aggregate study, we obtain an individual marginal likelihood function. Compared to the conditional likelihood, the marginal likelihood describes the likelihood where outcomes are known, but covariates are not. In the context of survival analysis, the outcomes are the event/censoring times. 
+It is clear to see how the model in Definition~\ref{def:mlnmrIPD} extends Equations~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}.  Indeed, the model in Definition~\ref{def:mlnmrIPD} is based only on IPD. But the aim is to expand the model in order to incorperate aggregate data. By integrating the individual conditional likelihood function over the joint covariate distribution from an aggregate study, we obtain an individual marginal likelihood function. Compared to the conditional likelihood, the marginal likelihood describes the likelihood where outcomes are known, but covariates are not. In the context of survival analysis, the outcomes are the event and censoring times. \\
 
 Let $\xi = \{\mu_j, \beta_1, \beta_{2,k}, \gamma_k | \forall \ j,k \}$ be the parameter space. Denote the individual conditional likelihood function by $L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x_{ijk})$. The form of $L_{ijk|x}^{\text{Con}}$ depends on $\pi_{Ind}$, $g$, and $\eta_{jk}$.
 
@@ -81,7 +80,7 @@ It is likeliy that a closed-form of Equation~\ref{eq:marg} does not exist. Quasi
     \label{eq:margApprox}
 \end{equation}
 
-Consider now a summary outcome $y_{\hat{jk}}$ aggregated over all individuals on treatment $k$ in study $j$. Each individual $i$ in on treatment $k$ in study $j$ contributes to the aggregate likelihood. Let $y_{ijk}$ denote the observed value of this summary measure for individual $i$. The aggregate maginal likelihood function is then the product of these $y_ijk$ up to a normalising constant, as in Equation~\ref{aggMargLik}.
+Consider now a summary outcome $\hat{y_{jk}}$ aggregated over all individuals on treatment $k$ in study $j$. Each individual $i$ in on treatment $k$ in study $j$ contributes to the aggregate likelihood. Let $y_{ijk}$ denote the observed value of this summary measure for individual $i$. The aggregate maginal likelihood function is then the product of these $y_{ijk}$ up to a normalising constant, as in Equation~\ref{aggMargLik}.
 
 \begin{equation}
     L_{\hat{jk}}^{\text{Mar}} \propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
@@ -106,13 +105,13 @@ The full, general ML-NMR model is then given by combining the individual and agg
 Under a Bayesian framework, priors are placed on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$. Uninformative priors were used.
 
 \section{Survival ML-NMR}
-The ML-NMR method lends itself well to survival outcomes. Each study in the network reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, denoted $f_{jk}$ is available. The idea is to include the $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ in Definition~\ref{mlnmrdef}. \\
+The ML-NMR method lends itself well to survival outcomes. Each study in the network reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD from an RCT or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, $f_{jk}$ is available. The idea is to include the $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ in Definition~\ref{mlnmrdef}. \\
 
-With some covariates, the pseudo-IPD can include a recreated covariate column for each individual. For example, if the proportion of male patients is given for a summary study, pseudo-patients can be randomly assigned to be male or female such that the number matches that reported in the trial. This is not possible with covariates such as age, where a distribution is usully reported. The proportion of male patients is somewhat unique in this case. It would likely not be statistically sound to do this with a variable such as the site of any metastises. Despite this being a count variable in the same way, the site of metastises may have more influence on survival times than the sex of a patient, and therefore randomly assigning patients to have a given metastises based on the aggregate data may not align with what the original data found. \\ 
+With some covariates, the pseudo-IPD can include a recreated covariate column for each individual. For example, if the proportion of male patients is given for a particular study, pseudo-patients can be randomly assigned to be male or female such that the number matches that reported in the trial. This is not possible with covariates such as age, where a distribution is usully reported. The proportion of male patients is somewhat unique in this case. It would likely not be statistically sound to do this with a variable such as the site of any metastises. Despite this being a count variable in the same way, the site of metastises may have more influence on survival times than the sex of a patient, and therefore randomly assigning patients to have a given metastises based on the aggregate data may not align with what the original data found. \\ 
 
 The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be the other way round- i.e $1$ denotes censoring instead of an event, as in Equation~\ref{censInd}. Therefore, when cleaning data for this dissertation, manual reversing of the censoring indicator was conducted to ensure all data used the same definition. 
 
-Let $S_{jk}(t|\bf{x})$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
+Let $S_{jk}(t|x)$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
 
 \begin{equation}
     L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}
@@ -178,10 +177,10 @@ Returning to ML-NMR, recall $d_{ab}$ is the relative effect of treatment b versu
               &= \gamma_b - \gamma_a + \bar{x}^T_{(P)}(\beta_{2,b}-\beta_{2,a}) \label{popavd}
 \end{align}
 
-For this dissertation, The estimates considered for results were the RMST and median OS. The survival and hazard functions were also analysed but were not primary outcomes for the NMA.
+For this dissertation, The treatment effect measures considered were the RMST and median OS. The survival and hazard functions were also analysed but were not primary outcomes for the NMA.
 
 \subsection{Survival function}
-Let $\bar{S}_{(P)k}(t)$ be the population-average marginal survival probability of treatmentt $k$ in population $P$ at time $t$. $\bar{S}_{(P)k}(t)$ is obtained by integrating $S_{(P)k}(t|x)$ over $f_{(P)}(x)$, as in Equation~\ref{popavgS}.
+Let $\bar{S}_{(P)k}(t)$ be the population-average marginal survival probability of treatment $k$ in population $P$ at time $t$. $\bar{S}_{(P)k}(t)$ is obtained by integrating $S_{(P)k}(t|x)$ over $f_{(P)}(x)$, as in Equation~\ref{popavgS}.
 
 \begin{equation}
     \bar{S}_{(P)k}(t) = \int_{\mathfrak{X}}S_{(P)k}(t|x)f_{(P)}(x)dx
@@ -193,21 +192,22 @@ The population-average marginal hazard function and cumulative hazard function a
 
 \begin{align}
     \bar{h}_{(P)k}(t) &= \frac{\int_{\mathfrak{X}}S_{(P)k}(t|x)h_{(P)k}(t|x)f_{(P)k}(x)}{\bar{S}_{(P)k}(t)} \label{popavghaz}\\
-    \bar{H}{(P)k}(t) &= -\log(\bar{S}_{(P)k}(t)) \label{popavgcumhaz}
+    \bar{H}_{(P)k}(t) &= -\log(\bar{S}_{(P)k}(t)) \label{popavgcumhaz}
 \end{align}
 
 \subsection{RMST}
-Let $x$ be some time horizon. The population-average marginal RMST follows from Definition~\ref{def:rmst}.
+Let $x$ be some time horizon. The population-average marginal RMST follows from Definition~\ref{def:rmst}. By default, $\tau$ is the time such that $S(\tau) = 0$.
 
 \begin{equation}
-    RMST_{(P)k}(x) = \int^{x}_{0} \bar{S}_{(P)k}(t)dt.
+    RMST_{(P)k}(\tau) = \int^{\tau}_{0} \bar{S}_{(P)k}(t)dt.
 \end{equation}
 
 \subsection{Median OS}
-In general, the $\alpha\%$ quantile is obtained by solving
+In general, the $100\alpha\%$ quantile is obtained by solving Equation~\ref{survQuant} for $\alpha \in [0, 1]$.
 
 \begin{equation}
     \bar{S}_{(P)k}(t) = 1 - \alpha.
+    \label{survQuant}
 \end{equation}
 
 Since the median OS is a special case of this with $\alpha = \frac{1}{2}$, the population-average marginal median OS, $m$ is estimated by Equation~\ref{popavgmed}. 
@@ -227,7 +227,7 @@ Model selection was based primarily on the Leave-One-Out Information Criterion (
     BBegin by defining the expected log pointwise predictive density (elpd) as in Equation~\ref{elpd} for data $y$,
     
     \begin{equation}
-        elpd_{loo} = \sum_{i = 1}^n \log(p(y_i | y_{-i})
+        elpd_{loo} = \sum_{i = 1}^n \log(p(y_i | y_{-i}))
         \label{elpd}
     \end{equation}
     

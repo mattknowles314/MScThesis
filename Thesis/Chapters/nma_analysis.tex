@@ -1,6 +1,7 @@
 \chapter{NMA of Pancreatic Cancer Trials}\label{nmachap}
 
-\section{Network of Evidence}
+\section{Base Case}
+\subsection{Network of Evidence}
 Figure~\ref{fig:osnet} presents the network of evidence for this NMA. There were two studies comparing GEM with GEM-AXI, but only one study for each other comparison. As indicated by the size of each node, GEM-SOR was the treatment with the lowest sample size, and GEM-NAB was the comparator with the highest. The GEM $\to$ GEM-NAB edge is a different colour due to being an IPD trial. 
 
 \begin{figure}[h]
@@ -10,7 +11,7 @@ Figure~\ref{fig:osnet} presents the network of evidence for this NMA. There were
     \label{fig:osnet}
 \end{figure}
 
-\section{Model Fitting and Selection}
+\subsection{Model Fitting and Selection}
 Both FE and RE models were fit using log-logistic, log-normal, and Weibull likelihoods. Vague priors were used for each model. Namely, the intercept prior was $N(0, 100)$, the treatment prior was $N(0, 10)$, the auxiliary prior was $hN(0, 5)$, and auxiliary regression prior was $N(0, 10)$. Here, $hN$ denotes a \textit{half-normal distribution}. For each model, sampling was done using 1000 iterations on four chains. The first 500 iterations were warmup iterations. In total, it took approximately six days to run all the models using $64$ integration points for the numerical integration.\\
 
 Table~\ref{tab:selectionstatbc} presents the selection statistics for each model. The RE log-logistic model performed best in terms of LOOIC and DIC score. The FE log-logistic was very similar to the RE log-logistic model. Indeed, the scores were only seperated by 0.0398. The RE log-normal model was only 0.9148 above the LOOIC score of the RE log-logistic model. Given the similarity in the LOOIC scores for the FE and RE log-logistic models, the final moel was selected based on model convergence. \\
@@ -93,7 +94,7 @@ Given the clinical plausibility of the FE model and the demonstrated superior co
 \end{figure}
 
 
-\section{Results}
+\subsection{Results}
 Figure~\ref{fig:prior_post} presents a density plot of the prior versus posterior distribution for each treatment. The posterior distribution is shown in green, and the prior in red. The priors were of course uninformative priors. There were two key takeaways from Figure~\ref{fig:prior_post}. Firstly, the good convergence of this model was demonstrated by the shape of the posterior histogram through the consistent and unimodal shape of the distributions. Secondly, the shape of the posterior distributions being significantly different from the shape of the prior showed that the data were the primary influence on the parameter estimates. If the posterior were a similar shape to the prior, it would indicate the data has not contributed much to the model. Some inference about the effectiveness of these treatments compared to GEM could already be drawn from this plot. For example, FOL, GEM-NAB, and GEM-CAP are all centered above zero, indicating superior OS compared to GEM. Figure~\ref{fig:prior_post} also demonstrates the uncertainty for each interval. Indeed, GEM-SOR has a particularly wide posterior distribution, and GEM-NAB had quite a thin posterior distribution. This was to be expected as there is more uncertainty in the GEM-SOR arm due to fewer patients in the GEM-SOR arm of the network.
 
 Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} present the KM curves of each treatment in the Conroy and Goldstein populations, respectively. Figure~\ref{fig:pred_survbc}, available in Appendix~\ref{NMAAppendix} presents the KM curves in each population. As Conroy and Goldstein had the most mature data of all studies, and contained the two main treatments, these plots were given more priority in the analysis. Both Figure~\ref{fig:pred_survbc_conroy} and Figure~\ref{fig:pred_survbc_goldstein} showed superior OS for the FOL compared to all other treatments. GEM-NAB provides superior OS to GEM-CAP, but worse OS than FOL in the Conroy population. The same was observed in the Goldstein population. In both populations, GEM-SOR had the worst OS until between 12 and 15 months, but then crosses the GEM and GEM-AXI curves to give a higher OS at the end of the extrapolation period. \\
@@ -112,7 +113,6 @@ Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatme
     \caption{Priort versus posterior distribution for each treatment}
     \label{fig:prior_post}
 \end{figure}
-
 
 \begin{figure}[h]
     \centering
@@ -161,4 +161,27 @@ Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatme
     \includegraphics[width = \textwidth]{../Results/NMA/SUCRA.png}
     \caption{Cumulative rank probability for each treatment}
     \label{fig:sucra}
+\end{figure}
+
+\newpage
+\section{Sensitivity Analyses}
+
+\subsection{Sensitivity Analysis 1}
+The first SA was used to account for the fact that the Conroy study had a stricter age eligibility criteria than the other studies. By removing FOL, this SA also accounted for the fact that FOL can only be given to patients fit enough to take it, and therefore decision makers may not always have FOL as a treatment option. Figure~\ref{fig:sa1net} presents the network of evidence for this SA. The only difference between this and the base case evidence network was the absence of a GEM $\rightarrow$ FOL comparison.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../figures/SA1_Network.png}
+    \caption{Network of evidence}
+    \label{fig:sa1net}
+\end{figure}
+
+\subsection{Sensitivity Analysis 1}
+The second SA excluded considered trials for which the OS in both treatment arms dropped below $0.25$. By including studies with more mature data, this SA aimed to assess any uncertainty in the base case by removing these trials with immature data. The Goncalves and Kindler studies were therefore removed. Figure~\ref{fig:sa2net} presents the network of evidence for this SA. The differences between this network and the base case were the loss of one GEM $\rightarrow$ GEM-AXI comparison and the loss of the GEM $\rightarrow$ GEM-SOR comparison. Given that GEM-SOR was the worst ranked treatment in the base case, dropping this comparison was not deemed to be an issue.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../figures/SA2_Network.png}
+    \caption{Network of evidence}
+    \label{fig:sa2net}
 \end{figure}
