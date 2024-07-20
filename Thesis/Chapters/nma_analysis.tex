@@ -110,7 +110,7 @@ Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatme
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{../Results/NMA/prior_post.png}
-    \caption{Priort versus posterior distribution for each treatment}
+    \caption{Prior versus posterior distribution for each treatment}
     \label{fig:prior_post}
 \end{figure}
 
@@ -163,11 +163,14 @@ Figure~\ref{fig:sucra} presents the cumulative rank probability for each treatme
     \label{fig:sucra}
 \end{figure}
 
-\newpage
+\clearpage
 \section{Sensitivity Analyses}
 
 \subsection{Sensitivity Analysis 1}
-The first SA was used to account for the fact that the Conroy study had a stricter age eligibility criteria than the other studies. By removing FOL, this SA also accounted for the fact that FOL can only be given to patients fit enough to take it, and therefore decision makers may not always have FOL as a treatment option. Figure~\ref{fig:sa1net} presents the network of evidence for this SA. The only difference between this and the base case evidence network was the absence of a GEM $\rightarrow$ FOL comparison.
+The first SA was used to account for the fact that the Conroy study had a stricter age eligibility criteria than the other studies. By removing FOL, this SA also accounted for the fact that FOL can only be given to patients fit enough to take it, and therefore decision makers may not always have FOL as a treatment option. Figure~\ref{fig:sa1net} presents the network of evidence for this SA. The only difference between this and the base case evidence network was the absence of a GEM $\rightarrow$ FOL comparison. \\
+
+\subsubsection{Model Fitting and Selection}
+Table~\ref{selectStatSA1} presents the model selection statistics. The RE log-normal and FE-log normal scored best in terms of LOOIC and DIC score, respectively. As in the base case, both models were assessed to determine which one provided a better fit. Figure~\ref{fig:traceSA1FE} and Figure~\ref{fig:traceSA1RE} present the trace plots for the FE and RE model respectively. The FE model had better traces for each treatment parameter than the RE model. In addition, Figure~\ref{fig:parcoord_SA1} and Figure~\ref{fig:RE_parcoord_SA1} present the normalised parallel coordinates plot for the FE and RE model, respectively. The FE model showed no divergent transitions, with intermingling chains. The RE model showed many divergent transitions. In particular, several chains had a completely different pattern to the remainder, indicating that the sampling may have gotten stuck in a local minima or maxima. The RE model was therefore not deemed to have achieved acceptable convergence, and the FE log-normal model was used. The pairs plot for the FE and RE model are presented in Figure~\ref{fig:pairs_SA1} and Figure~\ref{fig:RE_pairs_SA1}. \\
 
 \begin{figure}[h]
     \centering
@@ -176,12 +179,268 @@ The first SA was used to account for the fact that the Conroy study had a strict
     \label{fig:sa1net}
 \end{figure}
 
-\subsection{Sensitivity Analysis 1}
-The second SA excluded considered trials for which the OS in both treatment arms dropped below $0.25$. By including studies with more mature data, this SA aimed to assess any uncertainty in the base case by removing these trials with immature data. The Goncalves and Kindler studies were therefore removed. Figure~\ref{fig:sa2net} presents the network of evidence for this SA. The differences between this network and the base case were the loss of one GEM $\rightarrow$ GEM-AXI comparison and the loss of the GEM $\rightarrow$ GEM-SOR comparison. Given that GEM-SOR was the worst ranked treatment in the base case, dropping this comparison was not deemed to be an issue.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lllll}
+    \hline
+    Likelihood   & Effect & DIC        & LOOIC         \\ \hline
+    Log-logistic & Fixed  & 15176.1347 & 15177.3745    \\
+    Log-logistic & Random & 15178.0459 & 15177.7154    \\
+    Log-normal   & Fixed  & 15172.7599 $\leftarrow$ & 15174.3034    \\
+    Log-normal   & Random & 15172.9396 & 15173.1961 $\leftarrow$   \\
+    Weibull      & Fixed  & 15203.4555 & 15203.4465    \\
+    Weibull      & Random & Inf        & 23994604.6763 \\ \hline
+    \end{tabular}
+    \caption{Model selection statistics for each model}
+    \label{selectStatSA1}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/SA1/Trace.png}
+        \caption{Trace plot for the FE log-normal model ML-NMR}
+        \label{fig:traceSA1FE}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/SA1/RE_Trace.png}
+        \caption{Trace plot for the RE log-normal model ML-NMR}
+        \label{fig:traceSA1RE}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/SA1/Parcoord.png}
+        \caption{Parallel coordinates plot of the FE log-normal model}
+        \label{fig:parcoord_SA1}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/SA1/RE_Parcoord.png}
+        \caption{Parallel coordinates plot of the RE log-normal model}
+        \label{fig:RE_parcoord_SA1}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/FE_Pairs.png}
+    \caption{Pairs plot for the FE log-normal model}
+    \label{fig:pairs_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/RE_Pairs.png}
+    \caption{Pairs plot for the RE log-normal model}
+    \label{fig:RE_pairs_SA1}
+\end{figure}
+
+\subsubsection{Results}
+Figure~\ref{fig:prior_post_SA1} presents the prior versus posterior distribution for each treatment. The posterior distributions were significantly different from the priors, indicating the data was primary influence on the parameter estimates. The GEM-SOR parameter had a wider posterior than the other treatments due to less available information for the GEM-SOR treatment arm. \\
+
+Figure~\ref{fig:pred_surv_goldstein_SA1} presents the simulated KM curves of each treatment in the Goldstein population. GEM-SOR was the worst treatment in this population until around 25 monhts, where it becomes comparable to GEM. GEM-NAB had the highest OS throughout the entire observation period. GEM-CAB and GEM-NAB had similar OS until around five months, after which the GEM-CAP curve declines quicker than GEM-NAB. \\
+
+Figure~\ref{fig:pred_rmst_SA1} presents the RMST estimates for each treatment in each population. GEM-NAB had the highest RMST estimate in each population. GEM-CAP had the second highest RMST of each treatment in each population. In the Goncalves and Kindler studies, the RMST estimates of GEM-CAP and GEM-NAB were quite similar. GEM, GEM-AXI, and GEM-PEM had very similar RMST estimates in each population. GEM-SOR and GEM-IRI had the lowest and second-lowest RMST estimates in each population. Figure~\ref{fig:pred_median_SA1} presents the median OS estimates of each treatment in each population. The same pattern was observed in the median OS estimates as in the RMST estimates. The gap between GEM-NAB and GEM-CAP was slightly more pronounced in the median OS estimates than in the RMST estimates. \\
+
+Figure~\ref{fig:releff_SA1} presents the relative effects of each treatment versus GEM in terms of the log survival time ratio. GEM-AXI, GEM-PEM, GEM-CAP, and GEM-NAB were all better than GEM. Only GEM-NAB was significantly better than GEM. Figure~\ref{fig:pair_releff_SA1} presents the relative effects for all comparisons. This plot showed that GEM-NAB was better than GEM-CAP, but not significantly, which was consitent with the base case analysis. GEM-NAB was significantly better than GEM-IRI. \\
+
+Figure~\ref{fig:sucra_SA1} presents the cumulative rank probability plot. GEM-NAB and GEM-CAP had the highest probabilities of being the best treatment. The SUCRA values of GEM-NAB and GEM-CAP were $60.8\%$ and $30.0\%$ respectively. GEM-SOR had a higher probability of being the best, second best, third best, and fourth best treatment than GEM-IRI, and a higher probability of being the best and sedond best treatment than GEM. GEM-PEM and GEM-AXI had similar probabilities for each ranking.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/prior_post.png}
+    \caption{Prior versus posterior distribution for each treatment}
+    \label{fig:prior_post_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/Goldstein_Survival_Plot.png}
+    \caption{OS of each treatment in the Goldstein population}
+    \label{fig:pred_surv_goldstein_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/RMST_Plot.png}
+    \caption{RMST of each treatment in each population}
+    \label{fig:pred_rmst_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/Median_Plot.png}
+    \caption{Median OS of each treatment in each population}
+    \label{fig:pred_median_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/Releff.png}
+    \caption{Relative treatment effects for all treatments versus GEM}
+    \label{fig:releff_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/Pair_Releff.png}
+    \caption{Pairwise relative treatment effects for all treatments}
+    \label{fig:pair_releff_SA1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/SUCRA.png}
+    \caption{Cumulative rank probability for each treatment}
+    \label{fig:sucra_SA1}
+\end{figure}
+
+\clearpage
+\subsection{Sensitivity Analysis 2}
+The second SA excluded considered trials for which the OS in both treatment arms dropped below $0.25$. By including studies with more mature data, this SA aimed to assess any uncertainty in the base case by removing these trials with immature data. The Goncalves and Kindler studies were therefore removed. Figure~\ref{fig:sa2net} presents the network of evidence for this SA. The differences between this network and the base case were the loss of one GEM $\rightarrow$ GEM-AXI comparison and the loss of the GEM $\rightarrow$ GEM-SOR comparison. Given that GEM-SOR was the worst ranked treatment in the base case, dropping this comparison was not deemed to be an issue. The RE log-logistic model scored best in terms of both LOOIC and DIC scores Figure~\ref{fig:traceSA2FE} and Figure~\ref{fig:traceSA2RE} present the trace plots for the FE and RE model respectively. The FE model had better traces for each treatment parameter than the RE model. In addition, Figure~\ref{fig:parcoord_SA1} and Figure~\ref{fig:RE_parcoord_SA1} present the normalised parallel coordinates plot for the FE and RE model, respectively. Unlike the base case and sensitivity analysis 1, the RE model did not have any divergent transitions. In order to determine which model was used, the pairs plots were examined. Figure~\ref{fig:pairs_SA2} and Figure~\ref{fig:RE_pairs_SA2} Given present the pairs plots for the FE and RE models respectively. The shapes of the distributions in the RE model were thinner than the FE model. The FE model was therefore selected as the better fitting model. \\
 
 \begin{figure}[h]
     \centering
     \includegraphics[width = \textwidth]{../figures/SA2_Network.png}
     \caption{Network of evidence}
     \label{fig:sa2net}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{llll}
+    \hline
+    Likelihood   & Effect & DIC        & LOOIC      \\ \hline
+    Log-logistic & Fixed  & 14970.7099 & 14968.6730 \\
+    Log-logistic & Random & 14970.2523 $\leftarrow$ & 14968.1193 $\leftarrow$ \\
+    Log-normal   & Fixed  & 14971.6948 & 14973.3886 \\
+    Log-normal   & Random & 14972.6324 & 14973.0334 \\
+    Weibull      & Fixed  & 14992.7850 & 14996.2477 \\
+    Weibull      & Random & 14992.2891 & 14995.4664 \\ \hline
+    \end{tabular}
+    \caption{Model selection statistics for each model}
+    \label{selectStatSA2}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/SA2/Trace.png}
+        \caption{Trace plot for the FE log-normal model ML-NMR}
+        \label{fig:traceSA2FE}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/SA2/RE_Trace.png}
+        \caption{Trace plot for the RE log-normal model ML-NMR}
+        \label{fig:traceSA2RE}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/SA2/Parcoord.png}
+        \caption{Parallel coordinates plot of the FE log-normal model}
+        \label{fig:parcoord_SA2}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \textwidth]{../Results/NMA/SA2/RE_Parcoord.png}
+        \caption{Parallel coordinates plot of the RE log-normal model}
+        \label{fig:RE_parcoord_SA2}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/FE_Pairs.png}
+    \caption{Pairs plot for the FE log-normal model}
+    \label{fig:pairs_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/RE_Pairs.png}
+    \caption{Pairs plot for the RE log-normal model}
+    \label{fig:RE_pairs_SA2}
+\end{figure}
+
+\subsubsection{Results}
+Figure~\ref{fig:prior_post_SA2} presents the prior versus posterior distribution for each treatment. The posterior distributions were significantly different from the priors, indicating the data was primary influence on the parameter estimates. The GEM-AXI parameter had a wider posterior than the other treatments. \\
+
+Figure~\ref{fig:pred_surv_goldstein_SA2} and Figure~\ref{fig:pred_surv_conroy_SA2} presents the simulated KM curves of each treatment in the Goldstein and Conroy population respectively. FOL had the highest OS in both populations. GEM-NAB had the second highest OS in both tretment arms. GEM-AXI had a higher OS than GEM-NAB until just before ten months. GEM-IRI had the lowest OS in the Goldstein population until just after ten months, when GEM and GEM-PEM became the worst performing treatment. GEM and GEM-PEM had similar OS curves in the Goldstein population. GEM-IRI had the lowest OS in the Conroy population until around ten months, when GEM and GEM-PEM again become the worst performing treatments. \\
+
+Figure~\ref{fig:pred_rmst_SA2} presents the RMST estimates for each treatment in each population. The RMST estimates were more spread out in each population than in the base case and first sensitivity analysis results. FOL had the highest RMST in each population. GEM-NAB had the second highest RMST estimate in each population. GEM-CAP did not have RMST estimates as close to GEM-NAB as in the base case and first sensitivity analysis. GEM-AXI had higher RMST estimates than GEM-CAP in each population, but was noted for having very wide credible intervals. GEM-IRI had the lowest RMST estimate in each population. GEM and GEM-PEM had similar RMST estimates in each population. Figure~\ref{fig:pred_median_SA2} presents the median OS estimates of each treatment in each population. GEM-AXI had similar median OS estimates to GEM-NAB, but did not have higher median OS than GEM-NAB in any treatment population. FOL had the highest median OS in each population. GEM-IRI had the lowest median OS estimates in each population. \\
+
+Figure~\ref{fig:releff_SA2} presents the relative effects of each treatment versus GEM in terms of the log survival time ratio. FOL, GEM-AXI, GEM-CAP, GEM-NAB, and GEM-PEM were all better than GEM. Only FOL and GEM-NAB was significantly better than GEM. GEM-AXI had a higher log survival time ratio than GEM-CAP, and a very similar estimate to GEM-NAB. Figure~\ref{fig:pair_releff_SA2} presents the relative effects for all comparisons. This plot showed that GEM-NAB was better than GEM-CAP, but not significantly, which was consitent with the base case analysis. GEM-NAB was not significantly better than GEM-IRI, as it was in the first sensitivity analysis. GEM-IRI and GEM-PEM were significantly worse than FOL. GEM-NAB and GEM-AXI were very similar. \\
+
+Figure~\ref{fig:sucra_SA2} presents the cumulative rank probability plot. FOL and GEM-AXI had the highest probabilities of being the best treatment. FOL and GEM-AXI had SUCRA values of $84.2\%$ and $14.3\%$, respectively. GEM-NAB did not have a higher SUCRA value than GEM-CAP until after the second best treatment. GEM-IRI had the lowest probability of being the fourth to seventh treatment. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/prior_post.png}
+    \caption{Prior versus posterior distribution for each treatment}
+    \label{fig:prior_post_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Goldstein_Survival_Plot.png}
+    \caption{OS of each treatment in the Goldstein population}
+    \label{fig:pred_surv_goldstein_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Conroy_Survival_Plot.png}
+    \caption{OS of each treatment in the Conroy population}
+    \label{fig:pred_surv_conroy_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/RMST_Plot.png}
+    \caption{RMST of each treatment in each population}
+    \label{fig:pred_rmst_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Median_Plot.png}
+    \caption{Median OS of each treatment in each population}
+    \label{fig:pred_median_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Releff.png}
+    \caption{Relative treatment effects for all treatments versus GEM}
+    \label{fig:releff_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Pair_Releff.png}
+    \caption{Pairwise relative treatment effects for all treatments}
+    \label{fig:pair_releff_SA2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/SUCRA.png}
+    \caption{Cumulative rank probability for each treatment}
+    \label{fig:sucra_SA2}
 \end{figure}
