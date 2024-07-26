@@ -61,7 +61,9 @@
 \begin{frame}{Project aims}
     \begin{enumerate}
         \item Determine the best treatment for pancreatic cancer using an ML-NMR
+        \pause
         \item Provide clarity on the comparison between GEM-NAB and GEM-CAP
+        \pause
         \item Corroborate findings of previous NMAs
     \end{enumerate} 
 \end{frame} 
@@ -70,9 +72,35 @@
 
 \begin{frame}{Survival Analysis}
     \begin{itemize}
-        \item THe standard parametric survival models were used
+        \item By looking at the KM curves for each study, the Proportional Hazards Assumption was deemed to be violated.
+        \pause
+        \item Therefore, the standard parametric models (excluding the exponential model) were fit to the data from each study.
+        \pause
+        \item Model fitting was conducted using ther R package ``flexsurv''.
+        \pause
+        \item Based on the Akaike's Information Criterion (AIC) scores, the log-logistic, log-normal, and Weibull models were selected. 
     \end{itemize}   
 \end{frame} 
+
+\begin{frame}{General ML-NMR}
+    \begin{block}{Definition: ML-NMR for general likelihoods}
+    Individual:
+    \begin{align}
+        L_{ijk|x}^{\text{Con}}(\xi;y_{ijk},x_{ijk}) &= \pi_{\text{Ind}}(y_{ijk}|\theta_{ijk}) \\
+        g(\theta_{ijk}) &= \eta_{jk}(x_{ijk}) = \mu_j + x_{ijk}^T(\beta_1 + \beta_{2,k}) + \gamma_k \label{mlnmragg}
+    \end{align}
+    Aggregate:
+    \begin{align}
+        L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) &= \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx \label{mlnnmrint}\\
+        L_{\hat{jk}}^{\text{Mar}} &\propto \prod_{i = 1}^{N_{jk}}L_{ijk}^{\text{Mar}}(\xi; y_{ijk})
+    \end{align}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Survival ML-NMR}
+    Expanding this model to the survival case comes from substituting $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ into the general model. 
+    
+\end{frame}
 
 
 \end{document}
