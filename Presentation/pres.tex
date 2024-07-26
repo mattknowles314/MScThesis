@@ -1,0 +1,78 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+\title{A Network Meta-Analysis for Treatments of Locally Advanced/Metastatic Pancreatic Cancer}
+\author{Matthew Knowles}
+\institute{University of Sheffield}
+\date{Autumn 2024}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame} 
+
+\section{Background}
+
+\begin{frame}{Pancreatic Cancer}
+    \begin{itemize}
+        \item Pancreatic cancer is the $10^{th}$ most common cancer in the UK, accounting for roughly $3\%$ of all new cases. 
+        \item The disease is associated with a particular poor prognosis, primarily due to late diagnoses.
+        \item Post cases are pancreatic duct  adenocarcinomas (PDAC), which form in the exocrine component of the pancreas. This part of the organ is responsible for producing digestive enzymes, and carrying the enzymes away from the pancreas. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Treatment Landscape}
+    \begin{itemize}
+        \item Gemcitabine (GEM) is a standard, not-particularly toxic treatment for pancreatic cancer
+        \item GEM in comination with capcitabine (GEM-CAP) or GEM in combination with nab-Paclitaxel (GEM-NAB) have been shown to be better than GEM alone.
+        \item FOLFIRINOX (FOL) has been shown to be significantly better than GEM, but is only given to patients who can tolerate it, which is not many. 
+        \item IN current NICE guidance, there is uncertainty around the comparison between GEM-CAP and GEM NAB.
+        \item Several NMAs have been conducted on pancreatic cancer trials, but none using the Multilevel Network Meta-Regression framework.
+    \end{itemize} 
+\end{frame}
+
+\begin{frame}{Project outline}
+    \begin{enumerate}
+        \item Digitise published Kaplan-Meier (KM) curves from some pancreatic cancer trials
+        \pause
+        \item Fit parametric survival models, and select a few best-fitting model candidates.
+        \pause
+        \item Use those models as likelihoods in the ML-NMR
+        \pause
+        \item Assess treatment landscape
+    \end{enumerate} 
+\end{frame} 
+
+\begin{frame}{Project aims}
+    \begin{enumerate}
+        \item Determine the best treatment for pancreatic cancer using an ML-NMR
+        \item Provide clarity on the comparison between GEM-NAB and GEM-CAP
+        \item Corroborate findings of previous NMAs
+    \end{enumerate} 
+\end{frame} 
+
+\section{Methodology}
+
+\begin{frame}{Survival Analysis}
+    \begin{itemize}
+        \item THe standard parametric survival models were used
+    \end{itemize}   
+\end{frame} 
+
+
+\end{document}
