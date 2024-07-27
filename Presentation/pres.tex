@@ -1,7 +1,7 @@
 \documentclass{beamer}
 
-\usetheme{Madrid}
-\usecolortheme{dolphin}
+\usetheme{Rochester}
+\usecolortheme{whale}
 
 \AtBeginSection[]{
   \begin{frame}
@@ -82,7 +82,11 @@
     \end{itemize}   
 \end{frame} 
 
-\begin{frame}{General ML-NMR}
+\begin{frame}{ML-NMR Background}
+    
+\end{frame}
+
+\begin{frame}{General ML-NMR Model}
     \begin{block}{Definition: ML-NMR for general likelihoods}
     Individual:
     \begin{align}
@@ -98,9 +102,52 @@
 \end{frame}
 
 \begin{frame}{Survival ML-NMR}
-    Expanding this model to the survival case comes from substituting $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ into the general model. 
-    
+    \begin{itemize}
+        \item Consider now that you have some survival data $y_{ijk} = \{t_{ijk}, c_{ijk}\}$. 
+        \pause
+        \item In the individual case, individual $i$ also has a vector of covariate values $x_{ijk}$. For the aggregate data, the only covariate information available is the distribution at baseline $f_{jk}$. 
+        \pause 
+        \item Let $S_{jk}(t|x)$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. 
+        \pause
+        \item The conditional likelihood contributions for each individual is given by
+        \[L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}\]
+        \pause 
+        \item \textbf{The form of the survival and hazard function depends on the survival model chosen}.
+    \end{itemize}
 \end{frame}
 
+\begin{frame}{Survival ML-NMR}
+    \begin{itemize}
+        \item We now want to derive the marginal likelihood.
+        \pause
+        \item \[L_{ijk}^{\text{Mar}}(\xi; y_{ijk}) = \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)f_{jk}(x)dx\]
+        \pause
+        \item Substitute $y_{ijk} = \{t_{ijk}, c_{ijk}\}$
+        \pause 
+        \item \[L_{ijk}^{\text{Mar}}(\xi; t_{ijk}, c_{ijk}) = \int_{\mathfrak{X}} L_{ijk|x}^{\text{Con}}(\xi; t_{ijk}, c_{ijk}, x)f_{jk}(x)dx\]
+                                          \[ = \int_{\mathfrak{X}} S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}} f_{jk}(x)dx\]
+    \end{itemize}
+\end{frame}
+
+\section{Trials}
+
+\begin{frame}{KM Curves}
+    \begin{figure}
+        \includegraphics[height=0.9\textheight,keepaspectratio]{../figures/OS_KMs.png}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{KM Considerations}
+    \begin{itemize}
+        \item The Goncalves and Kindler studies had comparatively immature data. 
+        \pause
+        \item In the Kindler, Oettle, and Rocha Lima studies, the GEM and comparator arm were very similar. 
+        \pause
+        \item Conroy and Goldstein have data on FOL and GEM-NAB respectively. The apparent improvement in OS that was observed in the literature review is visible from these studies. 
+        \pause
+        \item The PHA was not assumed for this study, 
+    \end{itemize}
+    
+\end{frame}
 
 \end{document}
