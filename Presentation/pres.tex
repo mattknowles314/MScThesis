@@ -149,7 +149,84 @@
         \pause
         \item The PHA was not assumed for this study, 
     \end{itemize}
+\end{frame}
+
+\section{ML-NMR}
+\begin{frame}{Network of Evidence}
+    \begin{figure}
+        \includegraphics[height=0.9\textheight,keepaspectratio]{../figures/OS_network.png}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Model Selection Statistics}
+\begin{table}
+    \centering
+    \begin{tabular}{llll}
+    \hline
+    Likelihood   & Type & DIC         & LOOIC      \\ \hline
+    Log-logistic & FE  & 16974.3668  & 16972.9184 \\
+    Log-logistic & RE & 16972.2638  & 16972.8786 \\
+    Log-normal   & FE  & 107813403.9532  & 48652.0393 \\
+    Log-normal   & RE & 16977.7101  & 16973.7934 \\
+    Weibull      & FE  & 16989.2670 & 16992.9722 \\
+    Weibull      & RE & 3.1937e42 & 5.8355e21 \\ \hline
+    \end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}{Model Selection Statistics}
+\begin{table}
+    \centering
+    \begin{tabular}{llll}
+    \hline
+    Likelihood   & Type & DIC         & LOOIC      \\ \hline
+    Log-logistic & FE  & 16974.3668  & 16972.9184 \\
+    Log-logistic & RE & 16972.2638  $\leftarrow$ & 16972.8786 $\leftarrow$ \\
+    Log-normal   & FE  & 107813403.9532  & 48652.0393 \\
+    Log-normal   & RE & 16977.7101  & 16973.7934 \\
+    Weibull      & FE  & 16989.2670 & 16992.9722 \\
+    Weibull      & RE & 3.1937e42 & 5.8355e21 \\ \hline
+    \end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}{Model Selection Considerations}
+    \begin{itemize}
+        \item The RE log-logistic model performed best, but notice how the FE model was quite close.
+        \pause
+        \item FE models were deemed to be clinically appropriate, and so it was decided to assess the fit of both models, rather than selecting purely on DIC scores.
+        \pause
+        \item We assessed fit with trace plots
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Assessing Model Fit}
+\begin{figure}
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/Trace.png}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../Results/NMA/RE_Trace.png}
+    \end{minipage}
+\end{figure}
+
+The left figure is the FE model, and the right figure is the RE model. Clearly, the FE model had better convergence
+\end{frame}   
+
+\begin{frame}{Predicted KM Curves}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{../Results/NMA/Survival_Plot.png}
+\end{figure}
     
 \end{frame}
+
+
+
 
 \end{document}
