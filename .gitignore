@@ -40,6 +40,7 @@
 *.toc
 *.vrb
 *.xdy
+*.xdv
 *.xml
 *blx.bib
 *.pdf
