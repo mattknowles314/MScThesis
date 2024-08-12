@@ -18,7 +18,7 @@
 \title{A Network Meta-Analysis of Treatments for Locally Advanced/Metastatic Pancreatic Cancer}
 \author{Matthew Knowles}
 \institute{University of Sheffield}
-\date{Autumn 2024}
+\date{August 12 2024}
 
 \begin{document}
 
@@ -32,7 +32,7 @@
     \begin{itemize}
         \item Pancreatic cancer is the $10^{th}$ most common cancer in the UK, accounting for roughly $3\%$ of all new cases. 
         \item The disease is associated with a particular poor prognosis, primarily due to late diagnoses.
-        \item Post cases are pancreatic duct  adenocarcinomas (PDAC), which form in the exocrine component of the pancreas. This part of the organ is responsible for producing digestive enzymes, and carrying the enzymes away from the pancreas. 
+        \item Most cases are pancreatic duct  adenocarcinomas (PDAC), which form in the exocrine component of the pancreas. This part of the organ is responsible for producing digestive enzymes, and carrying the enzymes away from the pancreas. 
     \end{itemize}
 \end{frame}
 
@@ -41,30 +41,30 @@
         \item Gemcitabine (GEM) is a standard, not-particularly toxic treatment for pancreatic cancer
         \item GEM in comination with capcitabine (GEM-CAP) or GEM in combination with nab-Paclitaxel (GEM-NAB) have been shown to be better than GEM alone.
         \item FOLFIRINOX (FOL) has been shown to be significantly better than GEM, but is only given to patients who can tolerate it, which is not many. 
-        \item IN current NICE guidance, there is uncertainty around the comparison between GEM-CAP and GEM NAB.
-        \item Several NMAs have been conducted on pancreatic cancer trials, but none using the Multilevel Network Meta-Regression framework.
+        \item In current NICE guidance, there is uncertainty around the comparison between GEM-CAP and GEM-NAB.
+        \item Several NMAs have been conducted on pancreatic cancer trials, but none using the Multilevel Network Meta-Regression (ML-NMR) framework.
     \end{itemize} 
 \end{frame}
 
 \begin{frame}{Project outline}
     \begin{enumerate}
-        \item Digitise published Kaplan-Meier (KM) curves from some pancreatic cancer trials
+        \item Digitise published Overall Survival (OS) Kaplan-Meier (KM) curves from some pancreatic cancer trials.
         \pause
         \item Fit parametric survival models, and select a few best-fitting model candidates.
         \pause
-        \item Use those models as likelihoods in the ML-NMR
+        \item Use those models as likelihoods in the ML-NMR.
         \pause
-        \item Assess treatment landscape
+        \item Conduct NMA, assess best treatments.
     \end{enumerate} 
 \end{frame} 
 
 \begin{frame}{Project aims}
     \begin{enumerate}
-        \item Determine the best treatment for pancreatic cancer using an ML-NMR
+        \item Determine the best treatment for pancreatic cancer using an ML-NMR.
         \pause
-        \item Provide clarity on the comparison between GEM-NAB and GEM-CAP
+        \item Provide clarity on the comparison between GEM-NAB and GEM-CAP.
         \pause
-        \item Corroborate findings of previous NMAs
+        \item Corroborate findings of previous NMAs.
     \end{enumerate} 
 \end{frame} 
 
@@ -84,7 +84,9 @@
 
 \begin{frame}{ML-NMR Background}
     \begin{itemize}
-        \item 
+        \item ML-NMR is a nice method for performing an NMA with a mixture of individual patient data (IPD) and aggregate data. 
+        \pause
+        \item The ML-NMR method lends itself really well to survival outcomes.
     \end{itemize}
 \end{frame}
 
@@ -141,22 +143,21 @@
 
 \begin{frame}{KM Considerations}
     \begin{itemize}
-        \item The Goncalves and Kindler studies had comparatively immature data. 
+        \item The Goncalves and Kindler studies had comparatively immature data. They were included in the main NMA, but a sensitivity analysis was conducted where they were excluded. 
         \pause
         \item In the Kindler, Oettle, and Rocha Lima studies, the GEM and comparator arm were very similar. 
         \pause
         \item Conroy and Goldstein have data on FOL and GEM-NAB respectively. The apparent improvement in OS that was observed in the literature review is visible from these studies. 
-        \pause
-        \item The PHA was not assumed for this study, 
     \end{itemize}
 \end{frame}
 
-\section{ML-NMR}
 \begin{frame}{Network of Evidence}
     \begin{figure}
         \includegraphics[height=0.9\textheight,keepaspectratio]{../figures/OS_network.png}
     \end{figure}    
 \end{frame}
+
+\section{Results}
 
 \begin{frame}{Model Selection Statistics}
 \begin{table}
@@ -196,7 +197,7 @@
         \pause
         \item FE models were deemed to be clinically appropriate, and so it was decided to assess the fit of both models, rather than selecting purely on DIC scores.
         \pause
-        \item We assessed fit with trace plots
+        \item The model fit was assessed using trace plots. 
     \end{itemize}
 \end{frame}
 
@@ -218,15 +219,54 @@ The left figure is the FE model, and the right figure is the RE model. Clearly, 
 \end{frame}   
 
 \begin{frame}{Predicted KM Curves}
-
 \begin{figure}
     \centering
-    \includegraphics[width = 0.85\textwidth]{../Results/NMA/Survival_Plot.png}
+    \includegraphics[width = 0.825\textwidth]{../Results/NMA/Survival_Plot.png}
 \end{figure}
-    
 \end{frame}
 
+\begin{frame}{Predicted Median OS}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.825\textwidth]{../Results/NMA/Median_Plot.png}
+\end{figure}
+\end{frame}
 
+\begin{frame}{Predicted Restricted Mean Survival Time}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.825\textwidth]{../Results/NMA/RMST_Plot.png}
+\end{figure}
+\end{frame}
 
+\begin{frame}{Relative effectiveness compared to GEM}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.825\textwidth]{../Results/NMA/Releff.png}
+\end{figure}
+\end{frame}
+
+\section{Conclusions and Future Work}
+\begin{frame}{Conclusions}
+    \begin{itemize}
+        \item FOLFIRINOX provided superior OS than GEM-NAB and GEM-CAP. (Aim 1) 
+        \pause
+        \item GEM-NAB provides slightly better OS than GEM-CAP, but not significantly better. (Aim 2)
+        \pause
+        \item GEM-SOR and GEM-IRI provided worse OS than GEM. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Discussion}
+    \begin{itemize}
+        \item These results were in line with several NMAs that included the same comparators (Aim 3).
+        \pause
+        \item The Conroy study capped the upper age of patients at 76. A sensitivity analysis was performed where the FOL study was excluded. In this NMA, the treatment order remained the same as in the main NMA. The comparison between GEM-NAB and GEM-CAP still showed similar OS.
+        \pause
+        \item The ISPOR good practice guidelines for NMAs were considered to ensure validity of the NMA. These were addressed in an appendix of the dissertation itself.
+        \pause
+        \item Future work will include more studies. It would be nice to implement some form of parallel-processing, to make the computing process more efficient.
+    \end{itemize}
+\end{frame}
 
 \end{document}
