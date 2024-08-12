@@ -38,8 +38,8 @@
 
 \begin{frame}{Treatment Landscape}
     \begin{itemize}
-        \item Gemcitabine (GEM) is a standard, not-particularly toxic treatment for pancreatic cancer
-        \item GEM in comination with capcitabine (GEM-CAP) or GEM in combination with nab-Paclitaxel (GEM-NAB) have been shown to be better than GEM alone.
+        \item Gemcitabine (GEM) is a standard, not-particularly toxic treatment for pancreatic cancer.
+        \item GEM in combination with capecitabine (GEM-CAP) or GEM in combination with nab-Paclitaxel (GEM-NAB) have been shown to be better than GEM alone.
         \item FOLFIRINOX (FOL) has been shown to be significantly better than GEM, but is only given to patients who can tolerate it, which is not many. 
         \item In current NICE guidance, there is uncertainty around the comparison between GEM-CAP and GEM-NAB.
         \item Several NMAs have been conducted on pancreatic cancer trials, but none using the Multilevel Network Meta-Regression (ML-NMR) framework.
@@ -84,7 +84,7 @@
 
 \begin{frame}{ML-NMR Background}
     \begin{itemize}
-        \item ML-NMR is a nice method for performing an NMA with a mixture of individual patient data (IPD) and aggregate data. 
+        \item ML-NMR is a nice method for performing an NMA with a mixture of individual patient data (IPD) and aggregate (AgD) data. 
         \pause
         \item The ML-NMR method lends itself really well to survival outcomes.
     \end{itemize}
@@ -113,7 +113,7 @@
         \pause 
         \item Let $S_{jk}(t|x)$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. 
         \pause
-        \item The conditional likelihood contributions for each individual is given by
+    \item The conditional likelihood contributions for each individual at time $t_{ijk}$ is given by
         \[L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}\]
         \pause 
         \item \textbf{The form of the survival and hazard function depends on the survival model chosen}.
@@ -268,5 +268,7 @@ The left figure is the FE model, and the right figure is the RE model. Clearly, 
         \item Future work will include more studies. It would be nice to implement some form of parallel-processing, to make the computing process more efficient.
     \end{itemize}
 \end{frame}
+
+\section{Thank you}
 
 \end{document}
