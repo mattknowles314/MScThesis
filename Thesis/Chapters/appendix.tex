@@ -1,6 +1,48 @@
-\chapter{Appendix: ISPOR Good Practice Questions}\label{isporqs}
+\chapter{Appendix}\label{appChap}
 
-\section{Evidence Base}
+\section{Appendix A: Additional NMA Results}\label{NMAAppendix}
+
+This appendix presents some additional NMA results for the FE log-normal ML-NMR model. 
+
+\subsection{Base Case}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/Survival_Plot.png}
+    \caption{OS of each treatment in each population}
+    \label{fig:pred_survbc}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/ranks.png}
+    \caption{Rank probabilities for each treatment}
+    \label{fig:rankplot}
+\end{figure}
+
+\clearpage
+\subsection{Sensitivity Analysis 1}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA1/Survival_Plot.png}
+    \caption{OS of each treatment in each population - SA1}
+    \label{fig:pred_survSA1}
+\end{figure}
+
+\clearpage
+\section{Sensitivity Analysis 2}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = \textwidth]{../Results/NMA/SA2/Survival_Plot.png}
+    \caption{OS of each treatment in each population - SA2}
+    \label{fig:pred_survSA2}
+\end{figure}
+
+\section{Appendix B: ISPOR Good Practice Questions}\label{isporqs}
+
+\subsection{Evidence Base}
 \textbf{Is the population relevant?} Yes. The populations in these trials were reflective of people most likely to have advanced/metastatic pancreatic cancer. The only slight deviaton was the Conroy study having a maximum age eligibility requirement, meaning that study likely had fitter patients.\\ 
 
 \textbf{Are any relevant interventions missing?} Potentially. The Gresham NMA included 19 treatments in total. This NMA included all of the best-performing treatments from the Gresham study, but could be expanded to include more studies in the future. The treatments in this NMA however were chosen as the ones most likely to be of interest to a decision maker in a clinical setting. \\ 
@@ -31,7 +73,7 @@ effect modifiers), were these imbalances in effect modifiers
 across the different treatment comparisons identified before
 comparing individual study results?} NA.\\
 
-\section{Analysis}
+\subsection{Analysis}
 \textbf{Were statistical methods used that preserve within-study
 randomization? (No naive comparisons)} Yes. The NMA was based on relative treatment effects. \\
 
@@ -58,7 +100,7 @@ about heterogeneity explored or discussed?} Question not applicable as the RE mo
 analyses or meta-regression analysis with prespecified
 covariates performed?} Yes, by nature of using an ML-NMR.\\
 
-\section{Reporting quality and transparency}
+\subsection{Reporting Quality and Transparency}
 
 \textbf{Is a graphical or tabular representation of the evidence
 network provided with information on the number of RCTs per
@@ -79,12 +121,47 @@ treatment effects and its uncertainty by outcome?} Yes, see Figure~\ref{fig:sucr
 \textbf{Is the effect of important patient characteristics on treatment
 effects reported?} No, due to lack of IPD. \\
 
-\section{Interpretation}
+\subsection{Interpretation}
 
 \textbf{Are the conclusions fair and balanced?} Yes. Every attempt was made to do this. \\
 
-\section{Conflicts of Interest}
+\subsection{Conflicts of Interest}
 
 \textbf{Were there any potential conflicts of interest?} This project was somewhat personal to the author, but that personal experience did not influence the results. There was no inherent bias to a particular therapy. The author is employed by a health economics consultancy, but has no interest in a particular therapy from a commercial perspective either.\\
 
 \textbf{If yes, were steps taken to address these?} Not required.
+
+\section{Appendix C: The PCNMA Package}\label{pack}
+
+To facilitiate the analysis conducted in this project, an \verb|R| package was constructed. Performing the analysis in this way ensures easy reproducibility for further analysis in the future. The package is roughly split into two parts: survival code, and NMA code. 
+
+\subsection{Survival Functions}
+The central function in the package for survival analysis is the \textit{fit\_distribution} function. This function is a wrapper around the \textit{flexsurvreg} function from \verb|flexsurv|. It is designed to take a list object containing the names of distributions and the associated argument to pass that distribution to \verb|flexsurv|. For example, 
+
+\begin{lstlisting}
+    distributions <- list("Weibull" = "weibull")
+\end{lstlisting}
+
+The reason for defining the distributions in this way is because the default \verb|flexsurv| arguments look untidy by default when plotting. For example, the exponential distribution is passed as just ``exp''. The beauty of the \textit{fit\_distribution} function is that several distributions can be passed with a tidier name, which \textit{flexsurvreg} never sees. This purely aesthetic change can be seen by comparing Figure~\ref{fig:flexsurvlabelexample}, and Figure~\ref{fig:fitdistributionexampleplot}. \\
+
+\begin{figure}[h]
+    \includegraphics{../figures/flexsurvExamplePlot.png}
+    \caption{Fitted Models as in Flexsurv}
+    \label{fig:flexsurvlabelexample}
+\end{figure}
+
+\begin{figure}[h]
+    \includegraphics{../figures/fitteddistExamplePlot.png}
+    \caption{Fitted Models with \textit{fit\_distribution}}
+    \label{fig:fitdistributionexampleplot}
+\end{figure}
+
+Any default \verb|flexsurv| distribution will work with \textit{fit\_distribution}, it just needs a suitable name in the list object . The \textit{fit\_distribution} function itself doesn't actually fit any distributions. There is a sub-function, \textit{.fit\_distribution} which takes a single distribution as an argument, and some data on which to fit that distribution. This function takes the ``weibull'' element of the above list and passes it to flexsurv. The \textit{fit\_distribution} function maps \textit{.fit\_distribution} across the list of distributions, using the \verb|purrr::map| function~\cite{purrr}. After some data cleaning, the object that is returned by \textit{fit\_distribution} is given the class ``fitted\_distribution''.  \\
+
+Several S3 methods exist for objects of class ``fitted\_distribution'', these are \textit{plot.fitted\_distribution}, \textit{summary.fitted\_distribution}, and \textit{coef.fitted\_distribution}. These functions allow for plotting fitted models, accessing information such as AIC scores, and accessing the model coefficients respectively.
+
+\subsection{NMA Functions}
+The NMA part of the \verb|PCNMA| package is a wrapper around \verb|multinma|. In particluar, the \textit{fit\_model} function is a wrapper around \textit{multinma::nma}. \\
+
+Once a network has been created using the \verb|multinma| functions \textit{set\_ipd} and \textit{set\_agd}, the \textit{fit\_model} function, with arguments such as iterations and chains can be used to fit an ML-NMR method for a given likelihood. Models fit in this way are given the class \textit{fitted\_model}. An object of class \textit{fitted\_model} has two S3 methods: \textit{plot.fitted\_distribution}, used for plotting trace plots and posterior results, such as predicted KM curves for a given study population, and \textit{summary.fitted\_distribution}, which is used for obtaining the LOOIC and DIC scores for the model. \\
+

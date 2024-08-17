@@ -66,7 +66,7 @@ To assess the PHA more formally, the log-cumulative hazard plot was inspected. I
 \end{figure}
 
 \section{Study Eligibility Criteria}
-\subsection{Eligibility by study}
+\subsection{Eligibility by Study}
 Patients in the conroy study had to be aged 18 or over with cytologically confirmed, previously untreated, metastatic PACD. Patients had to have an ECOG score of 0 or 1. Patients were required to have bone marrow such that granulocyte count was $\geq1500/mm^3$ and platelet count was $\geq100,000/mm^3$. In addition to bone marrow, the renal and liver function had to be adequate. For the liver function of patients, patients had to have bilirubin $\leq 1.5$ times the upper limit of the normal range. \\
 
 The Conroy study excluded patients who were aged 76 or over. In addition, endocrine or acinar pancreatic carcinoma, previous radiotherapy for measurable lesions, cerebral metastases, a history of another major cancer, active infection, chronic diarrhea, a clinically significant history of cardiac disease, and pregnancy or breast-feeding were all exclusion critera. \\
@@ -98,11 +98,11 @@ In the Spano study, patients who were aged 18 or older with locally advanced or 
 
 Patients were excluded from Spano if they recieved prior treatment for metastatic disease or treatment with GEM. Pregnancy or breast feeding, prior cerebrovascular accident, major surgery within the previous four weeks, brain metastases, active second malignancy, uncontrolled intercurrent illness, urine protein of $500mg$ or more in a 24 hour period, or ongoing uncontrolled hypertension were all exclusion criteria.
 
-\subsection{Analysis of eligibility}
+\subsection{Analysis of Eligibility}
 There was a lot of crossover in the eligibility criteria across the included studies. The two main differences is that the Conroy and Goldstein studies did not include patients with locally advanced disease, and that the Conroy study had an upper age limit for eligible patients. Based on this, it was deemed to be likely that the the populations were homgeneous. Without IPD it is impossible to fully assess homogeneity, but assuming the homogeneity based on the eligibility criteria, and summary statistics presented in Table~\ref{tab:studies} was deemed reasonable.
 
 \section{Covariates}
-No IPD was available for any study in the network. For the ML-NMR model to fit, at least one study needs to have IPD. To deal with this, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and NAB treatment arms, $60\%$ and $57\%$ of patients were assigned to be male, respectively. 
+No IPD was available for any study in the network. Therefore, in order to simulate the common HTA scenario of one IPD study and several AgD studies, the sex of patients in the Golstein study was simulated based on the reported proportion of male patients in each treatment arm. For the GEM and GEM-NAB treatment arms, $60\%$ and $57\%$ of patients were reported to be male, respectively. These values were used to randomly assign reconstructed patients to be male or female such that the reconstructed data was relfective of that of the original trial. The Goldstein study was chosen as it had very mature data with quite a lot of patients, and was also included in the base case and both SAs. 
 
 \section{Parametric Model Fitting to KM Curves}
 Figure~\ref{fig:cunninghamParamExtrap} to Figure~\ref{fig:spanoParamExtrap} present the extrapolation plots for each treatment arm in each study. The data was mature in all studies except the Kindler and Goncalves studies, which meant there was more variation in the survival models for treatments in these populations. The exponential model was noted for presenting poor visual fit in both treatments across both of these studies. For this reason, and due to the NMA not assuming the PHA held, the exponential model was left out of the NMA. This was further supported by the AIC scores as in Table~\ref{AIC1}-\ref{AIC2}, in which the exponential model performs poorly compared to all other models in terms of AIC score in each study.\\

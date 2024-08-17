@@ -11,6 +11,7 @@
     linkcolor=black,
     citecolor=black,    
 ]{hyperref}
+\usepackage{filecontents}
 \usepackage{rotating}
 \usepackage{amssymb}
 \usepackage{array}
@@ -115,12 +116,27 @@ colbacktitle=yellow!75!black,fonttitle=\bfseries}{re}
 %\clearpage
 %\includepdf{toMom.pdf}
 
-\section*{Abstract}
-A Multilevel Network Meta-Regression (ML-NMR) was performed on data from eight studies comparing gemcitabine (GEM) with six combination therapies and one standalone therapy. The comparative efficacy of the combination therapies was assessed in terms of the median overall survival (OS) and restricted mean survival time (RMST) estimates. FOLFIRINOX provides improved median OS and RMST estimates for the treatment of advanced/metastatic pancreatic cancer compared to GEM monotherapy. GEM in combination with nab-paclitaxel (GEM-NAB) also provides improved median OS and RMST compared to GEM and other treatments. 
-A brief literature review was conducted to validate the results of this ML-NMR. A ML-NMR has not previously been conducted for treatments of pancreatic cancer, but the results aligned with the results of the other meta-analyses found in the literature review. This dissertation showed the suitability of the ML-NMR method for use in pancreatic cancer, but lacked real individual patient-level data (IPD) meaning extensive adjustment of covariates was not possible.
+%\section*{Abstract}
 
+\begin{abstract}
+Pancreatic cancer is a particularly nasty cancer associated with exceptionally poor long term survival. Several Network Meta-Analyses (NMAs) have been conducted to analyse the treatment landscape, but none of these NMAs used the Multilevel Network Meta-Regression (ML-NMR) method. ML-NMR is a relatively new method for performing an NMA by combining individual patient-level data (IPD) and aggregate data. \\
+
+An ML-NMR was performed on data from eight studies comparing gemcitabine (GEM) with six combination therapies and one standalone therapy. The comparative efficacy of the combination therapies was assessed in terms of the median overall survival (OS) and restricted mean survival time (RMST) estimates. FOLFIRINOX provides improved median OS and RMST estimates for the treatment of locally advanced/metastatic pancreatic cancer compared to GEM monotherapy. GEM in combination with nab-paclitaxel (GEM-NAB) also provides improved median OS and RMST compared to GEM and other treatments.\\ 
+
+A brief literature review was conducted to validate the results of this ML-NMR. An ML-NMR has not previously been conducted for treatments of pancreatic cancer, but the results of this dissertation aligned with the results of the other meta-analyses found in the literature review. This dissertation showed the suitability of the ML-NMR method for use in pancreatic cancer, but lacked real IPD, meaning extensive adjustment of covariates was not possible. In addition, some conclusions about the ML-NMR method itself were able to be drawn.
+\end{abstract}
+
+\clearpage
 \section*{Acknowledgements}
-I would like to thank Dr Kate Ren for her invaluable supervision throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by. Finally, thank you to my friends and family for putting up with me talking about network meta analysis for the past two years.
+I would like to thank Dr. Kate Ren for her invaluable supervision and insightful discussions throughout this project. In addition, to my colleagues at OPEN Health who I have learnt so much from, and am continually inspired by. I would also like to thank Dr. David Phillippo, the creator of the \verb|multinma| package, and author of most of the theory on which this dissertation is based. Finally, thank you to my friends and family for putting up with me talking about network meta analysis for the past two years.
+
+\section*{Ethical Considerations}
+This dissertation used annonymised data from clinical trials. No ethical approval was therefore required for this dissertation. The letter confirming this research was able to go ahead without need for ethics approval is available in the appendix.
+
+\section*{Computing Environment}
+All work in this dissertation was conducted on a desktop computer running Ubuntu 20.04.4 on an AMD Ryzen 5 1600 6-core 3.2GHz CPU and NVIDIA GeForce GTX 1060 3GB GPU. \\
+
+All R code was developed in R version 4.4.1. \\
 
 \clearpage
 \begin{center}
@@ -155,19 +171,13 @@ I would like to thank Dr Kate Ren for her invaluable supervision throughout this
 
 \input{Chapters/conclusions.tex}
 
+\addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{apalike}
-\bibliography{refs}{}
+\bibliography{refs}
 
-\appendix
-\appendixpage
+\input{Chapters/appendix.tex}
 
 \includepdf[pages=-]{Chapters/Approval_Letter.pdf}
-
-\input{Chapters/NMA_Results_Appendix.tex}
-
-\input{Chapters/IPSORGP.tex}
-
-\input{Chapters/packageDev.tex}
 
 \includepdf[pages=-]{Chapters/PCNMA.pdf}
 

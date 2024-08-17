@@ -10,7 +10,7 @@ Given a  population of individuals, assume the time of death for each individual
     \end{equation}
 \end{definition}
 
-\begin{definition}{Hazard Function0}{h}
+\begin{definition}{Hazard Function}{h}
     The \textbf{Hazard function} gives the risk of death at time $t$, given that the individual has survived up to time $t$. 
     
     \begin{equation}
@@ -70,7 +70,9 @@ By taking the derivative of Equation~\ref{loghazlik} with respect to $h_i$, and 
 \end{definition}
 
 \section{Reconstructing Survival Data from Published Curves}
-The ML-NMR method requires aggregate survival data to be in the form of the TTE data previously described. Often, the actual patient level event and censoring times/indicators are not published, and therefore must be reconstructed from the published KM curves, which are usually readily available. Indeed, one of the study selection criteria outlined in Section~\ref{sec:aims} was that studies must publish KM curves with numbers at risk. This was motivated by the method for reconstructing patient-level data from KM curves, the Guyot algorithm~\cite{guyotipd} requiring numbers at risk.
+The ML-NMR method requires aggregate survival data to be in the form of the TTE data previously described. Often, the actual patient level event and censoring times/indicators are not published, and therefore must be reconstructed from the published KM curves, which are usually readily available. Indeed, one of the study selection criteria outlined in Section~\ref{sec:aims} was that studies must publish KM curves with numbers at risk. This was motivated by the method for reconstructing patient-level data from KM curves, the Guyot algorithm~\cite{guyotipd} requiring numbers at risk. \\
+
+The digitisation step in reconstructing survival data requires manually obtaining the values of the KM curves as coordinates of an image. These coordinates are then of the form $(time, event)$ or $(time, censoring)$. The Guyot algorithm obtains numerical solutions to the inverted KM equations using these digitised survival times, the numbers at risk, and the number of events.
 
 \section{Regression Models for Survival}\label{survReg}
 The survival time of patients may be dependent on several explanatory variables such as age, sex, the presence of a genetic mutation, etc. We wish to incorperate these variables into our survival functions. There are two forms of models for survival data: Accelerated Failure Time (AFT) models, and Proportional-Hazards (PH models).
@@ -164,7 +166,7 @@ The RMST is an alternative measure to the (log) HR in NMAs. RMST is the mean sur
 \end{definition}
 
 \section{Parametric Models for Survival Analysis}
-This section discusses the parametric models commonly used in survival analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. Section~\ref{flexSetup} outlines how the \verb|flexsurv| package works.
+This section discusses the parametric models commonly used in survival analysis. In particular, the seven parametric models recommended by the NICE in Technical Support Document (TSD) 14~\cite{tsd14}. These models are the exponential, gamma, generalised gamma, Gompertz, log-logistic, log-normal, and Weibull models. All of these models except the exponential models are AFT models. All parametric model fitting for this project was performed in \verb|R| using the \verb|flexsurv| package~\cite{flexsurv}. Section~\ref{flexSetup} outlines how the \verb|flexsurv| package works.
 
 \subsection{Model Setup}\label{flexSetup}
 The general model of a \verb|flexsurv| survival model takes the form 
@@ -218,8 +220,8 @@ In the case of interval-censoring, where the survival time is censored on $(t_i^
 
 MLE is performed in \verb|R| using the analytic derivatives of Equation~\ref{flexsurvRightCens} and/or Equation~\ref{flexSurvIntCens} to obtain the required survival models. 
 
-\subsection{Model selection Considerations}
-Once a set of models has been fit to the data from a trial, the best model must be selected. NICE DSU TSD 14~\cite{tsd14} gives guidance on the model selection process. \\
+\subsection{Model Selection Considerations}
+Once a set of models has been fit to the data from a trial, the best model must be selected. NICE Decision Support Unit (DSU) TSD 14~\cite{tsd14} gives guidance on the model selection process. \\
 
 The first thing to consider is the visual fit. By overlaying the fitted model(s) over the observed data, it is easy to see how well the two align. Indeed, this is not a particularly robust method of selection, but does provide a quick way to discount certain models. \\
 
@@ -272,6 +274,6 @@ If the PHA holds, then exponential model is of course acceptable, then the reaso
                 &= \log(n) - 2 \label{eq:dicDiff}
 \end{align}
 
-Item (2), which is the more important and slightly less specific to this particular scenario reason for prioritising the AIC score comes from the fact that survival models are inherently predictive. The purpose of survival models is to assess how the survival of a population will evolve over an unseen period without having to keep an RCT running for an indefinite amount of time until all patients have left the study. The AIC method is \textit{minimax\-rate optimal}~\cite{ding}, meaning the the maximum loss of information reduces at an optimal rate as the sample size increases. These definitions are information theoretic, and beyond the scope of this dissertation, but it does mean that the AIC model is more appropriate for predictive models. \\
+Item (2), which is the more important, and slightly less specific to this particular scenario, reason for prioritising the AIC score comes from the fact that survival models are inherently predictive. The purpose of survival models is to assess how the survival of a population will evolve over an unseen period without having to keep an RCT running for an indefinite amount of time until all patients have left the study. The AIC method is \textit{minimax\-rate optimal}~\cite{ding}, meaning the the maximum loss of information reduces at an optimal rate as the sample size increases. These definitions are information theoretic, and beyond the scope of this dissertation, but it does mean that the AIC model is more appropriate for predictive models. \\
 
 For these reasons, only the AIC score was used for survival model selection in this dissertation. The BIC score would be used if the AIC scores gave inconclusive estimates. 

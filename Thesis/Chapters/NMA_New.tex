@@ -1,4 +1,4 @@
-\chapter{Network Meta Analysis Theory}\label{nmatheory}
+\chapter{Network Meta-Analysis Theory}\label{nmatheory}
 
 \section{Building a Network of Evidence}
 
@@ -33,7 +33,7 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
     \label{fig:comb_evi}
 \end{figure}
 
-In some scenarios, a head-to-head (HtH) clinical trial may be included in an NMA. Including a HtH trial involves special consideration, since these trials do not compare a treatment versus a placebo, but against another active treatment. From a graph-theoretic perspective, this can create a loop. A loop is an edge that connects a vertex to itself, and makes a graph non-simple.
+In some scenarios, a HtH trial may be included in an NMA. Including a HtH trial involves special consideration, since these trials do not compare a treatment versus a placebo, but against another active treatment. From a graph-theoretic perspective, this can create a loop. A loop is an edge that connects a vertex to itself, and makes a graph non-simple.
 
 \section{Standard NMA Model}
 Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
@@ -43,9 +43,9 @@ Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. S
     g(\theta_{jk}) &= \mu_j + \delta_{jk} \label{eq:standardNMA2}
 \end{align}
 
-There are two types of NMAs: fixed effect (FE) and relative effects (RE) NMAs. In an FE NMA, $\delta_{jk} = d_{1k} = d_k$, with $d_1 = 0$. In an RE NMA, $\delta_{jk} \sim N(d_k, \tau^2)$ for the heterogeneity variance $\tau^2$, with $\delta_{j1} = d_1 = 0$. \\
+There are two types of NMAs: fixed effect (FE) and relative effects (RE) NMAs. In an FE NMA, $\delta_{jk} = d_k$, with $d_1 = 0$. In an RE NMA, $\delta_{jk} \sim N(d_k, \tau^2)$ for the heterogeneity variance $\tau^2$, with $\delta_{j1} = d_1 = 0$. \\
 
-The standard NMA model assumes that any effect modifiers, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and ML-NMR have saught to relax this assumption by using IPD from at least one of the studies in a population.
+As previously mentioned the standard NMA model assumes that any TEMs, i.e covariates that alter the relative effect on a given scale of an active treatment versus control, are balanced across populations. While this can often be a valid assumption, methods such as Matching-Adjusted-Indirect-Comparisons (MAICs), Simulated Treatment Comparisons (STCs), and ML-NMR have saught to relax this assumption by using IPD from at least one of the studies in a population. ML-NMR is a more generalisable method, as MAICs and STCs are only able to perform pairwise comparisons. ML-NMR is also able to estimate treatment effects in a target population for which there was no direct evidence.
 
 \section{The General Multilevel Network Meta-Regression}
 The derivation in this chapter outlines the work of~\cite{phillippo2024}. Under an NMA framework, there are $J$ RCTs investigating a subset $K_j \subset K$ $(j = 1,\ldots,J)$ treatments. In this project, $|K_j| = 2 \ \forall \ j$. Ideally, all IPD from the RCTs in a network would be available, however this is seldom the case. Certainly in a survival analysis context, often published KM curves accompanied by aggregate data are the only available data. From the perspective of a pharmaceutical company working on a Heatlth Technology Assessment (HTA) submission, the likely scenario is that they have data from their own RCT comparing their drug with a key comparator, and then published KM curves and covariate summaries. Consider first the standard IPD network meta-regression (NMR), as given in Defintion~\ref{def:mlnmrIPD}.
@@ -133,7 +133,8 @@ As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evalueate
 \end{equation}
 
 \section{Quasi Monte-Carlo}\label{qmcSec}
-Quasi-Monte-Carlo (QMC) is a method for efficient numerical integration. Equation~\ref{mcProblem} gives the form of a Mote-Carlo integration problem for a real integrable function $f$ over the $s$-dimensional hypercube $I^s = [0,1]^s$. QMC differs from standard Monte-Carlo (MC) integration in the way the $x_i$ are chosen for which $f$ is evaluated at. 
+\subsection{Background and Low-Discrepency Sequences}
+The full Quasi Monte-Carlo (QMC) procedure is beyond the scope of this dissertation, and is discussed at length in~\cite{phillippo2019}, but this section serves as an overview of QMC. QMC is a method for efficient numerical integration. Equation~\ref{mcProblem} gives the form of a Mote-Carlo integration problem for a real integrable function $f$ over the $s$-dimensional hypercube $I^s = [0,1]^s$. QMC differs from standard Monte-Carlo (MC) integration in the way the $x_i$ are chosen for which $f$ is evaluated at. 
 
 \begin{equation}
     \int_{[0,1]^S}f(u)du \approx \frac{1}{N}\sum_{i = 1}^{N}f(x_i)
@@ -183,6 +184,16 @@ In particular, \verb|multinma| uses a Sobol sequence~\cite{sobol} to sample $\ha
     \label{sblPlot}
 \end{figure}
 
+\subsection{The Joint-Covariate Distribution}
+$f_{jk}$ is constructed by the $L$ marginal distributions $f_{jk;l}$ $l \in \{1,\ldots,L\}$, where each $l$ is a covariate. By Skalr's Theorem~\cite{sklar1959}, $f_{jk}$ can be written as in Equation~\ref{agdcop}. 
+
+\begin{equation}
+    f_{jk} = C(f_{jk;1},\ldots,f_{jk,L})
+    \label{agdcop}
+\end{equation}
+
+Here, $C$ is a \textit{copula}. There are many forms of copula avaialble, but \verb|multinma| uses a Gaussian copula by default. It should be noted that the term ``Gaussian'' does not refer to the form of the marginal distribution, but of the copula itself. 
+
 \section{Population-average estimates}
 Returning to ML-NMR, recall $d_{ab}$ is the relative effect of treatment b versus treatment a. Let $d_{ab(P)}$ be the population-average relative effect of b versus a in population P. $d_{ab(P)}$ can be calculated as in Equation~\ref{popavd}. 
 
@@ -193,7 +204,7 @@ Returning to ML-NMR, recall $d_{ab}$ is the relative effect of treatment b versu
 
 For this dissertation, The treatment effect measures considered were the RMST and median OS. The survival and hazard functions were also analysed but were not primary outcomes for the NMA.
 
-\subsection{Survival function}
+\subsection{Survival Function}
 Let $\bar{S}_{(P)k}(t)$ be the population-average marginal survival probability of treatment $k$ in population $P$ at time $t$. $\bar{S}_{(P)k}(t)$ is obtained by integrating $S_{(P)k}(t|x)$ over $f_{(P)}(x)$, as in Equation~\ref{popavgS}.
 
 \begin{equation}
@@ -201,7 +212,7 @@ Let $\bar{S}_{(P)k}(t)$ be the population-average marginal survival probability 
     \label{popavgS}
 \end{equation}
 
-\subsection{Hazard function}
+\subsection{Hazard Function}
 The population-average marginal hazard function and cumulative hazard function are given by Equation~\ref{popavghaz}, and Equation~\ref{popavgcumhaz}, respectively.
 
 \begin{align}
