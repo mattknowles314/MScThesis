@@ -102,19 +102,20 @@ The full, general ML-NMR model is then given by combining the individual and agg
     \end{align}
 \end{definition}
 
-Under a Bayesian framework, priors are placed on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$. Uninformative priors were used.
+Under a Bayesian framework, priors are placed on $\mu_j$, $\beta_1$, $\beta_{2,l}$, and $\gamma_k$. Uninformative priors were used for this dissertation.
 
 \section{Survival ML-NMR}
 The ML-NMR method lends itself well to survival outcomes. Each study in the network reports a pair $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ consisting of outcome times $t_{ijk}$ and censoring indicators $c_{ijk}$, either from IPD from an RCT or reconstructed IPD. For IPD studies, the covariates $x_{ijk}$ will naturaly be avialble, but for aggregate studies (those for which pseudo-IPD has been re-created), only the joint covariate distribution of covariates at baseline, $f_{jk}$ is available. The idea for deriving the survival ML-NMR model is to include the $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ in Definition~\ref{mlnmrdef}. \\
 
 With some covariates, the pseudo-IPD can include a recreated covariate column for each individual. For example, if the proportion of male patients is given for a particular study, pseudo-patients can be randomly assigned to be male or female such that the number matches that reported in the trial. This is not possible with covariates such as age, where a distribution is usully reported. The proportion of male patients is somewhat unique in this case. It would likely not be statistically sound to do this with a variable such as the site of any metastises. Despite this being a count variable in the same way, the site of metastises may have more influence on survival times than the sex of a patient, and therefore randomly assigning patients to have a given metastises based on the aggregate data may not align with what the original data found. \\ 
 
-The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be defined as $0$ meaning the individual is censored, or $1$ denotes censoring, as in Equation~\ref{censInd}. For this project, as all the data was digitised, the censoring indicator was already consistent across the data in the network, but when using an IPD study, one must take care to ensure the correct definition of censoring is consistent across all the studies. 
+The censoring indicator for patient $i$ in study $j$ on treatment $k$ is defined as in Equation~\ref{censInd}. In practice, the censoring indicator can be defined as $0$ meaning the individual is censored, or $1$ denotes censoring, as in Equation~\ref{censInd}. For this project, as all the data was digitised, the censoring indicator was already consistent across the data in the network, but when using an IPD study, one must take care to ensure the correct definition of censoring is consistent across all the studies. \\ 
 
-Let $S_{jk}(t|x)$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by
+Let $S_{jk}(t|x)$ and $h_{jk}(t|x)$ be the survival and hazard functions at time $t$ conditional on the covariates $x$. Then the individual conditional likelihood contributions for each time $t_{ijk}$ in the IPD studies are given by Equation~\ref{condSurvEq}. 
 
 \begin{equation}
     L_{ijk|x}^{Con}(\zeta;t_{ijk},c_{ijk},x_{ijk}) = S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}}
+    \label{condSurvEq}
 \end{equation}
 
 The forms of $S$ and $h$ depend on the specific survival models chosen. In this dissertation, only parametric models were considered for $S$ and $h$. Starting from Equation~\ref{eq:marg}, the marginal likelihood equations for each event/censoring time in the aggregate data studies can be derived. Substituting $y_{ijk} = \{t_{ijk}, c_{ijk}\}$ into $L_{ijk|x}^{\text{Con}}(\xi; y_{ijk}, x)$ results in Equation~\ref{eq:survint}.
@@ -125,7 +126,7 @@ The forms of $S$ and $h$ depend on the specific survival models chosen. In this 
                                        &= \int_{\mathfrak{X}} S_{jk}(t_{ijk}| x_{ijk})h_{jk}(t_{ijk}|x_{ijk})^{c_{ijk}} f_{jk}(x)dx\label{eq:survint}
 \end{align}
 
-As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evalueated with quasi-Monte Carlo integration to obtain Equation~\ref{lijk}. 
+As with Equation~\ref{eq:margApprox}, Equation~\ref{eq:survint} can be evaluated with quasi-Monte Carlo integration to obtain Equation~\ref{lijk}. 
 
 \begin{equation}
     L_{ijk}^{\text{Mar}}(\xi; t_{ijk}, c_{ijk}) = \frac{1}{N}\sum_{\hat{x}}S_{jk}(t_{ijk}|\hat{x})h_{jk}(t_{ijk}|\hat{x})^{c_{ijk}}
@@ -144,7 +145,7 @@ The full Quasi Monte-Carlo (QMC) procedure is beyond the scope of this dissertat
 Regular MC integration uses random numbers\footnote{Strictly speaking, these are pseudo-random numbers when considering the implementation of this method.}, whereas QMC uses a low-discrepencey sequence, which is a sequence such that for all $N$, the set $P = \{x_1, \ldots, x_N\}$ has low discrepency, as definted in Definition~\ref{discrepency}.
 
 \begin{definition}[label=discrepency]{Low-Discrepency Sequence}
-    CConsider the set $P = \{x_1, \ldots, x_N\}$. The \textbf{discrepency} of $P$, $D_N(P)$ is defined as in Equation~\ref{def:descrep}.
+    LLet $P = \{x_1, \ldots, x_N\}$. The \textbf{discrepency} of $P$, $D_N(P)$ is defined as in Equation~\ref{def:descrep}.
 
     \begin{equation}
         D_N(P) = \sup_{B \in J}\left|\frac{A(B;P)}{N} - \lambda_s(B)\right|

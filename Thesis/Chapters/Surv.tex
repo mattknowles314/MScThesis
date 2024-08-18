@@ -181,12 +181,12 @@ Equation~\ref{fsurvmodel} gives the probability density for death at time $t \ge
 Section~\ref{survReg} discussed AFT and PH models. Under the \verb|flexsurv| framework, if the hazard function, $h(t) = \frac{f(t)}{S(t)}$, can be factorised as in Equation~\ref{flex1}, then the model is a PH model. Alternatively, if the survival function is written as in Equation~\ref{flex2}, then the model is an AFT model.
 
 \begin{equation}
-    h(t|\bf{\alpha}, \mu(z)) = \mu(z)h_0(t|\alpha). 
+    h(t|\alpha, \mu(z)) = \mu(z)h_0(t|\alpha). 
     \label{flex1}
 \end{equation}
 
 \begin{equation}
-    S(t|\mu(z), \bf{\alpha}) = S_0(\mu(z)t/\alpha).  
+    S(t|\mu(z), \alpha) = S_0(\mu(z)t/\alpha).  
     \label{flex2}
 \end{equation}
 
@@ -203,10 +203,10 @@ In Equation~\ref{flexsurvMLE1} and Equation~\ref{flexsurvMLE2}, $g$ is usally ch
 Let $t_i$, $i \in \{1, \ldots, n\}$, be a sample of times from $n$ individuals. Define $c_i$ as in Equation~\ref{censInd}. Introduce $s_i$, which are delayed-entry times. This means for an individual $i$ who is delayed-entry, the survival time is only observed conditionally on individual $i$ having survived up to time $s_i$. Therefore, $s_i = 0$ when there is no delayed-entry. 
 
 \subsubsection{Right Censoring}
-In the case of right-censoring and nothing else, the likelihood for the parameters $\bf{\theta} = \{\bf{\gamma}, \bf{\beta}\}$ required in Equation~\ref{flexsurvMLE1}-\ref{flexsurvMLE2} is given by 
+In the case of right-censoring and nothing else, the likelihood for the parameters $\theta = \{\gamma, \beta\}$ required in Equation~\ref{flexsurvMLE1}-\ref{flexsurvMLE2} is given by 
 
 \begin{equation}
-    l(\bf{\theta}|t,c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
+    l(\theta|t,c,s) = \frac{\prod_{i:c_i=1} f_i(t_i) \prod_{i:c_i=0} S_i(t_i)}{\prod_{i} S_i(s_i)}
     \label{flexsurvRightCens}
 \end{equation}
 
