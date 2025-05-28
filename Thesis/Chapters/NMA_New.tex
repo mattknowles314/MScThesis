@@ -33,8 +33,6 @@ Then the ordered triple $G = (V_{trts}, E_{trials}, \varphi)$ is the network of 
     \label{fig:comb_evi}
 \end{figure}
 
-In some scenarios, a HtH trial may be included in an NMA. Including a HtH trial involves special consideration, since these trials do not compare a treatment versus a placebo, but against another active treatment. From a graph-theoretic perspective, this can create a loop. A loop is an edge that connects a vertex to itself, and makes a graph non-simple.
-
 \section{Standard NMA Model}
 Let $d_{ab}$ denote the relative effect of treatment $b$ versus treatment $a$. Suppose we have summary outcomes $y_{jk}$ of treatment $k$ in study $j$. This summary outcome may be, for example, HRs, or RMST values. The standard NMA model is written as in Equation~\ref{eq:standardNMA1}-\ref{eq:standardNMA2}. In Equation~\ref{eq:standardNMA1}, $\pi_{Agg}$ is a suitable likelihood for the aggregate data, and $\theta_{jk}$ represents the expected summary outcome of treatment $k$ in study $j$. The link function $g$ serves to transform $\theta_{jk}$ onto the linear predictor scale. In Equation~\ref{eq:standardNMA2}, $\mu_j$ and $\delta_{jk}$ are study-specific intercepts and study-specific relative effect of treatment $k$ versus the reference treatment.
 
